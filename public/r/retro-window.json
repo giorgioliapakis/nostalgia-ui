@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-window",
+  "title": "RetroWindow",
+  "description": "A Mac OS 9 styled window frame with title bar, close/collapse/zoom controls, active/inactive states, and content area.",
+  "dependencies": [],
+  "registryDependencies": [
+    "retro-title-bar"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-window.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { RetroTitleBar } from \"@/registry/new-york/ui/retro-title-bar\"\n\n/* ------------------------------------------------------------------ */\n/*  RetroWindow                                                        */\n/* ------------------------------------------------------------------ */\n\nexport interface RetroWindowProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  /** Window title displayed in the title bar. */\n  title: string\n  /** Whether the window is in active/focused state. Defaults to true. */\n  active?: boolean\n  /** Callback when the close box is clicked. */\n  onClose?: React.MouseEventHandler<HTMLButtonElement>\n  /** Callback when the collapse box is clicked. */\n  onCollapse?: React.MouseEventHandler<HTMLButtonElement>\n  /** Callback when the zoom box is clicked. */\n  onZoom?: React.MouseEventHandler<HTMLButtonElement>\n}\n\nconst RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(\n  (\n    {\n      title,\n      active = true,\n      onClose,\n      onCollapse,\n      onZoom,\n      className,\n      children,\n      ...props\n    },\n    ref\n  ) => {\n    return (\n      <div\n        ref={ref}\n        className={cn(\"flex flex-col\", className)}\n        style={{\n          border: \"1px solid var(--os9-black)\",\n          backgroundColor: \"var(--os9-gray-200)\",\n          boxShadow: active\n            ? \"var(--os9-shadow-window)\"\n            : undefined,\n        }}\n        {...props}\n      >\n        {/* Title bar */}\n        <RetroTitleBar\n          title={title}\n          active={active}\n          onClose={onClose}\n          onCollapse={onCollapse}\n          onZoom={onZoom}\n        />\n\n        {/* Content area */}\n        <div\n          className=\"flex-1\"\n          style={{\n            padding: \"8px\",\n            boxShadow: \"-1px -1px 0 rgba(38,38,38,0.4)\",\n          }}\n        >\n          {children}\n        </div>\n      </div>\n    )\n  }\n)\nRetroWindow.displayName = \"RetroWindow\"\n\nexport { RetroWindow }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-window.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-nav-button",
+  "title": "RetroNavButton",
+  "description": "A Mac OS 9 styled 16x16 navigation button with raised bevel, centered SVG arrow, and four directions: left, right, up, down.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-nav-button.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroNavButtonVariants = cva(\n  [\n    \"inline-flex items-center justify-center\",\n    \"size-[16px] p-0\",\n    \"border border-os9-black bg-os9-gray-300\",\n    \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]\",\n    \"cursor-pointer select-none\",\n    \"transition-none\",\n    \"active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]\",\n    \"focus-visible:os9-focus-ring\",\n  ],\n  {\n    variants: {\n      direction: {\n        left: \"\",\n        right: \"\",\n        up: \"\",\n        down: \"\",\n      },\n    },\n    defaultVariants: {\n      direction: \"left\",\n    },\n  }\n)\n\n/* Simple filled triangles pointing in each direction within a 6x6 viewBox */\nconst arrowPaths: Record<string, string> = {\n  left: \"M5 1 L1 3 L5 5 Z\",\n  right: \"M1 1 L5 3 L1 5 Z\",\n  up: \"M1 5 L3 1 L5 5 Z\",\n  down: \"M1 1 L3 5 L5 1 Z\",\n}\n\nfunction RetroNavButton(\n  {\n    className,\n    direction = \"left\",\n    disabled,\n    ...props\n  }: React.ComponentProps<\"button\"> &\n    VariantProps<typeof retroNavButtonVariants>,\n  ref: React.ForwardedRef<HTMLButtonElement>\n) {\n  const dir = direction ?? \"left\"\n\n  return (\n    <button\n      className={cn(\n        retroNavButtonVariants({ direction }),\n        disabled && [\n          \"opacity-50\",\n          \"pointer-events-none\",\n        ],\n        className\n      )}\n      ref={ref}\n      disabled={disabled}\n      {...props}\n    >\n      <svg\n        width=\"6\"\n        height=\"6\"\n        viewBox=\"0 0 6 6\"\n        fill=\"none\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        aria-hidden=\"true\"\n      >\n        <path d={arrowPaths[dir]} fill=\"currentColor\" />\n      </svg>\n    </button>\n  )\n}\n\nconst ForwardedRetroNavButton = React.forwardRef(RetroNavButton)\nForwardedRetroNavButton.displayName = \"RetroNavButton\"\n\nexport { ForwardedRetroNavButton as RetroNavButton, retroNavButtonVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-nav-button.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

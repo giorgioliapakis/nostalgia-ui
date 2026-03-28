@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-tooltip",
+  "title": "RetroTooltip",
+  "description": "A Mac OS 9 Balloon Help styled tooltip with pale yellow background, rounded corners, and drop shadow, built on Radix UI Tooltip.",
+  "dependencies": [
+    "@radix-ui/react-tooltip"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-tooltip.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as TooltipPrimitive from \"@radix-ui/react-tooltip\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst RetroTooltipProvider = TooltipPrimitive.Provider\n\nconst RetroTooltip = TooltipPrimitive.Root\n\nconst RetroTooltipTrigger = TooltipPrimitive.Trigger\n\nconst RetroTooltipContent = React.forwardRef<\n  React.ComponentRef<typeof TooltipPrimitive.Content>,\n  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>\n>(({ className, sideOffset = 6, ...props }, ref) => (\n  <TooltipPrimitive.Portal>\n    <TooltipPrimitive.Content\n      ref={ref}\n      sideOffset={sideOffset}\n      className={cn(\n        \"z-50\",\n        \"rounded-[6px] border border-[var(--os9-black)] bg-[#ffffcc]\",\n        \"px-[8px] py-[4px]\",\n        \"shadow-[1px_1px_0_rgba(0,0,0,0.3)]\",\n        \"font-[family-name:var(--font-heading)] text-[10px] text-[var(--os9-black)]\",\n        \"animate-in fade-in-0 zoom-in-95\",\n        \"data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95\",\n        \"data-[side=bottom]:slide-in-from-top-2\",\n        \"data-[side=left]:slide-in-from-right-2\",\n        \"data-[side=right]:slide-in-from-left-2\",\n        \"data-[side=top]:slide-in-from-bottom-2\",\n        className\n      )}\n      {...props}\n    />\n  </TooltipPrimitive.Portal>\n))\nRetroTooltipContent.displayName = \"RetroTooltipContent\"\n\nexport {\n  RetroTooltipProvider,\n  RetroTooltip,\n  RetroTooltipTrigger,\n  RetroTooltipContent,\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-tooltip.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

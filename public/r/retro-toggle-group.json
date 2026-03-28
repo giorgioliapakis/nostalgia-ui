@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-toggle-group",
+  "title": "RetroToggleGroup",
+  "description": "A Mac OS 9 styled toggle group with shared borders, raised/pressed bevel states, and single or multiple selection modes, built on Radix UI Toggle Group.",
+  "dependencies": [
+    "@radix-ui/react-toggle-group",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-toggle-group.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as ToggleGroupPrimitive from \"@radix-ui/react-toggle-group\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroToggleGroupVariants = cva(\n  [\n    \"inline-flex items-center justify-center whitespace-nowrap\",\n    \"font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n    \"cursor-pointer select-none\",\n    \"transition-none\",\n    \"border border-os9-black bg-os9-gray-300 text-os9-black\",\n    \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_#808080]\",\n    \"data-[state=on]:bg-os9-gray-700 data-[state=on]:text-os9-white\",\n    \"data-[state=on]:shadow-[inset_1px_1px_0_#808080,inset_-1px_-1px_0_var(--os9-white)]\",\n    \"focus-visible:os9-focus-ring\",\n  ],\n  {\n    variants: {\n      size: {\n        default: \"h-[24px] px-[8px] py-[4px]\",\n        sm: \"h-[20px] px-[6px] py-[2px] text-[10px]\",\n        lg: \"h-[30px] px-[12px] py-[4px] text-[12px]\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\ntype ToggleGroupContextValue = VariantProps<typeof retroToggleGroupVariants>\n\nconst ToggleGroupContext = React.createContext<ToggleGroupContextValue>({\n  size: \"default\",\n})\n\nfunction RetroToggleGroup(\n  {\n    className,\n    size,\n    children,\n    ...props\n  }: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &\n    VariantProps<typeof retroToggleGroupVariants>,\n  ref: React.ForwardedRef<HTMLDivElement>\n) {\n  return (\n    <ToggleGroupPrimitive.Root\n      className={cn(\"inline-flex flex-row items-center\", className)}\n      ref={ref}\n      {...props}\n    >\n      <ToggleGroupContext.Provider value={{ size }}>\n        {children}\n      </ToggleGroupContext.Provider>\n    </ToggleGroupPrimitive.Root>\n  )\n}\n\nconst ForwardedRetroToggleGroup = React.forwardRef(RetroToggleGroup)\nForwardedRetroToggleGroup.displayName = \"RetroToggleGroup\"\n\nfunction RetroToggleGroupItem(\n  {\n    className,\n    size,\n    disabled,\n    children,\n    ...props\n  }: React.ComponentProps<typeof ToggleGroupPrimitive.Item> &\n    VariantProps<typeof retroToggleGroupVariants>,\n  ref: React.ForwardedRef<HTMLButtonElement>\n) {\n  const context = React.useContext(ToggleGroupContext)\n  const resolvedSize = size ?? context.size\n\n  return (\n    <ToggleGroupPrimitive.Item\n      className={cn(\n        retroToggleGroupVariants({ size: resolvedSize }),\n        \"-ml-px first:ml-0\",\n        disabled && \"opacity-50 pointer-events-none\",\n        className\n      )}\n      ref={ref}\n      disabled={disabled}\n      {...props}\n    >\n      {children}\n    </ToggleGroupPrimitive.Item>\n  )\n}\n\nconst ForwardedRetroToggleGroupItem = React.forwardRef(RetroToggleGroupItem)\nForwardedRetroToggleGroupItem.displayName = \"RetroToggleGroupItem\"\n\nexport {\n  ForwardedRetroToggleGroup as RetroToggleGroup,\n  ForwardedRetroToggleGroupItem as RetroToggleGroupItem,\n  retroToggleGroupVariants,\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-toggle-group.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

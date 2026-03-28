@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-chevron",
+  "title": "RetroChevron",
+  "description": "A Mac OS 9 styled chevron arrow (filled triangle) with configurable direction, two color variants, and two sizes.",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-chevron.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\ntype Direction = \"up\" | \"down\" | \"left\" | \"right\"\ntype Variant = \"default\" | \"accent\"\ntype Size = \"sm\" | \"default\"\n\nconst rotationMap: Record<Direction, string> = {\n  up: \"rotate(0)\",\n  right: \"rotate(90)\",\n  down: \"rotate(180)\",\n  left: \"rotate(270)\",\n}\n\nconst sizeMap: Record<Size, number> = {\n  sm: 6,\n  default: 8,\n}\n\ninterface RetroChevronProps extends React.SVGAttributes<SVGSVGElement> {\n  direction?: Direction\n  variant?: Variant\n  size?: Size\n}\n\nfunction RetroChevron(\n  {\n    direction = \"up\",\n    variant = \"default\",\n    size = \"default\",\n    className,\n    ...props\n  }: RetroChevronProps,\n  ref: React.ForwardedRef<SVGSVGElement>\n) {\n  const px = sizeMap[size]\n  const fill =\n    variant === \"accent\"\n      ? \"var(--os9-azul)\"\n      : \"var(--os9-black)\"\n\n  return (\n    <svg\n      ref={ref}\n      width={px}\n      height={px}\n      viewBox=\"0 0 8 8\"\n      fill=\"none\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      className={cn(\"inline-block shrink-0\", className)}\n      aria-hidden\n      {...props}\n    >\n      <path\n        d=\"M4 1L7 6H1L4 1Z\"\n        fill={fill}\n        transform={rotationMap[direction]}\n        style={{ transformOrigin: \"center\" }}\n      />\n    </svg>\n  )\n}\n\nconst ForwardedRetroChevron = React.forwardRef(RetroChevron)\nForwardedRetroChevron.displayName = \"RetroChevron\"\n\nexport { ForwardedRetroChevron as RetroChevron }\nexport type { RetroChevronProps }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-chevron.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

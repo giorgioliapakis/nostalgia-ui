@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-label",
+  "title": "RetroLabel",
+  "description": "A Mac OS 9 styled label with Geneva 10pt default and Charcoal 12pt large size variants, built on Radix UI Label.",
+  "dependencies": [
+    "@radix-ui/react-label",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-label.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as LabelPrimitive from \"@radix-ui/react-label\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroLabelVariants = cva(\n  [\n    \"font-[family-name:var(--font-sans)]\",\n    \"text-os9-black\",\n    \"cursor-default select-none\",\n    \"peer-disabled:text-os9-gray-600 peer-disabled:pointer-events-none\",\n  ],\n  {\n    variants: {\n      size: {\n        default: \"text-[10px] leading-normal\",\n        lg: \"font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\nconst RetroLabel = React.forwardRef<\n  React.ComponentRef<typeof LabelPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &\n    VariantProps<typeof retroLabelVariants>\n>(({ className, size, ...props }, ref) => (\n  <LabelPrimitive.Root\n    ref={ref}\n    className={cn(retroLabelVariants({ size }), className)}\n    {...props}\n  />\n))\nRetroLabel.displayName = \"RetroLabel\"\n\nexport { RetroLabel, retroLabelVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-label.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-separator",
+  "title": "RetroSeparator",
+  "description": "A Mac OS 9 styled separator with classic beveled line effect: dark top/left pixel and light bottom/right pixel, built on Radix UI Separator.",
+  "dependencies": [
+    "@radix-ui/react-separator"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-separator.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as SeparatorPrimitive from \"@radix-ui/react-separator\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction RetroSeparator(\n  {\n    className,\n    orientation = \"horizontal\",\n    decorative = true,\n    ...props\n  }: React.ComponentProps<typeof SeparatorPrimitive.Root>,\n  ref: React.ForwardedRef<React.ComponentRef<typeof SeparatorPrimitive.Root>>\n) {\n  return (\n    <SeparatorPrimitive.Root\n      ref={ref}\n      decorative={decorative}\n      orientation={orientation}\n      className={cn(\n        \"shrink-0\",\n        orientation === \"horizontal\"\n          ? \"h-[2px] w-full border-t border-b border-t-[var(--os9-gray-700)] border-b-[var(--os9-white)]\"\n          : \"w-[2px] self-stretch border-l border-r border-l-[var(--os9-gray-700)] border-r-[var(--os9-white)]\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nconst ForwardedRetroSeparator = React.forwardRef(RetroSeparator)\nForwardedRetroSeparator.displayName = \"RetroSeparator\"\n\nexport { ForwardedRetroSeparator as RetroSeparator }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-separator.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

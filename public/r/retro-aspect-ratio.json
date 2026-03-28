@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-aspect-ratio",
+  "title": "RetroAspectRatio",
+  "description": "A Mac OS 9 styled aspect ratio container with optional inset border, built on Radix UI Aspect Ratio.",
+  "dependencies": [
+    "@radix-ui/react-aspect-ratio"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-aspect-ratio.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as AspectRatioPrimitive from \"@radix-ui/react-aspect-ratio\"\n\nimport { cn } from \"@/lib/utils\"\n\ninterface RetroAspectRatioProps\n  extends React.ComponentProps<typeof AspectRatioPrimitive.Root> {\n  /** When true, wraps the content in an OS9-style inset border. Defaults to false. */\n  bordered?: boolean\n}\n\nfunction RetroAspectRatio(\n  { className, bordered = false, children, ...props }: RetroAspectRatioProps,\n  ref: React.ForwardedRef<React.ComponentRef<typeof AspectRatioPrimitive.Root>>\n) {\n  if (bordered) {\n    return (\n      <div\n        className=\"border border-[var(--os9-black)] bg-[var(--os9-white)]\"\n        style={{\n          boxShadow:\n            \"inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)\",\n        }}\n      >\n        <AspectRatioPrimitive.Root\n          ref={ref}\n          className={cn(className)}\n          {...props}\n        >\n          {children}\n        </AspectRatioPrimitive.Root>\n      </div>\n    )\n  }\n\n  return (\n    <AspectRatioPrimitive.Root\n      ref={ref}\n      className={cn(className)}\n      {...props}\n    >\n      {children}\n    </AspectRatioPrimitive.Root>\n  )\n}\n\nconst ForwardedRetroAspectRatio = React.forwardRef(RetroAspectRatio)\nForwardedRetroAspectRatio.displayName = \"RetroAspectRatio\"\n\nexport { ForwardedRetroAspectRatio as RetroAspectRatio }\nexport type { RetroAspectRatioProps }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-aspect-ratio.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

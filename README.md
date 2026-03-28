@@ -1,0 +1,9 @@
+# nostalgia-ui
+
+A shadcn-compatible component registry that recreates Mac OS 9 UI components as modern React/Tailwind components.
+
+59 components, zero image assets, pure CSS bevels and shadows. Install any component via `npx shadcn@latest add`.
+
+## Attribution
+
+Visual design based on the [Mac OS 9 UI Kit](https://www.figma.com/community/file/CJJW6Nbp2GpFfvz7oJZWv2) by [Michael Feeney](https://www.figma.com/@feeney), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

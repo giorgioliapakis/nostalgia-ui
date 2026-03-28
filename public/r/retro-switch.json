@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-switch",
+  "title": "RetroSwitch",
+  "description": "A Mac OS 9 styled binary toggle switch with rectangular inset track, raised bevel thumb, and azul checked state, built on Radix UI Switch.",
+  "dependencies": [
+    "@radix-ui/react-switch"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-switch.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as SwitchPrimitive from \"@radix-ui/react-switch\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst RetroSwitch = React.forwardRef<\n  React.ComponentRef<typeof SwitchPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>\n>(({ className, ...props }, ref) => (\n  <SwitchPrimitive.Root\n    ref={ref}\n    className={cn(\n      // Rectangular track: 28x14\n      \"peer inline-flex h-[14px] w-[28px] shrink-0 items-center\",\n      // Border + inset bevel for depth\n      \"border border-os9-black\",\n      \"bg-os9-gray-300\",\n      \"shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]\",\n      // Checked: azul track\n      \"data-[state=checked]:bg-os9-azul\",\n      // Disabled\n      \"disabled:cursor-not-allowed disabled:opacity-50\",\n      // Focus\n      \"focus-visible:outline-none focus-visible:os9-focus-ring\",\n      className\n    )}\n    {...props}\n  >\n    <SwitchPrimitive.Thumb\n      className={cn(\n        // Rectangular thumb: 12x12 with raised bevel\n        \"pointer-events-none block h-[12px] w-[12px]\",\n        \"bg-os9-gray-300\",\n        \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_#808080]\",\n        // Slide transition\n        \"transition-transform duration-100\",\n        \"translate-x-0 data-[state=checked]:translate-x-[14px]\"\n      )}\n    />\n  </SwitchPrimitive.Root>\n))\nRetroSwitch.displayName = \"RetroSwitch\"\n\nexport { RetroSwitch }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-switch.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

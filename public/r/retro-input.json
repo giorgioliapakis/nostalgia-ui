@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-input",
+  "title": "RetroInput",
+  "description": "A Mac OS 9 styled text input with inset bevel effect, focus ring, and two sizes.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-input.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroInputVariants = cva(\n  [\n    \"w-full\",\n    \"border border-os9-black bg-os9-white text-os9-black\",\n    \"placeholder:text-os9-gray-600\",\n    \"transition-none\",\n    \"outline-none\",\n    // Default inset bevel: inner shadow top-left gray, outer shadow for 3D effect\n    \"shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white),-1px_0_0_var(--os9-gray-700),0_-1px_0_var(--os9-gray-700),1px_0_0_var(--os9-white),0_1px_0_var(--os9-white)]\",\n    // Focus: OS9 blue ring matching Figma's active text field\n    \"focus:shadow-[0_2px_0_0_var(--os9-focus),2px_0_0_0_var(--os9-focus),0_-2px_0_0_var(--os9-focus),-2px_0_0_0_var(--os9-focus),0_0_0_1px_var(--os9-focus)]\",\n    // Disabled\n    \"disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-os9-gray-200 disabled:text-os9-gray-600\",\n  ],\n  {\n    variants: {\n      size: {\n        default: [\n          \"font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n          \"p-[5px]\",\n        ],\n        sm: [\n          \"font-[family-name:var(--font-sans)] text-[10px] leading-normal\",\n          \"px-[5px] py-[3px]\",\n        ],\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\ntype RetroInputProps = Omit<React.ComponentProps<\"input\">, \"size\"> &\n  VariantProps<typeof retroInputVariants>\n\nfunction RetroInput(\n  {\n    className,\n    size,\n    type = \"text\",\n    ...props\n  }: RetroInputProps,\n  ref: React.ForwardedRef<HTMLInputElement>\n) {\n  return (\n    <input\n      type={type}\n      className={cn(retroInputVariants({ size }), className)}\n      ref={ref}\n      {...props}\n    />\n  )\n}\n\nconst ForwardedRetroInput = React.forwardRef(RetroInput)\nForwardedRetroInput.displayName = \"RetroInput\"\n\nexport { ForwardedRetroInput as RetroInput, retroInputVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-input.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

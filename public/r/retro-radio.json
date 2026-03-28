@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-radio",
+  "title": "RetroRadio",
+  "description": "A Mac OS 9 styled radio button group with 3D circular bevel effect, built on Radix UI Radio Group.",
+  "dependencies": [
+    "@radix-ui/react-radio-group"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-radio.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as RadioGroupPrimitive from \"@radix-ui/react-radio-group\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst RetroRadioGroup = React.forwardRef<\n  React.ComponentRef<typeof RadioGroupPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>\n>(({ className, ...props }, ref) => (\n  <RadioGroupPrimitive.Root\n    className={cn(\"grid gap-2\", className)}\n    ref={ref}\n    {...props}\n  />\n))\nRetroRadioGroup.displayName = \"RetroRadioGroup\"\n\nconst RetroRadioGroupItem = React.forwardRef<\n  React.ComponentRef<typeof RadioGroupPrimitive.Item>,\n  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>\n>(({ className, ...props }, ref) => (\n  <RadioGroupPrimitive.Item\n    ref={ref}\n    className={cn(\n      \"group peer relative size-[13px] shrink-0 rounded-full\",\n      \"border border-os9-black\",\n      \"bg-[linear-gradient(135deg,#f1f1f1_0%,#9a9a9a_100%)]\",\n      \"shadow-[inset_1px_1px_0_rgba(255,255,255,0.5),inset_-1px_-1px_0_rgba(38,38,38,0.25)]\",\n      \"focus-visible:os9-focus-ring focus-visible:rounded-full\",\n      \"disabled:cursor-not-allowed disabled:opacity-50\",\n      \"cursor-pointer\",\n      className\n    )}\n    {...props}\n  >\n    <RadioGroupPrimitive.Indicator className=\"flex items-center justify-center\">\n      <span className=\"block size-[5px] rounded-full bg-os9-black\" />\n    </RadioGroupPrimitive.Indicator>\n  </RadioGroupPrimitive.Item>\n))\nRetroRadioGroupItem.displayName = \"RetroRadioGroupItem\"\n\nexport { RetroRadioGroup, RetroRadioGroupItem }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-radio.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

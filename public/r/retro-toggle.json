@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-toggle",
+  "title": "RetroToggle",
+  "description": "A Mac OS 9 styled toggle button with raised/pressed bevel states, built on Radix UI Toggle.",
+  "dependencies": [
+    "@radix-ui/react-toggle",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-toggle.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as TogglePrimitive from \"@radix-ui/react-toggle\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroToggleVariants = cva(\n  [\n    \"inline-flex items-center justify-center whitespace-nowrap\",\n    \"font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n    \"cursor-pointer select-none\",\n    \"transition-none\",\n    \"border border-os9-black bg-os9-gray-300 text-os9-black\",\n    \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_#808080]\",\n    \"data-[state=on]:bg-os9-gray-700 data-[state=on]:text-os9-white\",\n    \"data-[state=on]:shadow-[inset_1px_1px_0_#808080,inset_-1px_-1px_0_var(--os9-white)]\",\n    \"focus-visible:os9-focus-ring\",\n  ],\n  {\n    variants: {\n      size: {\n        default: \"h-[24px] px-[8px] py-[4px]\",\n        sm: \"h-[20px] px-[6px] py-[2px] text-[10px]\",\n        lg: \"h-[30px] px-[12px] py-[4px] text-[12px]\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\nfunction RetroToggle(\n  {\n    className,\n    size,\n    disabled,\n    ...props\n  }: React.ComponentProps<typeof TogglePrimitive.Root> &\n    VariantProps<typeof retroToggleVariants>,\n  ref: React.ForwardedRef<HTMLButtonElement>\n) {\n  return (\n    <TogglePrimitive.Root\n      className={cn(\n        retroToggleVariants({ size }),\n        disabled && \"opacity-50 pointer-events-none\",\n        className\n      )}\n      ref={ref}\n      disabled={disabled}\n      {...props}\n    />\n  )\n}\n\nconst ForwardedRetroToggle = React.forwardRef(RetroToggle)\nForwardedRetroToggle.displayName = \"RetroToggle\"\n\nexport { ForwardedRetroToggle as RetroToggle, retroToggleVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-toggle.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

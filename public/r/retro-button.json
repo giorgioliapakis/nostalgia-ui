@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-button",
+  "title": "RetroButton",
+  "description": "A Mac OS 9 styled button with raised bevel effect, active/pressed state, and disabled styling.",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-button.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Slot } from \"@radix-ui/react-slot\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroButtonVariants = cva(\n  [\n    \"inline-flex items-center justify-center whitespace-nowrap\",\n    \"font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n    \"cursor-pointer select-none\",\n    \"transition-none\",\n    \"focus-visible:os9-focus-ring\",\n  ],\n  {\n    variants: {\n      variant: {\n        default: [\n          \"border border-os9-black bg-os9-gray-300 text-os9-black\",\n          \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]\",\n          \"active:bg-os9-gray-800 active:text-os9-white\",\n          \"active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]\",\n        ],\n        primary: [\n          \"border-[2px] border-os9-black bg-os9-gray-300 text-os9-black\",\n          \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]\",\n          \"active:bg-os9-gray-800 active:text-os9-white\",\n          \"active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]\",\n        ],\n        secondary: [\n          \"border-y border-x-0 border-os9-black bg-os9-gray-300 text-os9-black\",\n          \"shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(128,128,128,0.5)]\",\n          \"active:bg-os9-gray-800 active:text-os9-white\",\n          \"active:shadow-[inset_0_1px_0_rgba(38,38,38,0.4),inset_0_-1px_0_rgba(133,133,133,1)]\",\n        ],\n      },\n      size: {\n        default: \"h-[24px] px-4 py-0\",\n        sm: \"h-[20px] px-2 py-0 text-[10px]\",\n        lg: \"h-[30px] px-6 py-0 text-[12px]\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n    },\n  }\n)\n\nfunction RetroButton(\n  {\n    className,\n    variant,\n    size,\n    asChild = false,\n    disabled,\n    ...props\n  }: React.ComponentProps<\"button\"> &\n    VariantProps<typeof retroButtonVariants> & {\n      asChild?: boolean\n    },\n  ref: React.ForwardedRef<HTMLButtonElement>\n) {\n  const Comp = asChild ? Slot : \"button\"\n  return (\n    <Comp\n      className={cn(\n        retroButtonVariants({ variant, size }),\n        disabled && [\n          \"pointer-events-none\",\n          \"text-os9-gray-600\",\n          \"border-os9-gray-600\",\n          \"shadow-[inset_1px_1px_0_var(--os9-gray-300),inset_-1px_-1px_0_var(--os9-gray-400)]\",\n        ],\n        className\n      )}\n      ref={ref}\n      disabled={disabled}\n      {...props}\n    />\n  )\n}\n\nconst ForwardedRetroButton = React.forwardRef(RetroButton)\nForwardedRetroButton.displayName = \"RetroButton\"\n\nexport { ForwardedRetroButton as RetroButton, retroButtonVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-button.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-skeleton",
+  "title": "RetroSkeleton",
+  "description": "A Mac OS 9 styled skeleton loading placeholder with dithered diagonal hatching pattern and optional pulse animation.",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-skeleton.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\ninterface RetroSkeletonProps extends React.ComponentProps<\"div\"> {\n  /** If true, applies a subtle pulse animation (opacity 0.7 to 1.0). Defaults to true. */\n  animate?: boolean\n}\n\nfunction RetroSkeleton(\n  { className, animate = true, ...props }: RetroSkeletonProps,\n  ref: React.ForwardedRef<HTMLDivElement>\n) {\n  return (\n    <>\n      <div\n        ref={ref}\n        className={cn(\n          \"border border-[var(--os9-gray-600)]\",\n          animate && \"retro-skeleton-pulse\",\n          className\n        )}\n        style={{\n          background: `\n            repeating-linear-gradient(\n              45deg,\n              var(--os9-gray-300),\n              var(--os9-gray-300) 2px,\n              var(--os9-gray-400) 2px,\n              var(--os9-gray-400) 4px\n            )\n          `,\n        }}\n        {...props}\n      />\n      {animate && (\n        <style>{`\n          @keyframes retro-skeleton-pulse {\n            0%, 100% { opacity: 1; }\n            50% { opacity: 0.7; }\n          }\n          .retro-skeleton-pulse {\n            animation: retro-skeleton-pulse 1.5s ease-in-out infinite;\n          }\n        `}</style>\n      )}\n    </>\n  )\n}\n\nconst ForwardedRetroSkeleton = React.forwardRef(RetroSkeleton)\nForwardedRetroSkeleton.displayName = \"RetroSkeleton\"\n\nexport { ForwardedRetroSkeleton as RetroSkeleton }\nexport type { RetroSkeletonProps }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-skeleton.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

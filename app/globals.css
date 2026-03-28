@@ -1,0 +1,176 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-destructive: var(--destructive);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* OS9 color tokens exposed to Tailwind */
+  --color-os9-black: var(--os9-black);
+  --color-os9-white: var(--os9-white);
+  --color-os9-gray-200: var(--os9-gray-200);
+  --color-os9-gray-300: var(--os9-gray-300);
+  --color-os9-gray-400: var(--os9-gray-400);
+  --color-os9-gray-500: var(--os9-gray-500);
+  --color-os9-gray-600: var(--os9-gray-600);
+  --color-os9-gray-700: var(--os9-gray-700);
+  --color-os9-gray-800: var(--os9-gray-800);
+  --color-os9-azul: var(--os9-azul);
+  --color-os9-lavender: var(--os9-lavender);
+  --color-os9-focus: var(--os9-focus);
+}
+
+:root {
+  /* Radius: Mac OS 9 uses no border radius */
+  --radius: 0rem;
+
+  /* shadcn semantic tokens mapped to OS9 palette */
+  --background: #eeeeee;
+  --foreground: #262626;
+  --primary: #262626;
+  --primary-foreground: #ffffff;
+  --secondary: #dddddd;
+  --secondary-foreground: #262626;
+  --muted: #cccccc;
+  --muted-foreground: #666666;
+  --accent: #ccccff;
+  --accent-foreground: #333399;
+  --border: #262626;
+  --input: #262626;
+  --ring: #6666cc;
+  --popover: #ffffff;
+  --popover-foreground: #262626;
+  --card: #eeeeee;
+  --card-foreground: #262626;
+  --destructive: #cc0000;
+
+  /* ===== Mac OS 9 Design Tokens ===== */
+
+  /* Primary colors */
+  --os9-black: #262626;
+  --os9-white: #ffffff;
+
+  /* Gray scale */
+  --os9-gray-200: #eeeeee;
+  --os9-gray-300: #dddddd;
+  --os9-gray-400: #cccccc;
+  --os9-gray-500: #bbbbbb;
+  --os9-gray-600: #999999;
+  --os9-gray-700: #808080;
+  --os9-gray-800: #666666;
+
+  /* Accent colors */
+  --os9-azul: #333399;
+  --os9-lavender: #ccccff;
+  --os9-focus: #6666cc;
+
+  /* Typography */
+  --font-heading: "Charcoal", "ChicagoFLF", "Geneva", "Arial", sans-serif;
+  --font-sans: "Geneva", "Verdana", "Helvetica Neue", sans-serif;
+  --font-mono: "Monaco", "Courier New", monospace;
+
+  /* Bevel shadow tokens (reused across components) */
+  --os9-shadow-raised: inset 1px 1px 0 var(--os9-white), inset -1px -1px 0 var(--os9-gray-700);
+  --os9-shadow-pressed: inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white);
+  --os9-shadow-inset: inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white);
+  --os9-shadow-window: 2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans text-[10px];
+  }
+
+  /* OS9 text selection color */
+  ::selection {
+    background-color: var(--os9-lavender);
+    color: var(--os9-black);
+  }
+}
+
+/* ===== Mac OS 9 Utility Classes ===== */
+
+/* Raised bevel — buttons, title bar control boxes, window chrome */
+@utility os9-raised {
+  border: 1px solid var(--os9-black);
+  background-color: var(--os9-gray-300);
+  box-shadow: var(--os9-shadow-raised);
+}
+
+/* Pressed/active bevel — inverted highlights */
+@utility os9-pressed {
+  border: 1px solid var(--os9-black);
+  background-color: var(--os9-gray-700);
+  box-shadow: var(--os9-shadow-pressed);
+}
+
+/* Inset bevel — text fields, checkboxes, list boxes */
+@utility os9-inset {
+  border: 1px solid var(--os9-black);
+  background-color: var(--os9-white);
+  box-shadow: var(--os9-shadow-inset);
+}
+
+/* Window frame — outer shadow + inner bevels */
+@utility os9-window {
+  border: 1px solid var(--os9-black);
+  background-color: var(--os9-gray-200);
+  box-shadow: var(--os9-shadow-window);
+}
+
+/* Title bar stripes */
+@utility os9-stripes {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 1px,
+    var(--os9-gray-600) 1px,
+    var(--os9-gray-600) 2px
+  );
+  background-color: var(--os9-gray-300);
+}
+
+/* Focus ring (OS9 blue outline for active fields) */
+@utility os9-focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--os9-focus);
+}
+
+/* Heading font */
+@utility os9-heading {
+  font-family: var(--font-heading);
+  letter-spacing: 0.42px;
+  line-height: 0.98;
+}
+
+/* Caret blink animation for OTP input */
+@keyframes os9-caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

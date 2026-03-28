@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-date-picker",
+  "title": "RetroDatePicker",
+  "description": "A Mac OS 9 styled date picker with calendar icon trigger button, popover calendar dropdown, and formatted date display, composed from RetroPopover, RetroCalendar, and RetroButton.",
+  "dependencies": [
+    "date-fns",
+    "react-day-picker"
+  ],
+  "registryDependencies": [
+    "retro-popover",
+    "retro-calendar",
+    "retro-button"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-date-picker.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { format } from \"date-fns\"\n\nimport { cn } from \"@/lib/utils\"\nimport { RetroButton } from \"@/registry/new-york/ui/retro-button\"\nimport { RetroCalendar } from \"@/registry/new-york/ui/retro-calendar\"\nimport {\n  RetroPopover,\n  RetroPopoverTrigger,\n  RetroPopoverContent,\n} from \"@/registry/new-york/ui/retro-popover\"\n\ninterface RetroDatePickerProps {\n  /** The selected date (controlled) */\n  value?: Date\n  /** Callback when the date changes */\n  onChange?: (date: Date | undefined) => void\n  /** Placeholder text when no date is selected */\n  placeholder?: string\n  /** Whether the date picker is disabled */\n  disabled?: boolean\n  /** Additional class names for the trigger button */\n  className?: string\n}\n\nconst CalendarIcon = React.forwardRef<\n  SVGSVGElement,\n  React.SVGProps<SVGSVGElement>\n>(function CalendarIcon(props, ref) {\n  return (\n    <svg\n      ref={ref}\n      width=\"12\"\n      height=\"12\"\n      viewBox=\"0 0 12 12\"\n      fill=\"none\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      aria-hidden=\"true\"\n      {...props}\n    >\n      {/* Outer frame */}\n      <rect x=\"1\" y=\"2\" width=\"10\" height=\"9\" stroke=\"currentColor\" strokeWidth=\"1\" fill=\"none\" />\n      {/* Top bar (header) */}\n      <rect x=\"1\" y=\"2\" width=\"10\" height=\"3\" fill=\"currentColor\" />\n      {/* Calendar pins */}\n      <rect x=\"3\" y=\"1\" width=\"1\" height=\"2\" fill=\"currentColor\" />\n      <rect x=\"8\" y=\"1\" width=\"1\" height=\"2\" fill=\"currentColor\" />\n      {/* Grid dots (day cells) */}\n      <rect x=\"3\" y=\"7\" width=\"1\" height=\"1\" fill=\"currentColor\" />\n      <rect x=\"5\" y=\"7\" width=\"1\" height=\"1\" fill=\"currentColor\" />\n      <rect x=\"7\" y=\"7\" width=\"1\" height=\"1\" fill=\"currentColor\" />\n      <rect x=\"3\" y=\"9\" width=\"1\" height=\"1\" fill=\"currentColor\" />\n      <rect x=\"5\" y=\"9\" width=\"1\" height=\"1\" fill=\"currentColor\" />\n      <rect x=\"7\" y=\"9\" width=\"1\" height=\"1\" fill=\"currentColor\" />\n    </svg>\n  )\n})\nCalendarIcon.displayName = \"CalendarIcon\"\n\nconst RetroDatePicker = React.forwardRef<HTMLButtonElement, RetroDatePickerProps>(\n  function RetroDatePicker(\n    {\n      value,\n      onChange,\n      placeholder = \"Pick a date\",\n      disabled = false,\n      className,\n    },\n    ref\n  ) {\n    const [open, setOpen] = React.useState(false)\n    const [internalDate, setInternalDate] = React.useState<Date | undefined>(\n      undefined\n    )\n\n    const isControlled = value !== undefined\n    const selectedDate = isControlled ? value : internalDate\n\n    function handleSelect(date: Date | undefined) {\n      if (!isControlled) {\n        setInternalDate(date)\n      }\n      onChange?.(date)\n      setOpen(false)\n    }\n\n    return (\n      <RetroPopover open={open} onOpenChange={setOpen}>\n        <RetroPopoverTrigger asChild>\n          <RetroButton\n            ref={ref}\n            variant=\"default\"\n            disabled={disabled}\n            className={cn(\n              \"w-[240px] justify-start gap-2 px-3\",\n              \"font-[family-name:var(--font-sans)] text-[10px]\",\n              !selectedDate && \"text-os9-gray-600\",\n              className\n            )}\n          >\n            <CalendarIcon className=\"shrink-0\" />\n            <span>\n              {selectedDate ? format(selectedDate, \"MMMM d, yyyy\") : placeholder}\n            </span>\n          </RetroButton>\n        </RetroPopoverTrigger>\n        <RetroPopoverContent className=\"w-auto p-0\" align=\"start\">\n          <RetroCalendar\n            mode=\"single\"\n            selected={selectedDate}\n            onSelect={handleSelect}\n            initialFocus\n          />\n        </RetroPopoverContent>\n      </RetroPopover>\n    )\n  }\n)\nRetroDatePicker.displayName = \"RetroDatePicker\"\n\nexport { RetroDatePicker }\nexport type { RetroDatePickerProps }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-date-picker.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

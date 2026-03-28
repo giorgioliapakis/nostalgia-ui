@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-badge",
+  "title": "RetroBadge",
+  "description": "A Mac OS 9 styled badge with raised bevel effect, Geneva 9px font, and three color variants: default, accent (lavender), and azul.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-badge.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroBadgeVariants = cva(\n  [\n    \"inline-flex items-center whitespace-nowrap\",\n    \"font-[family-name:var(--font-heading)] text-[9px] leading-[1]\",\n    \"px-2 py-0.5\",\n    \"border border-os9-black\",\n    \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_#808080]\",\n    \"select-none\",\n  ],\n  {\n    variants: {\n      variant: {\n        default: \"bg-os9-gray-300 text-os9-black\",\n        accent: \"bg-os9-lavender text-os9-black\",\n        azul: \"bg-os9-azul text-white\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  }\n)\n\nfunction RetroBadge(\n  {\n    className,\n    variant,\n    ...props\n  }: React.ComponentProps<\"span\"> &\n    VariantProps<typeof retroBadgeVariants>,\n  ref: React.ForwardedRef<HTMLSpanElement>\n) {\n  return (\n    <span\n      className={cn(retroBadgeVariants({ variant }), className)}\n      ref={ref}\n      {...props}\n    />\n  )\n}\n\nconst ForwardedRetroBadge = React.forwardRef(RetroBadge)\nForwardedRetroBadge.displayName = \"RetroBadge\"\n\nexport { ForwardedRetroBadge as RetroBadge, retroBadgeVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-badge.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-textarea",
+  "title": "RetroTextarea",
+  "description": "A Mac OS 9 styled textarea with inset bevel effect, focus ring, vertical resize, and two sizes.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-textarea.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst retroTextareaVariants = cva(\n  [\n    \"w-full\",\n    \"border border-os9-black bg-os9-white text-os9-black\",\n    \"placeholder:text-os9-gray-600\",\n    \"transition-none\",\n    \"outline-none\",\n    \"min-h-[80px] resize-vertical\",\n    // Default inset bevel: inner shadow top-left gray, outer shadow for 3D effect\n    \"shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white),-1px_0_0_var(--os9-gray-700),0_-1px_0_var(--os9-gray-700),1px_0_0_var(--os9-white),0_1px_0_var(--os9-white)]\",\n    // Focus: OS9 blue ring matching Figma's active text field\n    \"focus:shadow-[0_2px_0_0_var(--os9-focus),2px_0_0_0_var(--os9-focus),0_-2px_0_0_var(--os9-focus),-2px_0_0_0_var(--os9-focus),0_0_0_1px_var(--os9-focus)]\",\n    // Disabled\n    \"disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-os9-gray-200 disabled:text-os9-gray-600\",\n  ],\n  {\n    variants: {\n      size: {\n        default: [\n          \"font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n          \"p-[5px]\",\n        ],\n        sm: [\n          \"font-[family-name:var(--font-sans)] text-[10px] leading-normal\",\n          \"px-[5px] py-[3px]\",\n        ],\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\ntype RetroTextareaProps = Omit<React.ComponentProps<\"textarea\">, \"size\"> &\n  VariantProps<typeof retroTextareaVariants>\n\nfunction RetroTextarea(\n  {\n    className,\n    size,\n    ...props\n  }: RetroTextareaProps,\n  ref: React.ForwardedRef<HTMLTextAreaElement>\n) {\n  return (\n    <textarea\n      className={cn(retroTextareaVariants({ size }), className)}\n      ref={ref}\n      {...props}\n    />\n  )\n}\n\nconst ForwardedRetroTextarea = React.forwardRef(RetroTextarea)\nForwardedRetroTextarea.displayName = \"RetroTextarea\"\n\nexport { ForwardedRetroTextarea as RetroTextarea, retroTextareaVariants }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-textarea.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

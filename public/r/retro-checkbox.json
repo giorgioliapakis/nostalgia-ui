@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-checkbox",
+  "title": "RetroCheckbox",
+  "description": "A Mac OS 9 styled checkbox with inset bevel effect, inline SVG checkmark, and active/disabled states.",
+  "dependencies": [
+    "@radix-ui/react-checkbox"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-checkbox.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as CheckboxPrimitive from \"@radix-ui/react-checkbox\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst RetroCheckbox = React.forwardRef<\n  React.ComponentRef<typeof CheckboxPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>\n>(({ className, ...props }, ref) => (\n  <CheckboxPrimitive.Root\n    ref={ref}\n    className={cn(\n      // 12x12px box with OS9 inset bevel\n      \"peer relative inline-flex h-[12px] w-[12px] shrink-0 items-center justify-center\",\n      // Border\n      \"border border-os9-black\",\n      // Background: gray-300 default, gray-700 when active/pressed\n      \"bg-os9-gray-300 active:bg-os9-gray-700\",\n      // Inner shadow bevel: white highlight top-left, gray shadow bottom-right (default)\n      // Outer drop shadow per Figma: 0.5px 0.5px\n      \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700),0.5px_0.5px_0_0_rgba(38,38,38,0.3)]\",\n      // Active state: inverted inner shadows (darker top-left, lighter bottom-right)\n      \"active:shadow-[inset_1px_1px_0_#404040,inset_-1px_-1px_0_#c0c0c0,0.5px_0.5px_0_0_rgba(38,38,38,0.3)]\",\n      // Disabled state\n      \"disabled:cursor-not-allowed disabled:opacity-50\",\n      // Focus ring\n      \"focus-visible:outline-none focus-visible:os9-focus-ring\",\n      className\n    )}\n    {...props}\n  >\n    <CheckboxPrimitive.Indicator className=\"flex items-center justify-center\">\n      <svg\n        width=\"10\"\n        height=\"10\"\n        viewBox=\"0 0 16 16\"\n        fill=\"none\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className=\"mix-blend-darken\"\n      >\n        <path\n          d=\"M3 8.5L6.5 12L13 4\"\n          stroke=\"var(--os9-black)\"\n          strokeWidth=\"2.5\"\n          strokeLinecap=\"square\"\n          strokeLinejoin=\"miter\"\n        />\n      </svg>\n    </CheckboxPrimitive.Indicator>\n  </CheckboxPrimitive.Root>\n))\nRetroCheckbox.displayName = \"RetroCheckbox\"\n\nexport { RetroCheckbox }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-checkbox.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

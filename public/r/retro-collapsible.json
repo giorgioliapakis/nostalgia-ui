@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-collapsible",
+  "title": "RetroCollapsible",
+  "description": "A Mac OS 9 styled collapsible disclosure with rotating triangle indicator, Charcoal heading trigger, and indented Geneva content area, built on Radix UI Collapsible.",
+  "dependencies": [
+    "@radix-ui/react-collapsible"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-collapsible.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as CollapsiblePrimitive from \"@radix-ui/react-collapsible\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst RetroCollapsible = React.forwardRef<\n  HTMLDivElement,\n  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root> &\n    React.HTMLAttributes<HTMLDivElement>\n>(({ className, ...props }, ref) => (\n  <CollapsiblePrimitive.Root asChild {...props}>\n    <div ref={ref} className={cn(\"w-full\", className)} />\n  </CollapsiblePrimitive.Root>\n))\nRetroCollapsible.displayName = \"RetroCollapsible\"\n\nconst RetroCollapsibleTrigger = React.forwardRef<\n  React.ComponentRef<typeof CollapsiblePrimitive.Trigger>,\n  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Trigger>\n>(({ className, children, ...props }, ref) => (\n  <CollapsiblePrimitive.Trigger\n    ref={ref}\n    className={cn(\n      \"flex flex-row items-center gap-1 cursor-pointer select-none\",\n      \"os9-heading text-[12px]\",\n      className\n    )}\n    {...props}\n  >\n    {/* Disclosure triangle */}\n    <svg\n      width=\"8\"\n      height=\"8\"\n      viewBox=\"0 0 8 8\"\n      fill=\"none\"\n      xmlns=\"http://www.w3.org/2000/svg\"\n      className={cn(\n        \"shrink-0 transition-transform duration-150\",\n        \"[[data-state=open]>&]:rotate-90\"\n      )}\n      aria-hidden=\"true\"\n    >\n      <path d=\"M2 1L6 4L2 7Z\" fill=\"var(--os9-black)\" />\n    </svg>\n    {children}\n  </CollapsiblePrimitive.Trigger>\n))\nRetroCollapsibleTrigger.displayName = \"RetroCollapsibleTrigger\"\n\nconst RetroCollapsibleContent = React.forwardRef<\n  React.ComponentRef<typeof CollapsiblePrimitive.Content>,\n  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>\n>(({ className, ...props }, ref) => (\n  <CollapsiblePrimitive.Content\n    ref={ref}\n    className={cn(\n      \"pl-4 font-sans text-[10px]\",\n      \"data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down\",\n      \"overflow-hidden\",\n      className\n    )}\n    {...props}\n  />\n))\nRetroCollapsibleContent.displayName = \"RetroCollapsibleContent\"\n\nexport { RetroCollapsible, RetroCollapsibleTrigger, RetroCollapsibleContent }\n",
+      "type": "registry:ui",
+      "target": "components/ui/retro-collapsible.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

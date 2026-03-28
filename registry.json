@@ -1,0 +1,986 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "nostalgia-ui",
+  "homepage": "https://github.com/giorgioliapakis/nostalgia-ui",
+  "items": [
+    {
+      "name": "retro-label",
+      "type": "registry:ui",
+      "title": "RetroLabel",
+      "description": "A Mac OS 9 styled label with Geneva 10pt default and Charcoal 12pt large size variants, built on Radix UI Label.",
+      "dependencies": [
+        "@radix-ui/react-label",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-label.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-label.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-button",
+      "type": "registry:ui",
+      "title": "RetroButton",
+      "description": "A Mac OS 9 styled button with raised bevel effect, active/pressed state, and disabled styling.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-input",
+      "type": "registry:ui",
+      "title": "RetroInput",
+      "description": "A Mac OS 9 styled text input with inset bevel effect, focus ring, and two sizes.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-radio",
+      "type": "registry:ui",
+      "title": "RetroRadio",
+      "description": "A Mac OS 9 styled radio button group with 3D circular bevel effect, built on Radix UI Radio Group.",
+      "dependencies": [
+        "@radix-ui/react-radio-group"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-radio.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-radio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-tabs",
+      "type": "registry:ui",
+      "title": "RetroTabs",
+      "description": "Mac OS 9 styled tabs with large/small sizes and raised bevel active state, built on Radix UI Tabs.",
+      "dependencies": [
+        "@radix-ui/react-tabs",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-tabs.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-progress",
+      "type": "registry:ui",
+      "title": "RetroProgress",
+      "description": "A Mac OS 9 styled progress bar with inset bevel track and candy-stripe azul fill pattern.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-progress.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-title-bar",
+      "type": "registry:ui",
+      "title": "RetroTitleBar",
+      "description": "A Mac OS 9 styled title bar with striped drag region, close/collapse/zoom control boxes, and centered title text.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-title-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-title-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-slider",
+      "type": "registry:ui",
+      "title": "RetroSlider",
+      "description": "A Mac OS 9 styled slider with rectangular raised bevel thumb and inset track, built on Radix UI Slider.",
+      "dependencies": [
+        "@radix-ui/react-slider"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-slider.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-slider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-checkbox",
+      "type": "registry:ui",
+      "title": "RetroCheckbox",
+      "description": "A Mac OS 9 styled checkbox with inset bevel effect, inline SVG checkmark, and active/disabled states.",
+      "dependencies": [
+        "@radix-ui/react-checkbox"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-checkbox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-menu-bar",
+      "type": "registry:ui",
+      "title": "RetroMenuBar",
+      "description": "A Mac OS 9 styled menu bar with horizontal strip, bevel highlights, azul active state, and dropdown menus with classic drop shadow.",
+      "dependencies": [
+        "@radix-ui/react-menubar"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-menu-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-menu-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-window",
+      "type": "registry:ui",
+      "title": "RetroWindow",
+      "description": "A Mac OS 9 styled window frame with title bar, close/collapse/zoom controls, active/inactive states, and content area.",
+      "dependencies": [],
+      "registryDependencies": [
+        "retro-title-bar"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-window.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-window.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-select",
+      "type": "registry:ui",
+      "title": "RetroSelect",
+      "description": "A Mac OS 9 styled select dropdown with raised bevel trigger, up/down chevron arrows, and azul-highlighted menu items, built on Radix UI Select.",
+      "dependencies": [
+        "@radix-ui/react-select"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-select.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-separator",
+      "type": "registry:ui",
+      "title": "RetroSeparator",
+      "description": "A Mac OS 9 styled separator with classic beveled line effect: dark top/left pixel and light bottom/right pixel, built on Radix UI Separator.",
+      "dependencies": [
+        "@radix-ui/react-separator"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-separator.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-separator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-textarea",
+      "type": "registry:ui",
+      "title": "RetroTextarea",
+      "description": "A Mac OS 9 styled textarea with inset bevel effect, focus ring, vertical resize, and two sizes.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-textarea.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-textarea.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-badge",
+      "type": "registry:ui",
+      "title": "RetroBadge",
+      "description": "A Mac OS 9 styled badge with raised bevel effect, Geneva 9px font, and three color variants: default, accent (lavender), and azul.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-badge.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-badge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-popover",
+      "type": "registry:ui",
+      "title": "RetroPopover",
+      "description": "A Mac OS 9 styled popover with classic drop shadow, built on Radix UI Popover.",
+      "dependencies": [
+        "@radix-ui/react-popover"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-popover.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-toggle",
+      "type": "registry:ui",
+      "title": "RetroToggle",
+      "description": "A Mac OS 9 styled toggle button with raised/pressed bevel states, built on Radix UI Toggle.",
+      "dependencies": [
+        "@radix-ui/react-toggle",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-toggle.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-toggle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-card",
+      "type": "registry:ui",
+      "title": "RetroCard",
+      "description": "A Mac OS 9 styled card with raised bevel effect, header with bevel separator, title, description, content area, and footer with action buttons.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-switch",
+      "type": "registry:ui",
+      "title": "RetroSwitch",
+      "description": "A Mac OS 9 styled binary toggle switch with rectangular inset track, raised bevel thumb, and azul checked state, built on Radix UI Switch.",
+      "dependencies": [
+        "@radix-ui/react-switch"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-switch.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-tooltip",
+      "type": "registry:ui",
+      "title": "RetroTooltip",
+      "description": "A Mac OS 9 Balloon Help styled tooltip with pale yellow background, rounded corners, and drop shadow, built on Radix UI Tooltip.",
+      "dependencies": [
+        "@radix-ui/react-tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-tooltip.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-hover-card",
+      "type": "registry:ui",
+      "title": "RetroHoverCard",
+      "description": "A Mac OS 9 styled hover card with solid border and drop shadow, built on Radix UI Hover Card.",
+      "dependencies": [
+        "@radix-ui/react-hover-card"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-hover-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-hover-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-alert",
+      "type": "registry:ui",
+      "title": "RetroAlert",
+      "description": "A Mac OS 9 styled alert box with raised bevel effect, left accent border, and three variants: default, warning, and destructive.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-alert.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-alert.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-pagination",
+      "type": "registry:ui",
+      "title": "RetroPagination",
+      "description": "A Mac OS 9 styled pagination component with raised bevel page buttons, active/pressed state, previous/next navigation, and ellipsis indicator.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-pagination.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-pagination.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-avatar",
+      "type": "registry:ui",
+      "title": "RetroAvatar",
+      "description": "A Mac OS 9 styled avatar with beveled border, image support, fallback initials, and sm/default/lg size variants, built on Radix UI Avatar.",
+      "dependencies": [
+        "@radix-ui/react-avatar",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-avatar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-skeleton",
+      "type": "registry:ui",
+      "title": "RetroSkeleton",
+      "description": "A Mac OS 9 styled skeleton loading placeholder with dithered diagonal hatching pattern and optional pulse animation.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-skeleton.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-chevron",
+      "type": "registry:ui",
+      "title": "RetroChevron",
+      "description": "A Mac OS 9 styled chevron arrow (filled triangle) with configurable direction, two color variants, and two sizes.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-chevron.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-chevron.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-breadcrumb",
+      "type": "registry:ui",
+      "title": "RetroBreadcrumb",
+      "description": "A Mac OS 9 Finder-style breadcrumb navigation with Geneva 10px text, azul links, right-pointing triangle separators, and ellipsis for collapsed paths.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-breadcrumb.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-breadcrumb.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-toast",
+      "type": "registry:ui",
+      "title": "RetroToast",
+      "description": "A Mac OS 9 styled custom toast system with mini-window appearance, striped title bar, beveled close box, and auto-dismiss via useRetroToast hook.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-toast.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-toast.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-nav-button",
+      "type": "registry:ui",
+      "title": "RetroNavButton",
+      "description": "A Mac OS 9 styled 16x16 navigation button with raised bevel, centered SVG arrow, and four directions: left, right, up, down.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-nav-button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-nav-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-context-menu",
+      "type": "registry:ui",
+      "title": "RetroContextMenu",
+      "description": "A Mac OS 9 styled context menu with right-click trigger, sub-menus, checkbox/radio items, keyboard shortcuts, and classic drop shadow, built on Radix UI Context Menu.",
+      "dependencies": [
+        "@radix-ui/react-context-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-context-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-context-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-dialog",
+      "type": "registry:ui",
+      "title": "RetroDialog",
+      "description": "A Mac OS 9 styled modal dialog with overlay, OS9 window frame, striped title bar with close box, description area, and footer for action buttons, built on Radix UI Dialog.",
+      "dependencies": [
+        "@radix-ui/react-dialog"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-alert-dialog",
+      "type": "registry:ui",
+      "title": "RetroAlertDialog",
+      "description": "A Mac OS 9 styled alert dialog with OS9 window shadow, striped title bar, caution icon, and modal behavior, built on Radix UI Alert Dialog.",
+      "dependencies": [
+        "@radix-ui/react-alert-dialog"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-alert-dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-alert-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-toggle-group",
+      "type": "registry:ui",
+      "title": "RetroToggleGroup",
+      "description": "A Mac OS 9 styled toggle group with shared borders, raised/pressed bevel states, and single or multiple selection modes, built on Radix UI Toggle Group.",
+      "dependencies": [
+        "@radix-ui/react-toggle-group",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-toggle-group.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-toggle-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-table",
+      "type": "registry:ui",
+      "title": "RetroTable",
+      "description": "A Mac OS 9 styled data table with raised bevel column headers, hover highlight, azul selected row, and Finder list-view appearance.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-table.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-sheet",
+      "type": "registry:ui",
+      "title": "RetroSheet",
+      "description": "A Mac OS 9 styled sheet (slide-over panel) with side variants, striped title bar, close box, and overlay, built on Radix UI Dialog.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-sheet.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-scrollbar",
+      "type": "registry:ui",
+      "title": "RetroScrollbar",
+      "description": "A Mac OS 9 styled scroll area with 16px wide/tall scrollbars featuring raised bevel thumb, inset track, and arrow navigation buttons at each end, built on Radix UI ScrollArea.",
+      "dependencies": [
+        "@radix-ui/react-scroll-area"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-scrollbar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-scrollbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-navigation-menu",
+      "type": "registry:ui",
+      "title": "RetroNavigationMenu",
+      "description": "A Mac OS 9 styled navigation menu with horizontal strip, azul active triggers, dropdown content with classic drop shadow, and lavender hover links, built on Radix UI Navigation Menu.",
+      "dependencies": [
+        "@radix-ui/react-navigation-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-navigation-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-navigation-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-accordion",
+      "type": "registry:ui",
+      "title": "RetroAccordion",
+      "description": "A Mac OS 9 styled accordion with disclosure triangle, bevel separator, and collapse animation, built on Radix UI Accordion.",
+      "dependencies": [
+        "@radix-ui/react-accordion"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-accordion.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-collapsible",
+      "type": "registry:ui",
+      "title": "RetroCollapsible",
+      "description": "A Mac OS 9 styled collapsible disclosure with rotating triangle indicator, Charcoal heading trigger, and indented Geneva content area, built on Radix UI Collapsible.",
+      "dependencies": [
+        "@radix-ui/react-collapsible"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-collapsible.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-collapsible.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-dropdown-menu",
+      "type": "registry:ui",
+      "title": "RetroDropdownMenu",
+      "description": "A Mac OS 9 styled dropdown menu with white background, classic drop shadow, azul-highlighted items, bevel separators, submenus, checkbox/radio items, and keyboard shortcut labels, built on Radix UI Dropdown Menu.",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-dropdown-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-dropdown-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-theme-provider",
+      "type": "registry:ui",
+      "title": "NostalgiaProvider",
+      "description": "A Mac OS 9 theme provider that injects all OS9 CSS variables and utility classes so consumers can use nostalgia-ui components without manual globals.css setup.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-theme-provider.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-theme-provider.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-typography",
+      "type": "registry:ui",
+      "title": "RetroText",
+      "description": "A polymorphic Mac OS 9 text component with semantic variants matching the OS9 Figma type system: editorial (Apple Garamond 24pt), headline/smallHeadline (Charcoal), body/bodySmall/bodyBold/bodySlanted (Geneva), and mono (Monaco).",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-typography.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-typography.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-toolbar",
+      "type": "registry:ui",
+      "title": "RetroToolbar",
+      "description": "A Mac OS 9 styled toolbar with icon buttons, separators, and button groups. Includes RetroToolbar, RetroToolbarButton, RetroToolbarSeparator, and RetroToolbarGroup sub-components.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-toolbar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-toolbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-aspect-ratio",
+      "type": "registry:ui",
+      "title": "RetroAspectRatio",
+      "description": "A Mac OS 9 styled aspect ratio container with optional inset border, built on Radix UI Aspect Ratio.",
+      "dependencies": [
+        "@radix-ui/react-aspect-ratio"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-aspect-ratio.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-aspect-ratio.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-spinner",
+      "type": "registry:ui",
+      "title": "RetroSpinner",
+      "description": "Mac OS 9 styled loading indicators: RetroSpinner (animated wristwatch cursor with rotating second hand) and RetroBeachBall (spinning pinwheel wait cursor with colored segments). Both support sm/default/lg sizes via cva variants.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-spinner.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-spinner.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-carousel",
+      "type": "registry:ui",
+      "title": "RetroCarousel",
+      "description": "A Mac OS 9 styled carousel/slideshow with inset panel container, raised bevel navigation buttons with triangle arrow SVGs, and embla-carousel-react for smooth sliding. Supports horizontal and vertical orientations.",
+      "dependencies": [
+        "embla-carousel-react"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-carousel.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-carousel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-input-otp",
+      "type": "registry:ui",
+      "title": "RetroInputOTP",
+      "description": "A Mac OS 9 styled one-time password input with individual inset bevel character slots, blinking caret, focus ring, and group separators, built on input-otp.",
+      "dependencies": [
+        "input-otp"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-input-otp.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-input-otp.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-resizable",
+      "type": "registry:ui",
+      "title": "RetroResizable",
+      "description": "A Mac OS 9 styled resizable panel group for split layouts with raised bevel handle, grip dots, and drag-darkening effect, built on react-resizable-panels.",
+      "dependencies": [
+        "react-resizable-panels"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-resizable.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-resizable.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-drawer",
+      "type": "registry:ui",
+      "title": "RetroDrawer",
+      "description": "A Mac OS 9 styled bottom sheet / drawer with pull handle, OS9 window bevel, and overlay, built on vaul.",
+      "dependencies": [
+        "vaul"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-drawer.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-drawer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-form",
+      "type": "registry:ui",
+      "title": "RetroForm",
+      "description": "A React Hook Form integration with Mac OS 9 styling. Provides RetroForm, RetroFormField, RetroFormItem, RetroFormLabel, RetroFormControl, RetroFormDescription, and RetroFormMessage components following the shadcn Form pattern.",
+      "dependencies": [
+        "react-hook-form",
+        "@hookform/resolvers",
+        "zod",
+        "@radix-ui/react-label",
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [
+        "retro-label"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-form.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-command",
+      "type": "registry:ui",
+      "title": "RetroCommand",
+      "description": "A Mac OS 9 styled command palette (search interface) with inset search input, azul-highlighted items, keyboard shortcut labels, and modal dialog variant, built on cmdk and Radix UI Dialog.",
+      "dependencies": [
+        "cmdk",
+        "@radix-ui/react-dialog"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-command.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-calendar",
+      "type": "registry:ui",
+      "title": "RetroCalendar",
+      "description": "A Mac OS 9 styled date selection calendar grid with raised bevel navigation buttons, azul selected day, lavender hover and range states, built on react-day-picker v9.",
+      "dependencies": [
+        "react-day-picker"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-calendar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-chart",
+      "type": "registry:ui",
+      "title": "RetroChart",
+      "description": "Mac OS 9 styled charting components with Balloon Help tooltips, square legend indicators, inset bevel container, and Geneva typography, built on recharts. Provides RetroChartContainer, RetroChartTooltip, RetroChartTooltipContent, RetroChartLegend, RetroChartLegendContent, and RetroChartStyle.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-chart.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-date-picker",
+      "type": "registry:ui",
+      "title": "RetroDatePicker",
+      "description": "A Mac OS 9 styled date picker with inline text input (MM/DD/YYYY), calendar icon trigger button, and popover calendar dropdown, composed from RetroPopover and RetroCalendar.",
+      "dependencies": [
+        "date-fns",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "retro-popover",
+        "retro-calendar"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-date-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-date-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-date-range-picker",
+      "type": "registry:ui",
+      "title": "RetroDateRangePicker",
+      "description": "A Mac OS 9 styled date range picker with two inline text inputs, en-dash separator, calendar icon trigger, and a two-month popover calendar for range selection.",
+      "dependencies": [
+        "date-fns",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "retro-popover",
+        "retro-calendar",
+        "retro-date-picker"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-date-range-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-date-range-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-combobox",
+      "type": "registry:ui",
+      "title": "RetroCombobox",
+      "description": "A Mac OS 9 styled searchable select / autocomplete combobox with inset bevel trigger, search input, azul-highlighted items, checkmark selection indicator, and group headings, built on Radix UI Popover.",
+      "registryDependencies": [
+        "retro-popover"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-combobox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-combobox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-data-table",
+      "type": "registry:ui",
+      "title": "RetroDataTable",
+      "description": "A Mac OS 9 styled full-featured data table with column sorting, text filtering, pagination, row selection, and column visibility, built on @tanstack/react-table and existing RetroTable primitives.",
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDependencies": [
+        "retro-table",
+        "retro-button",
+        "retro-input"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-data-table.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-data-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-desktop",
+      "type": "registry:ui",
+      "title": "RetroDesktop",
+      "description": "A Mac OS 9 styled full-viewport desktop layout with pinned menu bar (Apple logo + live clock), desktop area with optional dot-pattern wallpaper, and selectable desktop shortcut icons with 32x32 icon area and Geneva 9px labels.",
+      "dependencies": [],
+      "registryDependencies": [
+        "retro-menu-bar",
+        "retro-window"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-desktop.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-desktop.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-sidebar",
+      "type": "registry:ui",
+      "title": "RetroSidebar",
+      "description": "A Mac OS 9 styled app shell layout with collapsible sidebar, context-driven open/closed state, menu items with azul active and lavender hover, keyboard shortcut (Cmd+B) toggle, and icon-only collapsed mode. Provides RetroSidebarProvider, RetroSidebar, RetroSidebarHeader, RetroSidebarContent, RetroSidebarFooter, RetroSidebarMenu, RetroSidebarMenuItem, RetroSidebarMenuButton, RetroSidebarGroup, RetroSidebarGroupLabel, RetroSidebarTrigger, and RetroSidebarInset.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@radix-ui/react-dialog"
+      ],
+      "registryDependencies": [
+        "retro-button",
+        "retro-separator",
+        "retro-tooltip",
+        "retro-sheet",
+        "retro-scrollbar"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-sidebar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-sidebar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-icons",
+      "type": "registry:ui",
+      "title": "RetroIcons",
+      "description": "Classic Mac OS 9 system icons as pure inline SVG components: Folder, Document, Trash, HardDrive, Floppy, Application, Alert, Info, Question, Stop, Network, Printer, Search, and Preferences. Includes a convenience RetroIcon wrapper with name prop and sm/default/lg/xl size variants.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-icons.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-icons.tsx"
+        }
+      ]
+    }
+  ]
+}
