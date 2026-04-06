@@ -483,7 +483,7 @@ export default function Home() {
 
             {/* Resizable */}
             <Section title="Resizable">
-              <RetroResizablePanelGroup direction="horizontal" className="min-h-[100px] border border-[var(--os9-black)]">
+              <RetroResizablePanelGroup orientation="horizontal" className="min-h-[100px] border border-[var(--os9-black)]">
                 <RetroResizablePanel defaultSize={50}>
                   <div className="flex h-full items-center justify-center p-2">
                     <p className="text-[10px]">Panel A</p>

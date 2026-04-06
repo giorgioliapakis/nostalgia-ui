@@ -24,7 +24,7 @@ export default function ResizablePreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Horizontal Layout</h2>
         <div className="w-[500px] h-[200px] border border-os9-black">
-          <RetroResizablePanelGroup direction="horizontal">
+          <RetroResizablePanelGroup orientation="horizontal">
             <RetroResizablePanel defaultSize={30} minSize={15}>
               <div className="flex h-full items-center justify-center bg-os9-gray-300 p-4">
                 <span className="os9-heading text-[10px]">Panel A</span>
@@ -44,7 +44,7 @@ export default function ResizablePreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Vertical Layout</h2>
         <div className="w-[400px] h-[300px] border border-os9-black">
-          <RetroResizablePanelGroup direction="vertical">
+          <RetroResizablePanelGroup orientation="vertical">
             <RetroResizablePanel defaultSize={40} minSize={15}>
               <div className="flex h-full items-center justify-center bg-os9-gray-300 p-4">
                 <span className="os9-heading text-[10px]">Top Panel</span>
@@ -64,7 +64,7 @@ export default function ResizablePreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Three-Panel Layout</h2>
         <div className="w-[600px] h-[200px] border border-os9-black">
-          <RetroResizablePanelGroup direction="horizontal">
+          <RetroResizablePanelGroup orientation="horizontal">
             <RetroResizablePanel defaultSize={25} minSize={10}>
               <div className="flex h-full items-center justify-center bg-os9-lavender p-4">
                 <span className="os9-heading text-[10px]">Sidebar</span>
