@@ -183,7 +183,7 @@ function SidebarNav() {
                 boxShadow: "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
               }}
             >
-              npx shadcn@latest add &quot;https://nostalgia-ui.vercel.app/r&quot;
+              npx shadcn@latest add &quot;https://nostalgia-ui.com/r&quot;
             </div>
           </>
         ) : (

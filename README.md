@@ -2,7 +2,24 @@
 
 A shadcn-compatible component registry that recreates Mac OS 9 UI components as modern React/Tailwind components.
 
-59 components, zero image assets, pure CSS bevels and shadows. Install any component via `npx shadcn@latest add`.
+60 components, zero image assets, pure CSS bevels and shadows.
+
+## Install
+
+```bash
+npx shadcn@latest add "https://nostalgia-ui.com/r/retro-button.json"
+```
+
+Or browse and add multiple components:
+
+```bash
+npx shadcn@latest add "https://nostalgia-ui.com/r"
+```
+
+## Links
+
+- [Website](https://nostalgia-ui.com)
+- [Components](https://nostalgia-ui.com/components)
 
 ## Attribution
 

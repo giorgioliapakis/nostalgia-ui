@@ -848,7 +848,28 @@
       "name": "retro-date-picker",
       "type": "registry:ui",
       "title": "RetroDatePicker",
-      "description": "A Mac OS 9 styled date picker with calendar icon trigger button, popover calendar dropdown, and formatted date display, composed from RetroPopover, RetroCalendar, and RetroButton.",
+      "description": "A Mac OS 9 styled date picker with inline text input (MM/DD/YYYY), calendar icon trigger button, and popover calendar dropdown, composed from RetroPopover and RetroCalendar.",
+      "dependencies": [
+        "date-fns",
+        "react-day-picker"
+      ],
+      "registryDependencies": [
+        "retro-popover",
+        "retro-calendar"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-date-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/retro-date-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "retro-date-range-picker",
+      "type": "registry:ui",
+      "title": "RetroDateRangePicker",
+      "description": "A Mac OS 9 styled date range picker with two inline text inputs, en-dash separator, calendar icon trigger, and a two-month popover calendar for range selection.",
       "dependencies": [
         "date-fns",
         "react-day-picker"
@@ -856,13 +877,13 @@
       "registryDependencies": [
         "retro-popover",
         "retro-calendar",
-        "retro-button"
+        "retro-date-picker"
       ],
       "files": [
         {
-          "path": "registry/new-york/ui/retro-date-picker.tsx",
+          "path": "registry/new-york/ui/retro-date-range-picker.tsx",
           "type": "registry:ui",
-          "target": "components/ui/retro-date-picker.tsx"
+          "target": "components/ui/retro-date-range-picker.tsx"
         }
       ]
     },
@@ -927,12 +948,15 @@
       "title": "RetroSidebar",
       "description": "A Mac OS 9 styled app shell layout with collapsible sidebar, context-driven open/closed state, menu items with azul active and lavender hover, keyboard shortcut (Cmd+B) toggle, and icon-only collapsed mode. Provides RetroSidebarProvider, RetroSidebar, RetroSidebarHeader, RetroSidebarContent, RetroSidebarFooter, RetroSidebarMenu, RetroSidebarMenuItem, RetroSidebarMenuButton, RetroSidebarGroup, RetroSidebarGroupLabel, RetroSidebarTrigger, and RetroSidebarInset.",
       "dependencies": [
-        "@radix-ui/react-slot"
+        "@radix-ui/react-slot",
+        "@radix-ui/react-dialog"
       ],
       "registryDependencies": [
         "retro-button",
         "retro-separator",
-        "retro-tooltip"
+        "retro-tooltip",
+        "retro-sheet",
+        "retro-scrollbar"
       ],
       "files": [
         {

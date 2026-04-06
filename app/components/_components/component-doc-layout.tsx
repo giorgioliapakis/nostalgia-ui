@@ -36,7 +36,7 @@ export function ComponentDocLayout({
             boxShadow: "var(--os9-shadow-inset)",
           }}
         >
-          npx shadcn@latest add &quot;https://nostalgia-ui.vercel.app/r/{name}.json&quot;
+          npx shadcn@latest add &quot;https://nostalgia-ui.com/r/{name}.json&quot;
         </pre>
       </section>
 

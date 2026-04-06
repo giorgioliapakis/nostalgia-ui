@@ -154,7 +154,7 @@ export default function ComponentsOverview() {
             boxShadow: "var(--os9-shadow-inset)",
           }}
         >
-          npx shadcn@latest add &quot;https://nostalgia-ui.vercel.app/r/retro-button.json&quot;
+          npx shadcn@latest add &quot;https://nostalgia-ui.com/r/retro-button.json&quot;
         </pre>
         <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black mb-3">
           Or add multiple components at once using the registry root:
@@ -167,7 +167,7 @@ export default function ComponentsOverview() {
             boxShadow: "var(--os9-shadow-inset)",
           }}
         >
-          npx shadcn@latest add &quot;https://nostalgia-ui.vercel.app/r&quot;
+          npx shadcn@latest add &quot;https://nostalgia-ui.com/r&quot;
         </pre>
       </section>
 
