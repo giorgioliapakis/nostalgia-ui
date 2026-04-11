@@ -23,4 +23,4 @@ npx shadcn@latest add "https://nostalgia-ui.com/r"
 
 ## Attribution
 
-Visual design based on the [Mac OS 9 UI Kit](https://www.figma.com/community/file/CJJW6Nbp2GpFfvz7oJZWv2) by [Michael Feeney](https://www.figma.com/@feeney), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Visual design based on the [Mac OS 9 UI Kit](https://www.figma.com/community/file/966779730364082883) by [Michael Feeney](https://www.figma.com/@feeneymichael), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
