@@ -56,7 +56,7 @@ function RetroTableFooter(
     <tfoot
       ref={ref}
       className={cn(
-        "bg-os9-gray-400 font-[family-name:var(--font-sans)] text-[10px] font-bold",
+        "bg-os9-gray-400 font-[family-name:var(--os9-font-sans)] text-[10px] font-bold",
         className
       )}
       {...props}
@@ -101,7 +101,7 @@ function RetroTableHead(
       className={cn(
         "text-left select-none",
         "bg-os9-gray-400 border border-[#484848] px-[8px] py-[4px]",
-        "font-[family-name:var(--font-sans)] text-[10px] font-bold",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] font-bold",
         /* Raised bevel */
         "shadow-[inset_-2px_0_0_var(--os9-gray-700),inset_0_-2px_0_var(--os9-gray-700),inset_2px_0_0_var(--os9-white),inset_0_2px_0_var(--os9-white)]",
         /* Pressed bevel while clicking (e.g. sortable headers) */
@@ -130,7 +130,7 @@ function RetroTableCell(
       ref={ref}
       className={cn(
         "align-middle px-[8px] py-[4px]",
-        "font-[family-name:var(--font-sans)] text-[10px]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px]",
         "border-b border-b-os9-gray-400",
         className
       )}
@@ -155,7 +155,7 @@ function RetroTableCaption(
       ref={ref}
       className={cn(
         "mt-1 p-[4px]",
-        "font-[family-name:var(--font-sans)] text-[10px] text-os9-gray-800",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-gray-800",
         className
       )}
       {...props}
@@ -182,7 +182,7 @@ function RetroTableRoot(
         className={cn(
           "w-full caption-bottom",
           "border border-os9-black border-separate border-spacing-0",
-          "font-[family-name:var(--font-sans)] text-[10px]",
+          "font-[family-name:var(--os9-font-sans)] text-[10px]",
           /* Body row hover (lavender) and selected (azul) highlights */
           "[&_tbody_tr:not([data-state=selected]):hover]:bg-os9-lavender",
           "[&_tbody_tr[data-state=selected]]:bg-os9-azul [&_tbody_tr[data-state=selected]]:text-os9-white",

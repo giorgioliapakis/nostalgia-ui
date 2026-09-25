@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 
 const retroLabelVariants = cva(
   [
-    "font-[family-name:var(--font-sans)]",
+    "font-[family-name:var(--os9-font-sans)]",
     "text-os9-black",
     "cursor-default select-none",
     "peer-disabled:text-os9-gray-600 peer-disabled:pointer-events-none",
@@ -17,7 +17,7 @@ const retroLabelVariants = cva(
     variants: {
       size: {
         default: "text-[10px] leading-normal",
-        lg: "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+        lg: "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       },
     },
     defaultVariants: {

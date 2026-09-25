@@ -223,7 +223,7 @@ export function ComponentsShell({ children }: { children: React.ReactNode }) {
         <SidebarNav />
       </RetroSidebar>
 
-      <RetroSidebarInset>
+      <RetroSidebarInset className="min-w-0">
         <ComponentsMenuBar />
         {children}
       </RetroSidebarInset>

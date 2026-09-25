@@ -54,7 +54,7 @@ function RetroCalendar({
         month_caption:
           "flex justify-center items-center h-[28px] px-10",
         caption_label:
-          "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98] text-os9-black select-none",
+          "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98] text-os9-black select-none",
         nav: cn(
           "absolute top-0 left-0 right-0 z-10",
           "flex justify-between items-center h-[28px] px-1"
@@ -80,13 +80,13 @@ function RetroCalendar({
         month_grid: "w-full border-collapse",
         weekdays: "flex",
         weekday:
-          "font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700 w-8 h-8 flex items-center justify-center select-none",
+          "font-[family-name:var(--os9-font-sans)] text-[9px] text-os9-gray-700 w-8 h-8 flex items-center justify-center select-none",
         week: "flex w-full mt-0.5",
-        day: "relative p-0 text-center text-[10px] font-[family-name:var(--font-sans)] w-8 h-8 flex items-center justify-center",
+        day: "relative p-0 text-center text-[10px] font-[family-name:var(--os9-font-sans)] w-8 h-8 flex items-center justify-center",
         day_button: cn(
           "inline-flex items-center justify-center w-8 h-8 p-0",
           "cursor-pointer select-none transition-none",
-          "font-[family-name:var(--font-sans)] text-[10px] text-os9-black",
+          "font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-black",
           "hover:bg-os9-lavender",
           "focus-visible:os9-focus-ring"
         ),

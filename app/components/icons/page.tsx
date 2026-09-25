@@ -14,13 +14,20 @@ import {
   RetroIconPrinter,
   RetroIconSearch,
   RetroIconPreferences,
+  RetroIconHappyMac,
+  RetroIconSadMac,
+  RetroIconBomb,
+  RetroIconUser,
+  RetroIconMemory,
+  RetroIconFinder,
+  RetroIconExtension,
 } from "@/registry/new-york/ui/retro-icons"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
 export const metadata: Metadata = {
   title: "Icons",
   description:
-    "14 pixel-art SVG icons inspired by Mac OS 9 in sm, default, lg, and xl sizes.",
+    "21 pixel-art SVG icons inspired by Mac OS 9 in sm, default, lg, and xl sizes.",
 }
 
 const allIcons = [
@@ -38,6 +45,13 @@ const allIcons = [
   { name: "Printer", Component: RetroIconPrinter },
   { name: "Search", Component: RetroIconSearch },
   { name: "Preferences", Component: RetroIconPreferences },
+  { name: "Happy Mac", Component: RetroIconHappyMac },
+  { name: "Sad Mac", Component: RetroIconSadMac },
+  { name: "Bomb", Component: RetroIconBomb },
+  { name: "User", Component: RetroIconUser },
+  { name: "Memory", Component: RetroIconMemory },
+  { name: "Finder", Component: RetroIconFinder },
+  { name: "Extension", Component: RetroIconExtension },
 ] as const
 
 const sizes = ["sm", "default", "lg", "xl"] as const
@@ -47,10 +61,10 @@ export default function IconsPreview() {
     <ComponentDocLayout
       name="retro-icons"
       title="RetroIcons"
-      description="14 pixel-art SVG icons inspired by Mac OS 9 in sm, default, lg, and xl sizes."
+      description="21 pixel-art SVG icons inspired by Mac OS 9 in sm, default, lg, and xl sizes."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        14 pixel-art SVG icons inspired by Mac OS 9. Each icon supports sm
+        21 pixel-art SVG icons inspired by Mac OS 9. Each icon supports sm
         (16px), default (32px), lg (48px), and xl (64px) sizes. All are pure SVG
         with no image assets.
       </p>
@@ -60,7 +74,7 @@ export default function IconsPreview() {
         <h2 className="os9-heading text-[14px] mb-4">
           All Icons (default size)
         </h2>
-        <div className="grid grid-cols-7 gap-6">
+        <div className="grid grid-cols-4 sm:grid-cols-7 gap-6">
           {allIcons.map(({ name, Component }) => (
             <div key={name} className="flex flex-col items-center gap-2">
               <Component size="default" />

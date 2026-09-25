@@ -153,7 +153,7 @@ const RetroDialogTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "shrink-0 whitespace-nowrap text-[12px] tracking-[0.42px] leading-[0.98]",
-      "font-[family-name:var(--font-heading)] text-os9-black",
+      "font-[family-name:var(--os9-font-heading)] text-os9-black",
       "max-w-[60%] overflow-hidden text-ellipsis",
       "px-[4px]",
       className
@@ -174,7 +174,7 @@ const RetroDialogDescription = React.forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn(
-      "text-[10px] font-[family-name:var(--font-sans)] text-os9-gray-700",
+      "text-[10px] font-[family-name:var(--os9-font-sans)] text-os9-gray-700",
       className
     )}
     {...props}

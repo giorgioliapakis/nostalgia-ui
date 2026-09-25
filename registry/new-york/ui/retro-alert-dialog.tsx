@@ -138,7 +138,7 @@ const RetroAlertDialogTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "shrink-0 whitespace-nowrap text-[12px] tracking-[0.42px] leading-[0.98]",
-      "font-[family-name:var(--font-heading)] text-os9-black",
+      "font-[family-name:var(--os9-font-heading)] text-os9-black",
       "max-w-[60%] overflow-hidden text-ellipsis",
       "px-[4px]",
       className
@@ -160,7 +160,7 @@ const RetroAlertDialogDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-[10px] leading-[1.4] text-os9-black",
-      "font-[family-name:var(--font-sans)]",
+      "font-[family-name:var(--os9-font-sans)]",
       className
     )}
     {...props}
@@ -241,7 +241,7 @@ const RetroAlertDialogAction = React.forwardRef<
     ref={ref}
     className={cn(
       "inline-flex items-center justify-center whitespace-nowrap",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "cursor-pointer select-none transition-none",
       "h-[24px] px-4 py-0",
       "border-[2px] border-os9-black bg-os9-gray-300 text-os9-black",
@@ -268,7 +268,7 @@ const RetroAlertDialogCancel = React.forwardRef<
     ref={ref}
     className={cn(
       "inline-flex items-center justify-center whitespace-nowrap",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "cursor-pointer select-none transition-none",
       "h-[24px] px-4 py-0",
       "border border-os9-black bg-os9-gray-300 text-os9-black",

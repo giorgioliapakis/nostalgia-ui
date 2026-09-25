@@ -59,7 +59,7 @@ const RetroDropdownMenuItem = React.forwardRef<
     className={cn(
       "group flex items-center cursor-default select-none",
       "h-[18px] px-[16px]",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "outline-none",
       /* Hover / focus highlight */
@@ -114,7 +114,7 @@ const RetroDropdownMenuSubTrigger = React.forwardRef<
     className={cn(
       "flex items-center cursor-default select-none",
       "h-[18px] px-[16px]",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "outline-none",
       /* Hover / focus highlight */
@@ -183,7 +183,7 @@ const RetroDropdownMenuCheckboxItem = React.forwardRef<
     className={cn(
       "relative flex items-center cursor-default select-none",
       "h-[18px] pl-[24px] pr-[16px]",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "outline-none",
       "data-[highlighted]:bg-os9-azul data-[highlighted]:text-os9-white",
@@ -236,7 +236,7 @@ const RetroDropdownMenuRadioItem = React.forwardRef<
     className={cn(
       "relative flex items-center cursor-default select-none",
       "h-[18px] pl-[24px] pr-[16px]",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "outline-none",
       "data-[highlighted]:bg-os9-azul data-[highlighted]:text-os9-white",
@@ -276,7 +276,7 @@ const RetroDropdownMenuLabel = React.forwardRef<
     ref={ref}
     className={cn(
       "px-[16px] py-[2px]",
-      "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
       "text-os9-gray-700",
       className
     )}
@@ -297,7 +297,7 @@ function RetroDropdownMenuShortcut({
     <span
       className={cn(
         "ml-auto pl-[16px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px]",
         "text-os9-gray-700",
         /* Inherit parent highlight color */
         "group-data-[highlighted]:text-os9-white",

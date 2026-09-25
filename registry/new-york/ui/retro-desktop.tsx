@@ -101,7 +101,7 @@ const RetroDesktopMenuBar = React.forwardRef<
       <div
         className={cn(
           "flex flex-1 items-center gap-[6px]",
-          "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+          "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
           "text-os9-black"
         )}
       >
@@ -113,7 +113,7 @@ const RetroDesktopMenuBar = React.forwardRef<
         <span
           className={cn(
             "shrink-0 pl-[8px]",
-            "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+            "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
             "text-os9-black"
           )}
         >
@@ -243,7 +243,7 @@ const RetroDesktopIcon = React.forwardRef<HTMLDivElement, RetroDesktopIconProps>
         <span
           className={cn(
             "max-w-full px-[2px] text-center",
-            "font-[family-name:var(--font-sans)] text-[9px] leading-[1.3]",
+            "font-[family-name:var(--os9-font-sans)] text-[9px] leading-[1.3]",
             "line-clamp-2",
             selected
               ? "bg-os9-azul text-os9-white"

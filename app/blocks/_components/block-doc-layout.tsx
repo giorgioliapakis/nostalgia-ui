@@ -23,7 +23,7 @@ export function BlockDocLayout({
   children,
 }: BlockDocProps) {
   return (
-    <main className="min-h-screen bg-os9-gray-200 p-8">
+    <main className="min-h-screen min-w-0 bg-os9-gray-200 p-4 sm:p-8">
       <div className="max-w-[720px] mb-6">
         <h1 className="os9-heading text-[18px] mb-2">{title}</h1>
         <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-gray-700">
@@ -49,7 +49,7 @@ export function BlockDocLayout({
 
       {/* Preview: blocks get a wider, desktop-patterned stage */}
       <div
-        className="relative w-full max-w-[1100px] overflow-hidden border border-os9-black p-6"
+        className="relative w-full min-w-0 max-w-[1100px] overflow-x-auto overflow-y-hidden border border-os9-black p-3 sm:p-6"
         style={{
           backgroundColor: "var(--os9-gray-400)",
           backgroundImage:

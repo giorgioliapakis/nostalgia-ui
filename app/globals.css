@@ -99,6 +99,10 @@
   --font-heading: "Charcoal", "ChicagoFLF", "Geneva", "Arial", sans-serif;
   --font-sans: "Geneva", "Verdana", "Helvetica Neue", sans-serif;
   --font-mono: "Monaco", "Courier New", monospace;
+  /* Component font tokens (shipped by nostalgia-theme; always emitted) */
+  --os9-font-heading: var(--font-heading);
+  --os9-font-sans: var(--font-sans);
+  --os9-font-mono: var(--font-mono);
 
   /* Bevel shadow tokens (reused across components) */
   --os9-shadow-raised: inset 1px 1px 0 var(--os9-white), inset -1px -1px 0 var(--os9-gray-700);
@@ -172,7 +176,7 @@
 
 /* Heading font */
 @utility os9-heading {
-  font-family: var(--font-heading);
+  font-family: var(--os9-font-heading);
   letter-spacing: 0.42px;
   line-height: 0.98;
 }

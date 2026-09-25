@@ -79,7 +79,7 @@ function RetroAvatarFallback(
       className={cn(
         "flex h-full w-full items-center justify-center",
         "bg-os9-gray-400 text-os9-black",
-        "font-[family-name:var(--font-heading)] text-[11px] leading-[1]",
+        "font-[family-name:var(--os9-font-heading)] text-[11px] leading-[1]",
         className
       )}
       {...props}

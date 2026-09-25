@@ -5,12 +5,17 @@ import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 
 import { cn } from "@/lib/utils"
 
+// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
+// literal `asChild` to Base UI's `render` prop in base-* projects, which
+// breaks these Radix-based components.
+const AS_CHILD = { asChild: true } as const
+
 const RetroCollapsible = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root> &
     React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <CollapsiblePrimitive.Root asChild {...props}>
+  <CollapsiblePrimitive.Root {...AS_CHILD} {...props}>
     <div ref={ref} className={cn("w-full", className)} />
   </CollapsiblePrimitive.Root>
 ))
@@ -57,7 +62,7 @@ const RetroCollapsibleContent = React.forwardRef<
   <CollapsiblePrimitive.Content
     ref={ref}
     className={cn(
-      "pl-4 font-sans text-[10px]",
+      "pl-4 font-[family-name:var(--os9-font-sans)] text-[10px]",
       "data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down",
       "overflow-hidden",
       className

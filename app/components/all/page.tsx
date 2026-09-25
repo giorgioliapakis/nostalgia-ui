@@ -158,7 +158,7 @@ import { RetroScrollArea } from "@/registry/new-york/ui/retro-scrollbar"
 // Infrastructure
 import { RetroText } from "@/registry/new-york/ui/retro-typography"
 
-import { NAV_ITEMS } from "../_components/nav-data"
+import { NAV_ITEMS, TOTAL_COMPONENTS } from "../_components/nav-data"
 
 // recharts is heavy — load the chart demo on the client only, after the
 // rest of the page has rendered.
@@ -249,14 +249,14 @@ export default function Home() {
                 Mac OS 9 UI Components for React
               </p>
               <p className="text-[10px] leading-normal">
-                A shadcn-compatible component registry with 59 Mac OS 9 styled components.
+                A shadcn-compatible component registry with {TOTAL_COMPONENTS} Mac OS 9 styled components.
                 Every visual effect is pure CSS — zero image assets.
               </p>
               <p className="text-[10px] leading-normal font-mono bg-white border border-[var(--os9-black)] p-2">
                 npx shadcn@latest add https://nostalgia-ui.com/r/retro-button.json
               </p>
               <div className="flex items-center gap-4">
-                <RetroBadge variant="accent">59 Components</RetroBadge>
+                <RetroBadge variant="accent">{TOTAL_COMPONENTS} Components</RetroBadge>
                 <RetroBadge variant="azul">Tailwind v4</RetroBadge>
                 <RetroBadge>Radix UI</RetroBadge>
               </div>

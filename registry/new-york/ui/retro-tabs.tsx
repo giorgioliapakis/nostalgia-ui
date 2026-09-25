@@ -86,11 +86,11 @@ const retroTabsTriggerVariants = cva(
       size: {
         lg: [
           "h-[22px] px-[12px]",
-          "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+          "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         ],
         sm: [
           "h-[16px] px-[10px]",
-          "font-[family-name:var(--font-sans)] text-[10px] tracking-[0.8px] leading-normal",
+          "font-[family-name:var(--os9-font-sans)] text-[10px] tracking-[0.8px] leading-normal",
         ],
       },
     },

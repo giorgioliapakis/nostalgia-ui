@@ -86,7 +86,7 @@ function RetroDataTableColumnHeader<TData, TValue>({
       type="button"
       className={cn(
         "inline-flex items-center gap-1 cursor-pointer select-none",
-        "font-[family-name:var(--font-heading)] text-[10px] font-bold",
+        "font-[family-name:var(--os9-font-heading)] text-[10px] font-bold",
         "outline-none focus-visible:os9-focus-ring",
         className
       )}
@@ -146,7 +146,7 @@ function RetroDataTableToolbar<TData>({
             "w-full max-w-[200px]",
             "border border-os9-black bg-os9-white text-os9-black",
             "placeholder:text-os9-gray-600",
-            "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+            "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
             "px-[5px] py-[3px]",
             "outline-none",
             "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white),-1px_0_0_var(--os9-gray-700),0_-1px_0_var(--os9-gray-700),1px_0_0_var(--os9-white),0_1px_0_var(--os9-white)]",
@@ -174,7 +174,7 @@ interface RetroDataTablePaginationProps<TData>
 const os9BtnBase = [
   "inline-flex items-center justify-center",
   "h-[20px] px-2",
-  "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
+  "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
   "border border-os9-black bg-os9-gray-300 text-os9-black",
   "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
   "cursor-pointer select-none",
@@ -204,7 +204,7 @@ function RetroDataTablePagination<TData>({
     <div
       className={cn(
         "flex items-center justify-between gap-4 pt-2",
-        "font-[family-name:var(--font-sans)] text-[10px]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px]",
         className
       )}
       {...props}
@@ -230,7 +230,7 @@ function RetroDataTablePagination<TData>({
             className={cn(
               "h-[18px] px-1",
               "border border-os9-black bg-os9-gray-300 text-os9-black",
-              "font-[family-name:var(--font-sans)] text-[10px]",
+              "font-[family-name:var(--os9-font-sans)] text-[10px]",
               "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
               "cursor-pointer outline-none focus-visible:os9-focus-ring"
             )}

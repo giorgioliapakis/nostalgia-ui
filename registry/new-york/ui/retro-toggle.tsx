@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 const retroToggleVariants = cva(
   [
     "inline-flex items-center justify-center whitespace-nowrap",
-    "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+    "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
     "cursor-pointer select-none",
     "transition-none",
     "border border-os9-black bg-os9-gray-300 text-os9-black",

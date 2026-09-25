@@ -77,9 +77,9 @@ function RetroChartContainer({
           "border border-os9-black bg-os9-gray-200",
           "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
           /* Recharts overrides — OS9 axis text: Geneva 9px, gray-700 */
-          "font-[family-name:var(--font-sans)] text-[9px]",
+          "font-[family-name:var(--os9-font-sans)] text-[9px]",
           "[&_.recharts-cartesian-axis-tick_text]:fill-[var(--os9-gray-700)]",
-          "[&_.recharts-cartesian-axis-tick_text]:font-[family-name:var(--font-sans)]",
+          "[&_.recharts-cartesian-axis-tick_text]:font-[family-name:var(--os9-font-sans)]",
           "[&_.recharts-cartesian-axis-tick_text]:text-[9px]",
           /* Grid lines: os9-gray-400 */
           "[&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-[var(--os9-gray-400)]",
@@ -205,7 +205,7 @@ function RetroChartTooltipContent({
         <div
           className={cn(
             /* Charcoal heading style */
-            "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98] text-[var(--os9-black)]",
+            "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98] text-[var(--os9-black)]",
             labelClassName
           )}
         >
@@ -221,7 +221,7 @@ function RetroChartTooltipContent({
     return (
       <div
         className={cn(
-          "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98] text-[var(--os9-black)]",
+          "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98] text-[var(--os9-black)]",
           labelClassName
         )}
       >
@@ -252,7 +252,7 @@ function RetroChartTooltipContent({
         "rounded-[6px] border border-[var(--os9-black)]",
         "bg-[#ffffcc]",
         "px-2 py-1.5",
-        "font-[family-name:var(--font-sans)] text-[10px] text-[var(--os9-black)]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] text-[var(--os9-black)]",
         "shadow-[1px_1px_0_rgba(0,0,0,0.3)]",
         className
       )}
@@ -320,7 +320,7 @@ function RetroChartTooltipContent({
                         </span>
                       </div>
                       {item.value != null && (
-                        <span className="font-[family-name:var(--font-mono)] font-medium text-[var(--os9-black)] tabular-nums">
+                        <span className="font-[family-name:var(--os9-font-mono)] font-medium text-[var(--os9-black)] tabular-nums">
                           {typeof item.value === "number"
                             ? item.value.toLocaleString()
                             : String(item.value)}
@@ -364,7 +364,7 @@ function RetroChartLegendContent({
       className={cn(
         /* OS9 legend: Geneva 10px, flex row, gap-3 */
         "flex items-center justify-center gap-3",
-        "font-[family-name:var(--font-sans)] text-[10px] text-[var(--os9-black)]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] text-[var(--os9-black)]",
         verticalAlign === "top" ? "pb-3" : "pt-3",
         className
       )}

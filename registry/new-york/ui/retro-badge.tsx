@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 const retroBadgeVariants = cva(
   [
     "inline-flex items-center whitespace-nowrap",
-    "font-[family-name:var(--font-heading)] text-[9px] leading-[1]",
+    "font-[family-name:var(--os9-font-heading)] text-[9px] leading-[1]",
     "px-2 py-0.5",
     "border border-os9-black",
     "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_#808080]",

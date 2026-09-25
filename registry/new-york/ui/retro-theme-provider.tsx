@@ -27,9 +27,9 @@ const os9Tokens: Record<string, string> = {
   "--os9-focus": "#6666cc",
 
   /* Typography */
-  "--font-heading": '"Charcoal", "ChicagoFLF", "Geneva", "Arial", sans-serif',
-  "--font-sans": '"Geneva", "Verdana", "Helvetica Neue", sans-serif',
-  "--font-mono": '"Monaco", "Courier New", monospace',
+  "--os9-font-heading": '"Charcoal", "ChicagoFLF", "Geneva", "Arial", sans-serif',
+  "--os9-font-sans": '"Geneva", "Verdana", "Helvetica Neue", sans-serif',
+  "--os9-font-mono": '"Monaco", "Courier New", monospace',
 
   /* Bevel shadow tokens */
   "--os9-shadow-raised":
@@ -76,7 +76,7 @@ const os9UtilityCSS = `
   box-shadow: 0 0 0 2px var(--os9-focus);
 }
 .os9-heading {
-  font-family: var(--font-heading);
+  font-family: var(--os9-font-heading);
   letter-spacing: 0.42px;
   line-height: 0.98;
 }
@@ -100,7 +100,7 @@ interface NostalgiaProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * Runtime override for the OS9 design tokens.
  *
- * Sets the `--os9-*` / `--font-*` custom properties inline on a wrapper div,
+ * Sets the `--os9-*` custom properties inline on a wrapper div,
  * so you can re-theme a subtree (or restore the classic values inside a
  * differently-themed page) without touching your global CSS.
  *
@@ -134,7 +134,7 @@ const NostalgiaProvider = React.forwardRef<HTMLDivElement, NostalgiaProviderProp
 
         <div
           ref={ref}
-          className={cn("font-[family-name:var(--font-sans)] text-[10px]", className)}
+          className={cn("font-[family-name:var(--os9-font-sans)] text-[10px]", className)}
           style={tokenStyles as React.CSSProperties}
           data-nostalgia-theme={theme}
           {...props}

@@ -46,6 +46,22 @@ export default function ButtonPage() {
       </section>
 
       <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">Default Button</h2>
+        <p className="mb-4 max-w-[520px] font-[family-name:var(--font-sans)] text-[10px] leading-[1.5] text-os9-gray-700">
+          Pass <code className="font-mono">isDefault</code> to mark the button
+          that Return/Enter activates. It draws the thick OS 9 outer ring with
+          a platinum gap, and reserves space for it with a 5px margin.
+        </p>
+        <div className="flex items-center gap-3 flex-wrap">
+          <RetroButton className="min-w-[70px]">Cancel</RetroButton>
+          <RetroButton isDefault className="min-w-[70px]">OK</RetroButton>
+          <RetroButton isDefault size="sm">Small</RetroButton>
+          <RetroButton isDefault size="lg">Large</RetroButton>
+          <RetroButton isDefault disabled>Disabled</RetroButton>
+        </div>
+      </section>
+
+      <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Size Comparison</h2>
         <div className="flex items-end gap-4 flex-wrap">
           <RetroButton size="sm">Small</RetroButton>

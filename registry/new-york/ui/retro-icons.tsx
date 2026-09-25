@@ -528,6 +528,234 @@ const RetroIconPreferences = React.forwardRef(RetroIconPreferencesInner)
 RetroIconPreferences.displayName = "RetroIconPreferences"
 
 /* ---------------------------------------------------------------------------
+ * 15-16. RetroIconHappyMac / RetroIconSadMac — compact Macintosh faces
+ * -------------------------------------------------------------------------*/
+
+/** Shared compact-Mac case; the face is drawn on top by each icon. */
+function CompactMacCase({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {/* Case */}
+      <rect x="6.5" y="1.5" width="19" height="25" fill="#dddddd" stroke="#262626" strokeWidth="1" />
+      {/* Case bevel */}
+      <line x1="7.5" y1="2.5" x2="24.5" y2="2.5" stroke="#ffffff" strokeWidth="1" />
+      <line x1="7.5" y1="2.5" x2="7.5" y2="25.5" stroke="#ffffff" strokeWidth="1" />
+      <line x1="24.5" y1="3" x2="24.5" y2="25.5" stroke="#999999" strokeWidth="1" />
+      {/* Screen bezel + screen */}
+      <rect x="9.5" y="4.5" width="13" height="11" fill="#bbbbbb" stroke="#808080" strokeWidth="1" />
+      <rect x="10.5" y="5.5" width="11" height="9" fill="#ffffff" stroke="#262626" strokeWidth="1" />
+      {/* Floppy slot */}
+      <rect x="16" y="20" width="6" height="1" fill="#262626" />
+      {/* Foot */}
+      <rect x="8.5" y="26.5" width="15" height="3" fill="#bbbbbb" stroke="#262626" strokeWidth="1" />
+      {/* Face (pixel grid) */}
+      <g fill="#262626" shapeRendering="crispEdges">
+        {children}
+      </g>
+    </>
+  )
+}
+
+const RetroIconHappyMac = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconHappyMac({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        <CompactMacCase>
+          {/* Eyes */}
+          <rect x="13" y="7" width="1" height="2" />
+          <rect x="18" y="7" width="1" height="2" />
+          {/* Nose */}
+          <rect x="16" y="7" width="1" height="4" />
+          <rect x="15" y="10" width="1" height="1" />
+          {/* Smile */}
+          <rect x="13" y="12" width="1" height="1" />
+          <rect x="14" y="13" width="4" height="1" />
+          <rect x="18" y="12" width="1" height="1" />
+        </CompactMacCase>
+      </Shell>
+    )
+  }
+)
+RetroIconHappyMac.displayName = "RetroIconHappyMac"
+
+const RetroIconSadMac = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconSadMac({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        <CompactMacCase>
+          {/* X eyes */}
+          <rect x="12" y="7" width="1" height="1" />
+          <rect x="14" y="7" width="1" height="1" />
+          <rect x="13" y="8" width="1" height="1" />
+          <rect x="12" y="9" width="1" height="1" />
+          <rect x="14" y="9" width="1" height="1" />
+          <rect x="17" y="7" width="1" height="1" />
+          <rect x="19" y="7" width="1" height="1" />
+          <rect x="18" y="8" width="1" height="1" />
+          <rect x="17" y="9" width="1" height="1" />
+          <rect x="19" y="9" width="1" height="1" />
+          {/* Nose */}
+          <rect x="16" y="8" width="1" height="3" />
+          <rect x="15" y="10" width="1" height="1" />
+          {/* Frown */}
+          <rect x="14" y="12" width="4" height="1" />
+          <rect x="13" y="13" width="1" height="1" />
+          <rect x="18" y="13" width="1" height="1" />
+        </CompactMacCase>
+      </Shell>
+    )
+  }
+)
+RetroIconSadMac.displayName = "RetroIconSadMac"
+
+/* ---------------------------------------------------------------------------
+ * 17. RetroIconBomb — the system error bomb with lit fuse
+ * -------------------------------------------------------------------------*/
+
+const RetroIconBomb = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconBomb({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        {/* Fuse cap */}
+        <rect
+          x="18.5"
+          y="8"
+          width="5"
+          height="5"
+          fill="#808080"
+          stroke="#262626"
+          strokeWidth="1"
+          transform="rotate(45 21 10.5)"
+        />
+        {/* Bomb body */}
+        <circle cx="14" cy="19" r="10" fill="#262626" />
+        {/* Highlight */}
+        <path d="M8 16 A7 7 0 0 1 12 12" stroke="#ffffff" strokeWidth="1.5" fill="none" strokeLinecap="square" />
+        {/* Fuse */}
+        <path d="M22.5 8.5 Q24 4.5 27.5 5" stroke="#996633" strokeWidth="1.5" fill="none" />
+        {/* Spark */}
+        <g stroke="#ffcc00" strokeWidth="1" strokeLinecap="square">
+          <line x1="28.5" y1="1.5" x2="28.5" y2="3" />
+          <line x1="28.5" y1="7" x2="28.5" y2="8.5" />
+          <line x1="25.5" y1="3" x2="26.5" y2="4" />
+          <line x1="30.5" y1="3" x2="30" y2="3.5" />
+          <line x1="30.5" y1="5" x2="31.5" y2="5" />
+        </g>
+        <circle cx="28.5" cy="5" r="1.25" fill="#ff6600" />
+      </Shell>
+    )
+  }
+)
+RetroIconBomb.displayName = "RetroIconBomb"
+
+/* ---------------------------------------------------------------------------
+ * 18. RetroIconUser — Head and shoulders (Multiple Users)
+ * -------------------------------------------------------------------------*/
+
+const RetroIconUser = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconUser({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        {/* Shoulders */}
+        <path d="M4.5 29.5 Q4.5 19.5 16 19.5 Q27.5 19.5 27.5 29.5 Z" fill="#6666cc" stroke="#262626" strokeWidth="1" strokeLinejoin="round" />
+        {/* Collar */}
+        <path d="M13 19.5 L16 23.5 L19 19.5" stroke="#ffffff" strokeWidth="1" fill="none" />
+        {/* Head */}
+        <circle cx="16" cy="11" r="6.5" fill="#ffcc99" stroke="#262626" strokeWidth="1" />
+        {/* Hair */}
+        <path
+          d="M9.6 10 Q9.5 4.5 16 4.5 Q22.5 4.5 22.4 10 Q19.5 7.5 16 8.5 Q12.5 7.5 9.6 10 Z"
+          fill="#663300"
+          stroke="#262626"
+          strokeWidth="0.75"
+          strokeLinejoin="round"
+        />
+        {/* Eyes */}
+        <rect x="13" y="11" width="1.5" height="1.5" fill="#262626" />
+        <rect x="17.5" y="11" width="1.5" height="1.5" fill="#262626" />
+      </Shell>
+    )
+  }
+)
+RetroIconUser.displayName = "RetroIconUser"
+
+/* ---------------------------------------------------------------------------
+ * 19. RetroIconMemory — RAM module (DIMM)
+ * -------------------------------------------------------------------------*/
+
+const RetroIconMemory = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconMemory({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        {/* Circuit board */}
+        <rect x="1.5" y="9.5" width="29" height="13" fill="#339966" stroke="#262626" strokeWidth="1" />
+        <line x1="2.5" y1="10.5" x2="29.5" y2="10.5" stroke="#66cc99" strokeWidth="1" />
+        {/* Chips */}
+        {[4, 10, 16, 22].map((x) => (
+          <rect key={x} x={x} y="12" width="5" height="5" fill="#262626" />
+        ))}
+        {/* Gold contacts */}
+        {Array.from({ length: 12 }, (_, i) => (
+          <rect key={i} x={3 + i * 2.25} y="19" width="1.25" height="3" fill="#ffcc33" />
+        ))}
+      </Shell>
+    )
+  }
+)
+RetroIconMemory.displayName = "RetroIconMemory"
+
+/* ---------------------------------------------------------------------------
+ * 20. RetroIconFinder — Two-tone smiling Finder face (Mac OS logo)
+ * -------------------------------------------------------------------------*/
+
+const RetroIconFinder = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconFinder({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        {/* Left (light) half */}
+        <path d="M3.5 3.5H17L14 17H17.5V28.5H3.5Z" fill="#ccccff" />
+        {/* Right (dark) half */}
+        <path d="M17 3.5H28.5V28.5H17.5V17H14Z" fill="#6666cc" />
+        {/* Profile line */}
+        <path d="M17 3.5L14 17H17.5V28.5" stroke="#262626" strokeWidth="1" fill="none" strokeLinejoin="round" />
+        {/* Outline */}
+        <rect x="3.5" y="3.5" width="25" height="25" stroke="#262626" strokeWidth="1" fill="none" />
+        {/* Eyes */}
+        <rect x="9" y="8" width="2" height="5" fill="#262626" />
+        <rect x="21" y="8" width="2" height="5" fill="#262626" />
+        {/* Smile */}
+        <path d="M8 21 Q16 26 24 21" stroke="#262626" strokeWidth="1.5" fill="none" />
+      </Shell>
+    )
+  }
+)
+RetroIconFinder.displayName = "RetroIconFinder"
+
+/* ---------------------------------------------------------------------------
+ * 21. RetroIconExtension — System extension puzzle piece
+ * -------------------------------------------------------------------------*/
+
+const RetroIconExtension = React.forwardRef<SVGSVGElement, RetroIconProps>(
+  function RetroIconExtension({ size, className, ...props }, ref) {
+    return (
+      <Shell ref={ref} size={size} className={className} {...props}>
+        <path
+          d="M4.5 10.5H11.5C11.5 5.5 18.5 5.5 18.5 10.5H25.5V15.5C30.5 15.5 30.5 22.5 25.5 22.5V28.5H4.5Z"
+          fill="#99cc99"
+          stroke="#262626"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+        {/* Bevel */}
+        <path d="M5.5 27.5V11.5H12" stroke="#ccffcc" strokeWidth="1" fill="none" />
+        <path d="M24.5 23.5V27.5H5.5" stroke="#669966" strokeWidth="1" fill="none" />
+      </Shell>
+    )
+  }
+)
+RetroIconExtension.displayName = "RetroIconExtension"
+
+/* ---------------------------------------------------------------------------
  * Icon map & convenience wrapper
  * -------------------------------------------------------------------------*/
 
@@ -546,6 +774,13 @@ const iconMap = {
   printer: RetroIconPrinter,
   search: RetroIconSearch,
   preferences: RetroIconPreferences,
+  "happy-mac": RetroIconHappyMac,
+  "sad-mac": RetroIconSadMac,
+  bomb: RetroIconBomb,
+  user: RetroIconUser,
+  memory: RetroIconMemory,
+  finder: RetroIconFinder,
+  extension: RetroIconExtension,
 } as const
 
 type RetroIconName = keyof typeof iconMap
@@ -582,6 +817,13 @@ export {
   RetroIconPrinter,
   RetroIconSearch,
   RetroIconPreferences,
+  RetroIconHappyMac,
+  RetroIconSadMac,
+  RetroIconBomb,
+  RetroIconUser,
+  RetroIconMemory,
+  RetroIconFinder,
+  RetroIconExtension,
   retroIconVariants,
   iconMap,
 }

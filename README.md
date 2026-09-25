@@ -2,7 +2,7 @@
 
 A shadcn-compatible component registry that recreates Mac OS 9 UI components as modern React/Tailwind components.
 
-60 components plus a theme item (`nostalgia-theme`). Zero image assets: every bevel and shadow is pure CSS.
+78 components, 12 blocks (full screens such as a Finder window, Open/Save dialog, Control Panel and installer) and a theme item (`nostalgia-theme`). Zero image assets: every bevel and shadow is pure CSS.
 
 ## Prerequisites
 
@@ -18,13 +18,19 @@ There is no "install everything" command. Add components one at a time with thei
 npx shadcn@latest add https://nostalgia-ui.com/r/retro-button.json
 ```
 
-Each component is available at `https://nostalgia-ui.com/r/<name>.json`, for example `retro-window`, `retro-dialog` or `retro-menu-bar`. The [components page](https://nostalgia-ui.com/components) has the command for each one.
+Blocks install the same way and pull in every component they use:
+
+```bash
+npx shadcn@latest add https://nostalgia-ui.com/r/finder-window.json
+```
+
+Each component is available at `https://nostalgia-ui.com/r/<name>.json`, for example `retro-window`, `retro-dialog` or `retro-menu-bar`. The [components page](https://nostalgia-ui.com/components) and [blocks page](https://nostalgia-ui.com/blocks) have the command for each one.
 
 ## Theme and setup
 
 Every component lists `nostalgia-theme` in its `registryDependencies`, so installing any component also installs the theme. The theme adds:
 
-- the `--os9-*` design tokens (colours, bevel shadows, heading font), and
+- the `--os9-*` design tokens (colours, bevel shadows, and the `--os9-font-sans` / `--os9-font-heading` / `--os9-font-mono` stacks), and
 - the `os9-*` utilities (`os9-raised`, `os9-inset`, `os9-window`, `os9-stripes`, `os9-focus-ring`).
 
 To install only the theme:
@@ -32,6 +38,8 @@ To install only the theme:
 ```bash
 npx shadcn@latest add https://nostalgia-ui.com/r/nostalgia-theme.json
 ```
+
+Components are built on Radix UI and work in both Radix (`new-york`) and Base UI (`base-*`) shadcn projects. The Radix packages are installed as regular dependencies.
 
 ## Development
 
@@ -44,12 +52,13 @@ pnpm lint             # ESLint (flat config)
 npx tsc --noEmit      # type check
 ```
 
-Components live in `registry/new-york/ui/`. `registry.json` is the source of truth for the registry build.
+Components live in `registry/new-york/ui/` and blocks in `registry/new-york/blocks/`. `registry.json` is the source of truth for the registry build.
 
 ## Links
 
 - [Website](https://nostalgia-ui.com)
 - [Components](https://nostalgia-ui.com/components)
+- [Blocks](https://nostalgia-ui.com/blocks)
 
 ## Attribution
 

@@ -7,7 +7,7 @@
       "name": "nostalgia-theme",
       "type": "registry:theme",
       "title": "Nostalgia Theme",
-      "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, heading font) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
+      "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, font stacks) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
       "cssVars": {
         "theme": {
           "color-os9-black": "var(--os9-black)",
@@ -21,8 +21,7 @@
           "color-os9-gray-800": "var(--os9-gray-800)",
           "color-os9-azul": "var(--os9-azul)",
           "color-os9-lavender": "var(--os9-lavender)",
-          "color-os9-focus": "var(--os9-focus)",
-          "font-heading": "\"Charcoal\", \"ChicagoFLF\", \"Geneva\", \"Arial\", sans-serif"
+          "color-os9-focus": "var(--os9-focus)"
         },
         "light": {
           "os9-black": "#262626",
@@ -40,7 +39,10 @@
           "os9-shadow-raised": "inset 1px 1px 0 var(--os9-white), inset -1px -1px 0 var(--os9-gray-700)",
           "os9-shadow-pressed": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
           "os9-shadow-inset": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
-          "os9-shadow-window": "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4)"
+          "os9-shadow-window": "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4)",
+          "os9-font-heading": "\"Charcoal\", \"ChicagoFLF\", \"Geneva\", \"Arial\", sans-serif",
+          "os9-font-sans": "\"Geneva\", \"Verdana\", \"Helvetica Neue\", sans-serif",
+          "os9-font-mono": "\"Monaco\", \"Courier New\", monospace"
         }
       },
       "css": {
@@ -73,7 +75,7 @@
           "box-shadow": "0 0 0 2px var(--os9-focus)"
         },
         "@utility os9-heading": {
-          "font-family": "var(--font-heading)",
+          "font-family": "var(--os9-font-heading)",
           "letter-spacing": "0.42px",
           "line-height": "0.98"
         },
@@ -232,7 +234,7 @@
       "name": "retro-checkbox",
       "type": "registry:ui",
       "title": "RetroCheckbox",
-      "description": "A Mac OS 9 styled checkbox with inset bevel effect, inline SVG checkmark, and active/disabled states.",
+      "description": "A Mac OS 9 styled checkbox with inset bevel, checkmark and indeterminate (dash) states, built on Radix UI Checkbox.",
       "dependencies": [
         "@radix-ui/react-checkbox"
       ],
@@ -805,7 +807,7 @@
       "name": "retro-typography",
       "type": "registry:ui",
       "title": "RetroText",
-      "description": "A polymorphic Mac OS 9 text component with semantic variants matching the OS9 Figma type system: editorial (Apple Garamond 24pt), headline/smallHeadline (Charcoal), body/bodySmall/bodyBold/bodySlanted (Geneva), and mono (Monaco).",
+      "description": "Mac OS 9 typography: RetroText variants plus semantic RetroH1\u2013H4, RetroP, RetroLead, RetroBlockquote, RetroList, RetroInlineCode, RetroLarge, RetroSmall and RetroMuted.",
       "dependencies": [
         "class-variance-authority"
       ],
@@ -1141,7 +1143,7 @@
       "name": "retro-icons",
       "type": "registry:ui",
       "title": "RetroIcons",
-      "description": "Classic Mac OS 9 system icons as pure inline SVG components: Folder, Document, Trash, HardDrive, Floppy, Application, Alert, Info, Question, Stop, Network, Printer, Search, and Preferences. Includes a convenience RetroIcon wrapper with name prop and sm/default/lg/xl size variants.",
+      "description": "21 pure-CSS/SVG Mac OS 9 icons (folder, document, Trash, alerts, Happy Mac, Sad Mac, bomb, user, memory, Finder, extension and more) with a name-based RetroIcon wrapper.",
       "dependencies": [
         "class-variance-authority"
       ],
@@ -1153,6 +1155,572 @@
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ]
+    },
+    {
+      "name": "about-this-computer",
+      "type": "registry:block",
+      "title": "About This Computer",
+      "description": "Mac OS 9 About This Computer window with version, built-in/virtual memory, largest unused block and per-application memory bars.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/about-this-computer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "boot-screen",
+      "type": "registry:block",
+      "title": "Boot Screen",
+      "description": "Mac OS 9 startup screen with Happy Mac, \u201cWelcome to Mac OS\u201d progress box and marching extension icons. Controlled or autoPlay; respects prefers-reduced-motion.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-progress.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/boot-screen.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "copy-progress",
+      "type": "registry:block",
+      "title": "Copy Progress",
+      "description": "The Finder \u201cCopy\u201d progress window with items remaining, current file, progress bar, Stop button and an indeterminate \u201cPreparing to copy\u2026\u201d state.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-progress.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/copy-progress.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "type": "registry:block",
+      "title": "Login",
+      "description": "Mac OS 9 Multiple Users welcome window with a keyboard-navigable user list, password field and default Log In button.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-input.json",
+        "https://nostalgia-ui.com/r/retro-label.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/login.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "retro-app-switcher",
+      "type": "registry:ui",
+      "title": "RetroAppSwitcher",
+      "description": "The Mac OS 9 Application menu for the right end of the menu bar: frontmost app icon and name, Hide, Hide Others, Show All, and a checkmarked list of running apps.",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-dropdown-menu.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-app-switcher.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-bevel-button",
+      "type": "registry:ui",
+      "title": "RetroBevelButton",
+      "description": "Mac OS 9 Appearance Manager bevel button with small/normal/large bevels, icon above or beside the label, sticky toggle (aria-pressed) behaviour and an optional pop-up menu arrow.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-bevel-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-button-group",
+      "type": "registry:ui",
+      "title": "RetroButtonGroup",
+      "description": "Joins RetroButtons, inputs and text into one Mac OS 9 control strip with shared borders. Horizontal or vertical, with RetroButtonGroupSeparator and RetroButtonGroupText.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-button-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-control-strip",
+      "type": "registry:ui",
+      "title": "RetroControlStrip",
+      "description": "The Mac OS 9 Control Strip: a collapsible strip of module buttons with a ridged end tab and pop-up module menus. Exports RetroControlStrip, RetroControlStripModule and RetroControlStripTab (aliased ControlStrip, ControlStripModule, ControlStripTab).",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-dropdown-menu.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-control-strip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-empty",
+      "type": "registry:ui",
+      "title": "RetroEmpty",
+      "description": "A Mac OS 9 empty state (RetroEmpty, RetroEmptyHeader, RetroEmptyMedia, RetroEmptyTitle, RetroEmptyDescription, RetroEmptyContent) for empty folders, Trash and search results.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-field",
+      "type": "registry:ui",
+      "title": "RetroField",
+      "description": "Mac OS 9 form layout primitives with shadcn Field API parity: RetroField (vertical/horizontal/responsive), RetroFieldLabel, RetroFieldDescription, RetroFieldError, RetroFieldGroup, RetroFieldSet (plain or etched OS9 group box), RetroFieldLegend, RetroFieldSeparator, RetroFieldContent and RetroFieldTitle. No form-library dependency.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-label.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-folder-tag",
+      "type": "registry:ui",
+      "title": "RetroFolderTag",
+      "description": "Mac OS 9 folder tag: the tab of a pop-up window with a small icon and folder name, in active/inactive states, attached above or below its window.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-folder-tag.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-group-box",
+      "type": "registry:ui",
+      "title": "RetroGroupBox",
+      "description": "Mac OS 9 primary/secondary group box: an etched frame whose title (text, checkbox or pop-up) interrupts the top border.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-group-box.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-icon-view",
+      "type": "registry:ui",
+      "title": "RetroIconView",
+      "description": "A Mac OS 9 Finder icon view grid with click, shift and command selection, darkened selected icons with azul labels, arrow-key grid navigation, open on double-click/Cmd+O, and optional inline rename.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-icon-view.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-input-group",
+      "type": "registry:ui",
+      "title": "RetroInputGroup",
+      "description": "A Mac OS 9 inset text well combining an input or textarea with addons: RetroInputGroup, RetroInputGroupAddon (inline-start/inline-end/block-start/block-end), RetroInputGroupInput, RetroInputGroupTextarea, RetroInputGroupButton and RetroInputGroupText.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-input.json",
+        "https://nostalgia-ui.com/r/retro-textarea.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-item",
+      "type": "registry:ui",
+      "title": "RetroItem",
+      "description": "A flexible Mac OS 9 list row: RetroItem (default/outline/muted, default/sm, asChild) with RetroItemMedia, RetroItemContent, RetroItemTitle, RetroItemDescription, RetroItemActions, RetroItemGroup, RetroItemSeparator, RetroItemHeader and RetroItemFooter.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-item.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-kbd",
+      "type": "registry:ui",
+      "title": "RetroKbd",
+      "description": "Mac OS 9 keyboard keycaps (RetroKbd, RetroKbdGroup) with a raised bevel and Charcoal lettering, plus RETRO_KBD_KEYS for the command, option, shift and control glyphs.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-list-box",
+      "type": "registry:ui",
+      "title": "RetroListBox",
+      "description": "Mac OS 9 inset list box with single or multiple selection, azul highlight, arrow/Home/End navigation, type-ahead and listbox/option semantics.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-list-box.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-little-arrows",
+      "type": "registry:ui",
+      "title": "RetroLittleArrows",
+      "description": "Mac OS 9 little arrows stepper with press-and-hold repeat, plus RetroNumberField: an inset spinbutton field with min/max/step, keyboard stepping and controlled/uncontrolled value.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-little-arrows.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-native-select",
+      "type": "registry:ui",
+      "title": "RetroNativeSelect",
+      "description": "A native <select> styled as a Mac OS 9 pop-up menu button with raised bevel and double-arrow box. Default and sm sizes, plus RetroNativeSelectOption and RetroNativeSelectOptGroup.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-native-select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-placard",
+      "type": "registry:ui",
+      "title": "RetroPlacard",
+      "description": "Mac OS 9 window placard: the raised status strip at a window's bottom-left, with a RetroPlacardButton pop-up variant.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-placard.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-sonner",
+      "type": "registry:ui",
+      "title": "RetroToaster",
+      "description": "Sonner toasts rendered as Mac OS 9 alert windows: striped title bar, close box, per-type alert icons and OS9 action/cancel buttons. Exports RetroToaster and re-exports sonner's toast().",
+      "dependencies": [
+        "sonner"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-spinner.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-sonner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "retro-tree-view",
+      "type": "registry:ui",
+      "title": "RetroTreeView",
+      "description": "A Mac OS 9 Finder list view / Folder List: data-driven tree with animated disclosure triangles, optional sortable column headers (Name, Date Modified, Size, Kind), single/multi azul selection, controlled or uncontrolled expanded/selected state, and full WAI-ARIA tree keyboard support with type-ahead.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-tree-view.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sad-mac-404",
+      "type": "registry:block",
+      "title": "Sad Mac 404",
+      "description": "Full-page not-found screen with a pure-SVG Sad Mac, hex error codes and a Restart link home. Dark and light variants.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/sad-mac-404.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "unexpectedly-quit",
+      "type": "registry:block",
+      "title": "Unexpectedly Quit",
+      "description": "The classic Mac OS 9 \u201capplication has unexpectedly quit\u201d Stop alert with OK, plus a \u201cSorry, a system error occurred\u201d bomb variant with Restart.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-icons.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/unexpectedly-quit.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "control-panel",
+      "type": "registry:block",
+      "title": "Control Panel",
+      "description": "Mac OS 9 Appearance control panel with Themes, Appearance, Fonts, Desktop, Sound and Options tabs built from group boxes, pop-ups, sliders, checkboxes, radios and little-arrows fields.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-checkbox.json",
+        "https://nostalgia-ui.com/r/retro-group-box.json",
+        "https://nostalgia-ui.com/r/retro-label.json",
+        "https://nostalgia-ui.com/r/retro-list-box.json",
+        "https://nostalgia-ui.com/r/retro-little-arrows.json",
+        "https://nostalgia-ui.com/r/retro-radio.json",
+        "https://nostalgia-ui.com/r/retro-select.json",
+        "https://nostalgia-ui.com/r/retro-slider.json",
+        "https://nostalgia-ui.com/r/retro-tabs.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/control-panel.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "desktop-shell",
+      "type": "registry:block",
+      "title": "Desktop Shell",
+      "description": "Full Mac OS 9 desktop that fills its container: menu bar with clock and Application menu, desktop icons, overlapping draggable windows with click-to-front, and the Control Strip.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-app-switcher.json",
+        "https://nostalgia-ui.com/r/retro-control-strip.json",
+        "https://nostalgia-ui.com/r/retro-desktop.json",
+        "https://nostalgia-ui.com/r/retro-dropdown-menu.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-menu-bar.json",
+        "https://nostalgia-ui.com/r/retro-textarea.json",
+        "https://nostalgia-ui.com/r/retro-tree-view.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/desktop-shell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "finder-window",
+      "type": "registry:block",
+      "title": "Finder Window",
+      "description": "Mac OS 9 Finder window with a sortable Name / Date Modified / Size / Kind list view, disclosure triangles, an icon view toggle, a status placard and a size box.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-bevel-button.json",
+        "https://nostalgia-ui.com/r/retro-icon-view.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-placard.json",
+        "https://nostalgia-ui.com/r/retro-tree-view.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/finder-window.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "get-info",
+      "type": "registry:block",
+      "title": "Get Info",
+      "description": "Mac OS 9 Finder Get Info window with General Information, Sharing and Memory panes, label pop-up, comments, and Locked / Stationery Pad checkboxes.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-checkbox.json",
+        "https://nostalgia-ui.com/r/retro-group-box.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-input.json",
+        "https://nostalgia-ui.com/r/retro-label.json",
+        "https://nostalgia-ui.com/r/retro-little-arrows.json",
+        "https://nostalgia-ui.com/r/retro-select.json",
+        "https://nostalgia-ui.com/r/retro-separator.json",
+        "https://nostalgia-ui.com/r/retro-textarea.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/get-info.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "installer",
+      "type": "registry:block",
+      "title": "Installer",
+      "description": "Mac OS 9 multi-step installer wizard: Welcome, Read Me, license with Agree / Disagree alert, destination disk, install progress and finish.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-list-box.json",
+        "https://nostalgia-ui.com/r/retro-progress.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/installer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "open-save-dialog",
+      "type": "registry:block",
+      "title": "Open / Save Dialog",
+      "description": "Mac OS 9 Navigation Services Open and Save dialog with a location pop-up, Shortcuts / Favorites / Recent buttons, a browsable file list, a Name field and New Folder button.",
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-bevel-button.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-dropdown-menu.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-input.json",
+        "https://nostalgia-ui.com/r/retro-label.json",
+        "https://nostalgia-ui.com/r/retro-select.json",
+        "https://nostalgia-ui.com/r/retro-tree-view.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/blocks/open-save-dialog.tsx",
+          "type": "registry:component"
+        }
       ]
     }
   ]
