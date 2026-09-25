@@ -1,9 +1,16 @@
+import type { Metadata } from "next"
 import {
   RetroAvatar,
   RetroAvatarImage,
   RetroAvatarFallback,
 } from "@/registry/new-york/ui/retro-avatar"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Avatar",
+  description:
+    "A user avatar with image and fallback initials in Mac OS 9 beveled frame styling.",
+}
 
 export default function AvatarPreview() {
   return (

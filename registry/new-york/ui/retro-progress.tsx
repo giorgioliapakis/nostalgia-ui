@@ -67,15 +67,22 @@ function RetroProgress(
             : "none",
         }}
       />
-      {/* Keyframe animation for the indeterminate stripe movement */}
+      {/*
+        Keyframe animation for the indeterminate stripe movement (kept inline
+        so the component stays self-contained). React 19 hoists this <style>
+        into <head> and dedupes it by `href`.
+      */}
       {indeterminate && (
-        <style>{`
+        <style href="retro-progress" precedence="default">{`
           @keyframes retro-progress-stripe {
             from { background-position: 0 0; }
             to { background-position: 28px 0; }
           }
           .retro-progress-indeterminate {
             animation: retro-progress-stripe 0.6s linear infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .retro-progress-indeterminate { animation: none; }
           }
         `}</style>
       )}

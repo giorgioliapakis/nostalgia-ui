@@ -76,7 +76,9 @@ function GripDots({
  *   Group orientation="horizontal" → Separator aria-orientation="vertical"
  *   Group orientation="vertical"   → Separator aria-orientation="horizontal"
  *
- * We use Tailwind's `aria-[orientation=…]` variant to style accordingly:
+ * We use Tailwind's `aria-[orientation=…]` variant to style accordingly
+ * (the grip dots use `[[data-separator][aria-orientation=…]>div>&]` since
+ * they sit inside an intermediate wrapper div):
  *   aria-[orientation=vertical]   → vertical separator bar (3px wide, left/right bevel)
  *   aria-[orientation=horizontal] → horizontal separator bar (3px tall, top/bottom bevel)
  */
@@ -126,14 +128,14 @@ function RetroResizableHandle({
            * Vertical dots (for a vertical separator between side-by-side panels).
            * Shown when parent Separator has aria-orientation="vertical".
            */}
-          <span className="hidden [[aria-orientation=vertical]>&]:block">
+          <span className="hidden [[data-separator][aria-orientation=vertical]>div>&]:block">
             <GripDots orientation="vertical" />
           </span>
           {/*
            * Horizontal dots (for a horizontal separator between stacked panels).
            * Shown when parent Separator has aria-orientation="horizontal".
            */}
-          <span className="hidden [[aria-orientation=horizontal]>&]:block">
+          <span className="hidden [[data-separator][aria-orientation=horizontal]>div>&]:block">
             <GripDots orientation="horizontal" />
           </span>
         </div>

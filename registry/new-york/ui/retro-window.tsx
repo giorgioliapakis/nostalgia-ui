@@ -40,14 +40,11 @@ const RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col", className)}
-        style={{
-          border: "1px solid var(--os9-black)",
-          backgroundColor: "var(--os9-gray-200)",
-          boxShadow: active
-            ? "var(--os9-shadow-window)"
-            : undefined,
-        }}
+        className={cn(
+          "flex flex-col border border-os9-black bg-os9-gray-200",
+          active && "shadow-[var(--os9-shadow-window)]",
+          className
+        )}
         {...props}
       >
         {/* Title bar */}
@@ -61,11 +58,7 @@ const RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(
 
         {/* Content area */}
         <div
-          className="flex-1"
-          style={{
-            padding: "8px",
-            boxShadow: "-1px -1px 0 rgba(38,38,38,0.4)",
-          }}
+          className="flex-1 p-[8px] shadow-[-1px_-1px_0_rgba(38,38,38,0.4)]"
         >
           {children}
         </div>

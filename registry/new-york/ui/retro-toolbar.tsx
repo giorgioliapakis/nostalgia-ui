@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import * as ToolbarPrimitive from "@radix-ui/react-toolbar"
 
 import { cn } from "@/lib/utils"
 
@@ -10,12 +11,12 @@ function RetroToolbar(
   {
     className,
     ...props
-  }: React.ComponentProps<"div">,
+  }: React.ComponentProps<typeof ToolbarPrimitive.Root>,
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
+  // Radix Toolbar provides role="toolbar" and arrow-key roving focus
   return (
-    <div
-      role="toolbar"
+    <ToolbarPrimitive.Root
       ref={ref}
       className={cn(
         "flex flex-row items-center gap-1 px-1",
@@ -40,12 +41,13 @@ function RetroToolbarButton(
     className,
     disabled,
     ...props
-  }: React.ComponentProps<"button">,
+  }: React.ComponentProps<typeof ToolbarPrimitive.Button>,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
   return (
-    <button
+    <ToolbarPrimitive.Button
       ref={ref}
+      type="button"
       disabled={disabled}
       className={cn(
         "inline-flex items-center justify-center",
@@ -73,13 +75,11 @@ function RetroToolbarSeparator(
   {
     className,
     ...props
-  }: React.ComponentProps<"div">,
+  }: React.ComponentProps<typeof ToolbarPrimitive.Separator>,
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
   return (
-    <div
-      role="separator"
-      aria-orientation="vertical"
+    <ToolbarPrimitive.Separator
       ref={ref}
       className={cn(
         "mx-1 h-[16px] w-[2px] shrink-0",

@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroSelect,
   RetroSelectTrigger,
@@ -11,6 +10,12 @@ import {
   RetroSelectLabel,
 } from "@/registry/new-york/ui/retro-select"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Select",
+  description:
+    "A dropdown select control with Mac OS 9 beveled trigger and azul highlight on items.",
+}
 
 export default function SelectPreview() {
   return (

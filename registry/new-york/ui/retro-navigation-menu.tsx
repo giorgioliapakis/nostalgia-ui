@@ -19,7 +19,17 @@ const ForwardedRetroNavigationMenuViewport = React.forwardRef<
         ref={ref}
         className={cn(
           "relative mt-0 w-full overflow-hidden",
-          "h-[var(--radix-navigation-menu-viewport-height)]",
+          /*
+           * The panel chrome (border, white bg, 2px drop shadow) lives on the
+           * viewport rather than the content: the viewport must clip its
+           * content, which would otherwise cut off the content's drop shadow.
+           * +2px accounts for the 1px top/bottom border (border-box).
+           */
+          "h-[calc(var(--radix-navigation-menu-viewport-height)+2px)]",
+          "bg-os9-white",
+          "border border-os9-black",
+          /* Classic OS 9 drop shadow: 2px offset, no blur */
+          "shadow-[2px_2px_0_var(--os9-black)]",
           "origin-top",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -125,7 +135,7 @@ function RetroNavigationMenuTrigger(
         "px-[8px] py-[4px]",
         "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         "text-os9-black",
-        "outline-none",
+        "outline-none focus-visible:os9-focus-ring",
         /* Active / open state */
         "data-[state=open]:bg-os9-azul data-[state=open]:text-os9-white",
         className
@@ -157,10 +167,7 @@ function RetroNavigationMenuContent(
       className={cn(
         "absolute top-0 left-0 w-full",
         "p-[8px]",
-        "bg-os9-white",
-        "border border-os9-black",
-        /* Classic OS 9 drop shadow: 2px offset, no blur */
-        "shadow-[2px_2px_0_var(--os9-black)]",
+        /* Border, background and drop shadow are drawn by the viewport */
         /* Animate in/out */
         "data-[motion=from-start]:animate-in data-[motion=from-start]:fade-in-0",
         "data-[motion=from-end]:animate-in data-[motion=from-end]:fade-in-0",
@@ -193,7 +200,7 @@ function RetroNavigationMenuLink(
       className={cn(
         "block cursor-default select-none",
         "px-[8px] py-[2px]",
-        "font-[family-name:var(--font-body)] text-[10px] tracking-[0.42px] leading-[1.4]",
+        "font-[family-name:var(--font-sans)] text-[10px] tracking-[0.42px] leading-[1.4]",
         "text-os9-black",
         "outline-none",
         /* Hover highlight */

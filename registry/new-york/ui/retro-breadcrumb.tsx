@@ -97,6 +97,7 @@ function RetroBreadcrumbLink(
       className={cn(
         "text-[var(--os9-azul)] no-underline hover:underline cursor-pointer",
         "transition-none",
+        "outline-none focus-visible:os9-focus-ring",
         className
       )}
       {...props}

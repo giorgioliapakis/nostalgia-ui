@@ -60,6 +60,13 @@ export default function SliderPreview() {
         </div>
       </section>
 
+      <section>
+        <h2 className="os9-heading text-[14px] mb-4">Range</h2>
+        <div className="w-[260px]">
+          <RetroSlider defaultValue={[20, 80]} aria-label="Price range" />
+        </div>
+      </section>
+
       <p className="text-os9-gray-700 text-[9px] mt-8">
         Drag the rectangular thumb to adjust values. The track uses OS9 inset bevel styling.
       </p>

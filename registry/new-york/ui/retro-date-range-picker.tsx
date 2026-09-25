@@ -54,11 +54,18 @@ const RetroDateRangePicker = React.forwardRef<
   const isControlled = value !== undefined
   const selectedRange = isControlled ? value : internalRange
 
+  // Depend on timestamps (not object identity) so an inline `value` prop
+  // doesn't reset the inputs on every parent render while the user types.
+  const fromTime = selectedRange?.from?.getTime()
+  const toTime = selectedRange?.to?.getTime()
+
   // Sync input text with range
   React.useEffect(() => {
-    setFromInput(selectedRange?.from ? format(selectedRange.from, DATE_FORMAT) : "")
-    setToInput(selectedRange?.to ? format(selectedRange.to, DATE_FORMAT) : "")
-  }, [selectedRange])
+    setFromInput(fromTime !== undefined ? format(new Date(fromTime), DATE_FORMAT) : "")
+  }, [fromTime])
+  React.useEffect(() => {
+    setToInput(toTime !== undefined ? format(new Date(toTime), DATE_FORMAT) : "")
+  }, [toTime])
 
   function commitRange(range: DateRange | undefined) {
     if (!isControlled) {
@@ -87,8 +94,13 @@ const RetroDateRangePicker = React.forwardRef<
   function handleFromCommit() {
     const parsed = parseInput(fromInput)
     if (parsed) {
+      if (parsed.getTime() === fromTime) {
+        setFromInput(format(parsed, DATE_FORMAT))
+        return
+      }
       commitRange({ from: parsed, to: selectedRange?.to })
     } else if (fromInput.trim() === "") {
+      if (fromTime === undefined) return
       commitRange(
         selectedRange?.to ? { from: undefined, to: selectedRange.to } : undefined
       )
@@ -100,8 +112,13 @@ const RetroDateRangePicker = React.forwardRef<
   function handleToCommit() {
     const parsed = parseInput(toInput)
     if (parsed) {
+      if (parsed.getTime() === toTime) {
+        setToInput(format(parsed, DATE_FORMAT))
+        return
+      }
       commitRange({ from: selectedRange?.from, to: parsed })
     } else if (toInput.trim() === "") {
+      if (toTime === undefined) return
       commitRange(
         selectedRange?.from ? { from: selectedRange.from, to: undefined } : undefined
       )
@@ -135,6 +152,7 @@ const RetroDateRangePicker = React.forwardRef<
           onKeyDown={(e) => e.key === "Enter" && handleFromCommit()}
           placeholder={placeholder?.from ?? "MM/DD/YYYY"}
           disabled={disabled}
+          aria-label="Start date"
           className={inputClasses}
         />
 
@@ -159,6 +177,7 @@ const RetroDateRangePicker = React.forwardRef<
           onKeyDown={(e) => e.key === "Enter" && handleToCommit()}
           placeholder={placeholder?.to ?? "MM/DD/YYYY"}
           disabled={disabled}
+          aria-label="End date"
           className={inputClasses}
         />
 
@@ -167,6 +186,7 @@ const RetroDateRangePicker = React.forwardRef<
           <button
             type="button"
             disabled={disabled}
+            aria-label="Choose date range"
             className={cn(
               "inline-flex items-center justify-center",
               "h-[24px] w-[28px] p-0 -ml-px",
@@ -188,8 +208,8 @@ const RetroDateRangePicker = React.forwardRef<
           selected={selectedRange}
           onSelect={handleCalendarSelect}
           numberOfMonths={numberOfMonths}
-          month={selectedRange?.from}
-          initialFocus
+          defaultMonth={selectedRange?.from}
+          autoFocus
         />
       </RetroPopoverContent>
     </RetroPopover>

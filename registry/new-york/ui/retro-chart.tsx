@@ -64,9 +64,10 @@ function RetroChartContainer({
 }) {
   const uniqueId = React.useId()
   const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`
+  const contextValue = React.useMemo(() => ({ config }), [config])
 
   return (
-    <ChartContext.Provider value={{ config }}>
+    <ChartContext.Provider value={contextValue}>
       <div
         data-slot="retro-chart"
         data-chart={chartId}
@@ -284,7 +285,11 @@ function RetroChartTooltipContent({
                         <div
                           className={cn(
                             /* OS9: square indicators, no border-radius */
-                            "shrink-0 border border-[var(--os9-black)] bg-(--color-bg)",
+                            "shrink-0 border bg-(--color-bg)",
+                            /* Dashed indicators draw only a border, so it carries the series colour */
+                            indicator === "dashed"
+                              ? "border-(--color-border)"
+                              : "border-[var(--os9-black)]",
                             {
                               "h-2 w-2": indicator === "dot",
                               "w-1": indicator === "line",

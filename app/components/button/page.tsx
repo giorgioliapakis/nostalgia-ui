@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Button",
+  description:
+    "A Mac OS 9 styled button with raised bevel effect, active/pressed state, and disabled styling.",
+}
 
 export default function ButtonPage() {
   return (

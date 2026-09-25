@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils"
 const retroAlertVariants = cva(
   [
     "relative w-full",
-    "border border-os9-black p-[12px]",
-    "shadow-[inset_1px_1px_0_white,inset_-1px_-1px_0_#808080]",
+    /* 1px black frame all round; the coloured left accent is drawn as an
+       inset shadow inside the frame so the black edge is preserved. */
+    "border border-os9-black p-[12px] pl-[15px]",
     "text-os9-black",
   ],
   {
@@ -21,15 +22,15 @@ const retroAlertVariants = cva(
       variant: {
         default: [
           "bg-os9-gray-300",
-          "border-l-[3px] border-l-os9-gray-300",
+          "shadow-[inset_3px_0_0_var(--os9-gray-600),inset_1px_1px_0_white,inset_-1px_-1px_0_#808080]",
         ],
         warning: [
           "bg-[#ffffcc]",
-          "border-l-[3px] border-l-[#ffffcc]",
+          "shadow-[inset_3px_0_0_#ffcc00,inset_1px_1px_0_white,inset_-1px_-1px_0_#808080]",
         ],
         destructive: [
           "bg-[#ffcccc]",
-          "border-l-[3px] border-l-[#ffcccc]",
+          "shadow-[inset_3px_0_0_#cc0000,inset_1px_1px_0_white,inset_-1px_-1px_0_#808080]",
         ],
       },
     },

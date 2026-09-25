@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroTextarea } from "@/registry/new-york/ui/retro-textarea"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Textarea",
+  description:
+    "A multi-line text input with Mac OS 9 inset bevel, focus ring, and disabled styling.",
+}
 
 export default function TextareaPreview() {
   return (

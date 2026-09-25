@@ -1,9 +1,14 @@
-"use client"
-
+import type { Metadata } from "next"
 import { RetroLabel } from "@/registry/new-york/ui/retro-label"
 import { RetroInput } from "@/registry/new-york/ui/retro-input"
 import { RetroCheckbox } from "@/registry/new-york/ui/retro-checkbox"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Label",
+  description:
+    "A form label in Mac OS 9 typography with default and large size variants.",
+}
 
 export default function LabelPreview() {
   return (

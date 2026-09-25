@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroInput } from "@/registry/new-york/ui/retro-input"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Input",
+  description:
+    "A text input field with Mac OS 9 inset bevel, focus ring, and disabled styling.",
+}
 
 export default function InputPreview() {
   return (

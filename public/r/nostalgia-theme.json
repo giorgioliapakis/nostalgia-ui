@@ -1,0 +1,85 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nostalgia-theme",
+  "title": "Nostalgia Theme",
+  "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, heading font) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
+  "cssVars": {
+    "theme": {
+      "color-os9-black": "var(--os9-black)",
+      "color-os9-white": "var(--os9-white)",
+      "color-os9-gray-200": "var(--os9-gray-200)",
+      "color-os9-gray-300": "var(--os9-gray-300)",
+      "color-os9-gray-400": "var(--os9-gray-400)",
+      "color-os9-gray-500": "var(--os9-gray-500)",
+      "color-os9-gray-600": "var(--os9-gray-600)",
+      "color-os9-gray-700": "var(--os9-gray-700)",
+      "color-os9-gray-800": "var(--os9-gray-800)",
+      "color-os9-azul": "var(--os9-azul)",
+      "color-os9-lavender": "var(--os9-lavender)",
+      "color-os9-focus": "var(--os9-focus)",
+      "font-heading": "\"Charcoal\", \"ChicagoFLF\", \"Geneva\", \"Arial\", sans-serif"
+    },
+    "light": {
+      "os9-black": "#262626",
+      "os9-white": "#ffffff",
+      "os9-gray-200": "#eeeeee",
+      "os9-gray-300": "#dddddd",
+      "os9-gray-400": "#cccccc",
+      "os9-gray-500": "#bbbbbb",
+      "os9-gray-600": "#999999",
+      "os9-gray-700": "#808080",
+      "os9-gray-800": "#666666",
+      "os9-azul": "#333399",
+      "os9-lavender": "#ccccff",
+      "os9-focus": "#6666cc",
+      "os9-shadow-raised": "inset 1px 1px 0 var(--os9-white), inset -1px -1px 0 var(--os9-gray-700)",
+      "os9-shadow-pressed": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
+      "os9-shadow-inset": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
+      "os9-shadow-window": "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4)"
+    }
+  },
+  "css": {
+    "@utility os9-raised": {
+      "border": "1px solid var(--os9-black)",
+      "background-color": "var(--os9-gray-300)",
+      "box-shadow": "var(--os9-shadow-raised)"
+    },
+    "@utility os9-pressed": {
+      "border": "1px solid var(--os9-black)",
+      "background-color": "var(--os9-gray-700)",
+      "box-shadow": "var(--os9-shadow-pressed)"
+    },
+    "@utility os9-inset": {
+      "border": "1px solid var(--os9-black)",
+      "background-color": "var(--os9-white)",
+      "box-shadow": "var(--os9-shadow-inset)"
+    },
+    "@utility os9-window": {
+      "border": "1px solid var(--os9-black)",
+      "background-color": "var(--os9-gray-200)",
+      "box-shadow": "var(--os9-shadow-window)"
+    },
+    "@utility os9-stripes": {
+      "background-image": "repeating-linear-gradient(to bottom, transparent, transparent 1px, var(--os9-gray-600) 1px, var(--os9-gray-600) 2px)",
+      "background-color": "var(--os9-gray-300)"
+    },
+    "@utility os9-focus-ring": {
+      "outline": "none",
+      "box-shadow": "0 0 0 2px var(--os9-focus)"
+    },
+    "@utility os9-heading": {
+      "font-family": "var(--font-heading)",
+      "letter-spacing": "0.42px",
+      "line-height": "0.98"
+    },
+    "@keyframes os9-caret-blink": {
+      "0%, 100%": {
+        "opacity": "1"
+      },
+      "50%": {
+        "opacity": "0"
+      }
+    }
+  },
+  "type": "registry:theme"
+}

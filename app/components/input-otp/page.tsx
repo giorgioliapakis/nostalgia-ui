@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroInputOTP,
   RetroInputOTPGroup,
@@ -7,6 +6,12 @@ import {
   RetroInputOTPSeparator,
 } from "@/registry/new-york/ui/retro-input-otp"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Input OTP",
+  description:
+    "A one-time password input with Mac OS 9 beveled digit slots and blinking caret.",
+}
 
 export default function InputOTPPreview() {
   return (

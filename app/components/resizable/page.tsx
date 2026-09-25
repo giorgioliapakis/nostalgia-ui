@@ -1,11 +1,16 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroResizablePanelGroup,
   RetroResizablePanel,
   RetroResizableHandle,
 } from "@/registry/new-york/ui/retro-resizable"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Resizable",
+  description:
+    "Resizable panel layouts with Mac OS 9 styled drag handles and grip dot indicators.",
+}
 
 export default function ResizablePreview() {
   return (

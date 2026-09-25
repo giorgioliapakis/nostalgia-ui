@@ -54,6 +54,19 @@ interface SidebarContextValue {
 
 const SidebarContext = React.createContext<SidebarContextValue | null>(null)
 
+/**
+ * True for descendants of the mobile sheet. The sheet always shows the full
+ * (expanded) sidebar regardless of the desktop collapsed state.
+ */
+const SidebarMobileSheetContext = React.createContext(false)
+
+/** Whether sidebar content should render in its expanded (labelled) form. */
+function useSidebarExpanded() {
+  const { open } = useRetroSidebar()
+  const inMobileSheet = React.useContext(SidebarMobileSheetContext)
+  return open || inMobileSheet
+}
+
 function useRetroSidebar() {
   const ctx = React.useContext(SidebarContext)
   if (!ctx) {
@@ -161,11 +174,22 @@ function RetroSidebar(
   if (!contained && isMobile) {
     return (
       <RetroSheet open={openMobile} onOpenChange={setOpenMobile}>
-        <RetroSheetContent side="left" className="p-0">
+        <RetroSheetContent side={side} className="p-0">
           <RetroSheetTitle className="sr-only">Navigation</RetroSheetTitle>
-          <div className="flex h-full w-full flex-col bg-os9-gray-300">
-            {children}
-          </div>
+          <SidebarMobileSheetContext.Provider value={true}>
+            <aside
+              ref={ref as React.ForwardedRef<HTMLElement>}
+              data-state="open"
+              data-mobile="true"
+              className={cn(
+                "flex h-full w-full flex-col bg-os9-gray-300",
+                className
+              )}
+              {...props}
+            >
+              {children}
+            </aside>
+          </SidebarMobileSheetContext.Provider>
         </RetroSheetContent>
       </RetroSheet>
     )
@@ -296,6 +320,7 @@ function RetroSidebarContent(
 ) {
   return (
     <RetroScrollArea
+      type="hover"
       className={cn("min-h-0 flex-1", className)}
     >
       <div ref={ref} className="flex flex-col p-2" {...props}>
@@ -386,12 +411,14 @@ function RetroSidebarMenuButton(
   }: RetroSidebarMenuButtonProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
-  const { open } = useRetroSidebar()
+  const open = useSidebarExpanded()
   const Comp = asChild ? Slot : "button"
 
   return (
     <Comp
       ref={ref}
+      type={asChild ? undefined : "button"}
+      aria-current={isActive ? "page" : undefined}
       data-active={isActive}
       className={cn(
         "flex w-full items-center gap-2",
@@ -415,7 +442,8 @@ function RetroSidebarMenuButton(
           {children}
         </span>
       ) : (
-        <span className="flex items-center justify-center [&>*:not(:first-child)]:hidden">
+        // Icon-only: labels stay in the accessibility tree (visually hidden)
+        <span className="flex items-center justify-center [&>*:not(:first-child)]:sr-only">
           {children}
         </span>
       )}
@@ -456,7 +484,7 @@ function RetroSidebarGroupLabel(
   { className, ...props }: React.ComponentProps<"div">,
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
-  const { open } = useRetroSidebar()
+  const open = useSidebarExpanded()
 
   return (
     <div
@@ -483,17 +511,18 @@ ForwardedRetroSidebarGroupLabel.displayName = "RetroSidebarGroupLabel"
 /* ------------------------------------------------------------------ */
 
 function RetroSidebarTrigger(
-  { className, ...props }: React.ComponentProps<"button">,
+  { className, onClick, ...props }: React.ComponentProps<"button">,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) {
-  const { open, toggleSidebar } = useRetroSidebar()
+  const { open, openMobile, isMobile, toggleSidebar } = useRetroSidebar()
+  const expanded = isMobile ? openMobile : open
 
   return (
     <button
       ref={ref}
       type="button"
-      aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
-      onClick={toggleSidebar}
+      aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
+      aria-expanded={expanded}
       className={cn(
         "inline-flex items-center justify-center",
         "size-[20px] p-0",
@@ -506,6 +535,10 @@ function RetroSidebarTrigger(
         className
       )}
       {...props}
+      onClick={(event) => {
+        onClick?.(event)
+        if (!event.defaultPrevented) toggleSidebar()
+      }}
     >
       {/* Chevron arrow that flips based on open state */}
       <svg
@@ -516,7 +549,7 @@ function RetroSidebarTrigger(
         aria-hidden="true"
         className={cn(
           "transition-transform duration-150",
-          !open && "rotate-180"
+          !expanded && "rotate-180"
         )}
       >
         <path d="M5 1L2 4L5 7" stroke="currentColor" strokeWidth="1.5" />

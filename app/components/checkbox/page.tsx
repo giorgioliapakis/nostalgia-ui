@@ -1,7 +1,12 @@
-"use client"
-
+import type { Metadata } from "next"
 import { RetroCheckbox } from "@/registry/new-york/ui/retro-checkbox"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Checkbox",
+  description:
+    "A checkbox input with Mac OS 9 beveled box and X-mark indicator.",
+}
 
 export default function CheckboxPreview() {
   return (

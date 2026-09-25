@@ -83,14 +83,16 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
     const isControlled = value !== undefined
     const selectedDate = isControlled ? value : internalDate
 
+    // Depend on the timestamp (not Date identity) so a parent passing a new
+    // Date instance with the same value on every render doesn't clobber typing.
+    const selectedTime = selectedDate?.getTime()
+
     // Sync input text with the selected date
     React.useEffect(() => {
-      if (selectedDate) {
-        setInputValue(format(selectedDate, displayFormat))
-      } else {
-        setInputValue("")
-      }
-    }, [selectedDate, displayFormat])
+      setInputValue(
+        selectedTime !== undefined ? format(new Date(selectedTime), displayFormat) : ""
+      )
+    }, [selectedTime, displayFormat])
 
     function commitDate(date: Date | undefined) {
       if (!isControlled) {
@@ -108,14 +110,30 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
       setInputValue(e.target.value)
     }
 
+    function parseInput(text: string): Date | undefined {
+      // Parse using the display format first, then fall back to MM/dd/yyyy
+      for (const fmt of [displayFormat, DATE_FORMAT]) {
+        const parsed = parse(text, fmt, new Date())
+        if (isValid(parsed) && parsed.getFullYear() > 1900 && parsed.getFullYear() < 2100) {
+          return parsed
+        }
+      }
+      return undefined
+    }
+
     function handleInputCommit() {
       if (inputValue.trim() === "") {
-        commitDate(undefined)
+        if (selectedTime !== undefined) commitDate(undefined)
         return
       }
-      const parsed = parse(inputValue, DATE_FORMAT, new Date())
-      if (isValid(parsed) && parsed.getFullYear() > 1900 && parsed.getFullYear() < 2100) {
-        commitDate(parsed)
+      const parsed = parseInput(inputValue.trim())
+      if (parsed) {
+        if (parsed.getTime() !== selectedTime) {
+          commitDate(parsed)
+        } else {
+          // Unchanged: normalise the text back to the display format
+          setInputValue(format(parsed, displayFormat))
+        }
       } else {
         // Reset to last valid value
         setInputValue(selectedDate ? format(selectedDate, displayFormat) : "")
@@ -142,6 +160,7 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
             onKeyDown={handleInputKeyDown}
             placeholder={placeholder}
             disabled={disabled}
+            aria-label="Date"
             className={cn(
               "h-[24px] w-[110px] px-[5px]",
               "font-[family-name:var(--font-sans)] text-[11px] text-os9-black",
@@ -156,6 +175,7 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
             <button
               type="button"
               disabled={disabled}
+              aria-label="Choose date"
               className={cn(
                 "inline-flex items-center justify-center",
                 "h-[24px] w-[28px] p-0 -ml-px",
@@ -176,8 +196,8 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
             mode="single"
             selected={selectedDate}
             onSelect={handleCalendarSelect}
-            month={selectedDate}
-            initialFocus
+            defaultMonth={selectedDate}
+            autoFocus
           />
         </RetroPopoverContent>
       </RetroPopover>

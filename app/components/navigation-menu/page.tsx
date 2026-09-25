@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroNavigationMenu,
   RetroNavigationMenuList,
@@ -7,6 +8,12 @@ import {
   RetroNavigationMenuLink,
 } from "@/registry/new-york/ui/retro-navigation-menu"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Navigation Menu",
+  description:
+    "A horizontal navigation menu with Mac OS 9 styled triggers and dropdown content panels.",
+}
 
 export default function NavigationMenuPreview() {
   return (

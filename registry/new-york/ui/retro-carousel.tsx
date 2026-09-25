@@ -105,15 +105,17 @@ const RetroCarousel = React.forwardRef<
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === "ArrowLeft") {
+        const prevKey = orientation === "horizontal" ? "ArrowLeft" : "ArrowUp"
+        const nextKey = orientation === "horizontal" ? "ArrowRight" : "ArrowDown"
+        if (event.key === prevKey) {
           event.preventDefault()
           scrollPrev()
-        } else if (event.key === "ArrowRight") {
+        } else if (event.key === nextKey) {
           event.preventDefault()
           scrollNext()
         }
       },
-      [scrollPrev, scrollNext]
+      [orientation, scrollPrev, scrollNext]
     )
 
     React.useEffect(() => {
@@ -127,22 +129,34 @@ const RetroCarousel = React.forwardRef<
       api.on("reInit", onSelect)
       api.on("select", onSelect)
       return () => {
+        api.off("reInit", onSelect)
         api.off("select", onSelect)
       }
     }, [api, onSelect])
 
+    const contextValue = React.useMemo<CarouselContextValue>(
+      () => ({
+        carouselRef,
+        api,
+        scrollPrev,
+        scrollNext,
+        canScrollPrev,
+        canScrollNext,
+        orientation,
+      }),
+      [
+        carouselRef,
+        api,
+        scrollPrev,
+        scrollNext,
+        canScrollPrev,
+        canScrollNext,
+        orientation,
+      ]
+    )
+
     return (
-      <CarouselContext.Provider
-        value={{
-          carouselRef,
-          api,
-          scrollPrev,
-          scrollNext,
-          canScrollPrev,
-          canScrollNext,
-          orientation,
-        }}
-      >
+      <CarouselContext.Provider value={contextValue}>
         <div
           ref={ref}
           onKeyDownCapture={handleKeyDown}
@@ -230,7 +244,10 @@ const RetroCarouselPrevious = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(
-  function RetroCarouselPrevious({ className, ...props }, ref) {
+  function RetroCarouselPrevious(
+    { className, onClick, disabled, ...props },
+    ref
+  ) {
     const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
     const direction = orientation === "horizontal" ? "left" : "up"
@@ -239,8 +256,6 @@ const RetroCarouselPrevious = React.forwardRef<
       <button
         ref={ref}
         type="button"
-        disabled={!canScrollPrev}
-        onClick={scrollPrev}
         className={cn(
           "absolute z-10",
           "inline-flex items-center justify-center",
@@ -263,6 +278,11 @@ const RetroCarouselPrevious = React.forwardRef<
         )}
         aria-label="Previous slide"
         {...props}
+        disabled={disabled || !canScrollPrev}
+        onClick={(event) => {
+          onClick?.(event)
+          if (!event.defaultPrevented) scrollPrev()
+        }}
       >
         <svg
           width="8"
@@ -288,7 +308,10 @@ const RetroCarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(
-  function RetroCarouselNext({ className, ...props }, ref) {
+  function RetroCarouselNext(
+    { className, onClick, disabled, ...props },
+    ref
+  ) {
     const { orientation, scrollNext, canScrollNext } = useCarousel()
 
     const direction = orientation === "horizontal" ? "right" : "down"
@@ -297,8 +320,6 @@ const RetroCarouselNext = React.forwardRef<
       <button
         ref={ref}
         type="button"
-        disabled={!canScrollNext}
-        onClick={scrollNext}
         className={cn(
           "absolute z-10",
           "inline-flex items-center justify-center",
@@ -321,6 +342,11 @@ const RetroCarouselNext = React.forwardRef<
         )}
         aria-label="Next slide"
         {...props}
+        disabled={disabled || !canScrollNext}
+        onClick={(event) => {
+          onClick?.(event)
+          if (!event.defaultPrevented) scrollNext()
+        }}
       >
         <svg
           width="8"

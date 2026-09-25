@@ -6,13 +6,25 @@ interface ComponentDocProps {
   name: string
   title: string
   description: string
+  /** Optional usage snippet, rendered as a code block after Import. */
+  usage?: string
   children: React.ReactNode
+}
+
+const CODE_BLOCK_CLS =
+  "p-2.5 font-mono text-[10px] text-os9-black leading-[1.6] overflow-x-auto"
+
+const CODE_BLOCK_STYLE: React.CSSProperties = {
+  backgroundColor: "var(--os9-white)",
+  border: "1px solid var(--os9-black)",
+  boxShadow: "var(--os9-shadow-inset)",
 }
 
 export function ComponentDocLayout({
   name,
   title,
   description,
+  usage,
   children,
 }: ComponentDocProps) {
   return (
@@ -28,32 +40,40 @@ export function ComponentDocLayout({
       {/* Install */}
       <section className="max-w-[720px] mb-6">
         <h2 className="os9-heading text-[12px] mb-2">Installation</h2>
-        <pre
-          className="p-2.5 font-mono text-[10px] text-os9-black leading-[1.6] overflow-x-auto"
-          style={{
-            backgroundColor: "var(--os9-white)",
-            border: "1px solid var(--os9-black)",
-            boxShadow: "var(--os9-shadow-inset)",
-          }}
-        >
+        <pre className={CODE_BLOCK_CLS} style={CODE_BLOCK_STYLE}>
           npx shadcn@latest add &quot;https://nostalgia-ui.com/r/{name}.json&quot;
         </pre>
+        <p className="mt-2 font-[family-name:var(--font-sans)] text-[10px] leading-[1.5] text-os9-gray-700">
+          <span className="font-bold text-os9-black">Setup:</span> installing
+          any component also installs{" "}
+          <code className="font-mono">nostalgia-theme</code> (the{" "}
+          <code className="font-mono">--os9-*</code> tokens and{" "}
+          <code className="font-mono">os9-*</code> utilities) via{" "}
+          <code className="font-mono">registryDependencies</code>. To add the
+          theme on its own:{" "}
+          <code className="font-mono break-all">
+            npx shadcn@latest add https://nostalgia-ui.com/r/nostalgia-theme.json
+          </code>
+        </p>
       </section>
 
       {/* Import */}
       <section className="max-w-[720px] mb-6">
         <h2 className="os9-heading text-[12px] mb-2">Import</h2>
-        <pre
-          className="p-2.5 font-mono text-[10px] text-os9-black leading-[1.6] overflow-x-auto"
-          style={{
-            backgroundColor: "var(--os9-white)",
-            border: "1px solid var(--os9-black)",
-            boxShadow: "var(--os9-shadow-inset)",
-          }}
-        >
+        <pre className={CODE_BLOCK_CLS} style={CODE_BLOCK_STYLE}>
           {`import { ${title} } from "@/components/ui/${name}"`}
         </pre>
       </section>
+
+      {/* Usage (optional) */}
+      {usage ? (
+        <section className="max-w-[720px] mb-6">
+          <h2 className="os9-heading text-[12px] mb-2">Usage</h2>
+          <pre className={CODE_BLOCK_CLS} style={CODE_BLOCK_STYLE}>
+            {usage.trim()}
+          </pre>
+        </section>
+      ) : null}
 
       <RetroSeparator className="max-w-[720px] mb-6" />
 

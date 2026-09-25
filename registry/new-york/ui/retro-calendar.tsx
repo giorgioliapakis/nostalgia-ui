@@ -1,9 +1,37 @@
 "use client"
 
 import * as React from "react"
-import { DayPicker } from "react-day-picker"
+import { DayPicker, type ChevronProps } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
+
+/**
+ * OS9 solid-triangle chevron. Only `className` and `orientation` are used —
+ * rdp's other props (size, disabled) are not valid SVG attributes.
+ */
+function RetroCalendarChevron({ className, orientation }: ChevronProps) {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      className={className}
+    >
+      {orientation === "left" ? (
+        <path d="M7 1 L3 5 L7 9 Z" fill="currentColor" />
+      ) : orientation === "up" ? (
+        <path d="M1 7 L5 3 L9 7 Z" fill="currentColor" />
+      ) : orientation === "down" ? (
+        <path d="M1 3 L5 7 L9 3 Z" fill="currentColor" />
+      ) : (
+        <path d="M3 1 L7 5 L3 9 Z" fill="currentColor" />
+      )}
+    </svg>
+  )
+}
 
 function RetroCalendar({
   className,
@@ -62,35 +90,28 @@ function RetroCalendar({
           "hover:bg-os9-lavender",
           "focus-visible:os9-focus-ring"
         ),
+        /*
+         * In rdp v9, modifier classNames (selected, today, range_*, outside)
+         * land on the day cell, while day_button sets its own text/hover
+         * colours. Target the child button so modifier styling wins.
+         */
         selected:
-          "!bg-os9-azul !text-os9-white hover:!bg-os9-azul",
-        today: "font-bold underline underline-offset-2",
-        outside: "text-os9-gray-600",
+          "[&>button]:!bg-os9-azul [&>button]:!text-os9-white [&>button:hover]:!bg-os9-azul",
+        today: "[&>button]:font-bold [&>button]:underline [&>button]:underline-offset-2",
+        outside: "[&>button]:text-os9-gray-600",
         disabled: "opacity-50 pointer-events-none",
         hidden: "invisible",
-        range_start: "!bg-os9-azul !text-os9-white rounded-none",
-        range_middle: "!bg-os9-lavender !text-os9-black rounded-none",
-        range_end: "!bg-os9-azul !text-os9-white rounded-none",
+        /* `&&` doubles specificity so range styles beat `selected` (also applied) */
+        range_start:
+          "[&&>button]:!bg-os9-azul [&&>button]:!text-os9-white rounded-none",
+        range_middle:
+          "[&&>button]:!bg-os9-lavender [&&>button]:!text-os9-black [&&>button:hover]:!bg-os9-lavender rounded-none",
+        range_end:
+          "[&&>button]:!bg-os9-azul [&&>button]:!text-os9-white rounded-none",
         ...classNames,
       }}
       components={{
-        Chevron: ({ orientation, ...chevronProps }) => (
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            {...chevronProps}
-          >
-            {orientation === "left" ? (
-              <path d="M7 1 L3 5 L7 9 Z" fill="currentColor" />
-            ) : (
-              <path d="M3 1 L7 5 L3 9 Z" fill="currentColor" />
-            )}
-          </svg>
-        ),
+        Chevron: RetroCalendarChevron,
       }}
       {...props}
     />

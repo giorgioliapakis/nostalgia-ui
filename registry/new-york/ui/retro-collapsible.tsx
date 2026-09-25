@@ -25,6 +25,7 @@ const RetroCollapsibleTrigger = React.forwardRef<
     className={cn(
       "flex flex-row items-center gap-1 cursor-pointer select-none",
       "os9-heading text-[12px]",
+      "focus-visible:os9-focus-ring",
       className
     )}
     {...props}

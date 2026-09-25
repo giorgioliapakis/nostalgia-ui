@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import {
   RetroMenuBar,
   RetroMenuBarMenu,
@@ -5,10 +8,23 @@ import {
   RetroMenuBarContent,
   RetroMenuBarItem,
   RetroMenuBarSeparator,
+  RetroMenuBarSub,
+  RetroMenuBarSubTrigger,
+  RetroMenuBarSubContent,
+  RetroMenuBarCheckboxItem,
+  RetroMenuBarRadioGroup,
+  RetroMenuBarRadioItem,
+  RetroMenuBarLabel,
+  RetroMenuBarGroup,
+  RetroMenuBarShortcut,
 } from "@/registry/new-york/ui/retro-menu-bar"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
 export default function MenuBarPreview() {
+  const [showRulers, setShowRulers] = React.useState(true)
+  const [showStatusBar, setShowStatusBar] = React.useState(false)
+  const [labelColor, setLabelColor] = React.useState("none")
+
   return (
     <ComponentDocLayout
       name="retro-menu-bar"
@@ -103,6 +119,70 @@ export default function MenuBarPreview() {
             <RetroMenuBarContent>
               <RetroMenuBarItem>as Icons</RetroMenuBarItem>
               <RetroMenuBarItem>as List</RetroMenuBarItem>
+            </RetroMenuBarContent>
+          </RetroMenuBarMenu>
+        </RetroMenuBar>
+      </section>
+      {/* ---- Submenus, checkboxes, radios, shortcuts ---- */}
+      <section className="space-y-2">
+        <h2 className="font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px]">
+          Submenus, checkbox items &amp; shortcuts
+        </h2>
+
+        <RetroMenuBar className="w-[480px]">
+          <RetroMenuBarMenu>
+            <RetroMenuBarTrigger>File</RetroMenuBarTrigger>
+            <RetroMenuBarContent>
+              <RetroMenuBarItem>
+                New Folder <RetroMenuBarShortcut>⌘N</RetroMenuBarShortcut>
+              </RetroMenuBarItem>
+              <RetroMenuBarItem>
+                Open <RetroMenuBarShortcut>⌘O</RetroMenuBarShortcut>
+              </RetroMenuBarItem>
+              <RetroMenuBarSub>
+                <RetroMenuBarSubTrigger>Open Recent</RetroMenuBarSubTrigger>
+                <RetroMenuBarSubContent>
+                  <RetroMenuBarItem>Read Me</RetroMenuBarItem>
+                  <RetroMenuBarItem>SimpleText Notes</RetroMenuBarItem>
+                  <RetroMenuBarItem>Budget 1999</RetroMenuBarItem>
+                </RetroMenuBarSubContent>
+              </RetroMenuBarSub>
+              <RetroMenuBarSeparator />
+              <RetroMenuBarItem>
+                Get Info <RetroMenuBarShortcut>⌘I</RetroMenuBarShortcut>
+              </RetroMenuBarItem>
+            </RetroMenuBarContent>
+          </RetroMenuBarMenu>
+
+          <RetroMenuBarMenu>
+            <RetroMenuBarTrigger>View</RetroMenuBarTrigger>
+            <RetroMenuBarContent>
+              <RetroMenuBarCheckboxItem
+                checked={showRulers}
+                onCheckedChange={setShowRulers}
+              >
+                Show Rulers
+              </RetroMenuBarCheckboxItem>
+              <RetroMenuBarCheckboxItem
+                checked={showStatusBar}
+                onCheckedChange={setShowStatusBar}
+              >
+                Show Status Bar
+              </RetroMenuBarCheckboxItem>
+              <RetroMenuBarSeparator />
+              <RetroMenuBarGroup>
+                <RetroMenuBarLabel>Label</RetroMenuBarLabel>
+                <RetroMenuBarRadioGroup
+                  value={labelColor}
+                  onValueChange={setLabelColor}
+                >
+                  <RetroMenuBarRadioItem value="none">None</RetroMenuBarRadioItem>
+                  <RetroMenuBarRadioItem value="essential">
+                    Essential
+                  </RetroMenuBarRadioItem>
+                  <RetroMenuBarRadioItem value="hot">Hot</RetroMenuBarRadioItem>
+                </RetroMenuBarRadioGroup>
+              </RetroMenuBarGroup>
             </RetroMenuBarContent>
           </RetroMenuBarMenu>
         </RetroMenuBar>

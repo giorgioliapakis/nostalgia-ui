@@ -4,6 +4,90 @@
   "homepage": "https://github.com/giorgioliapakis/nostalgia-ui",
   "items": [
     {
+      "name": "nostalgia-theme",
+      "type": "registry:theme",
+      "title": "Nostalgia Theme",
+      "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, heading font) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
+      "cssVars": {
+        "theme": {
+          "color-os9-black": "var(--os9-black)",
+          "color-os9-white": "var(--os9-white)",
+          "color-os9-gray-200": "var(--os9-gray-200)",
+          "color-os9-gray-300": "var(--os9-gray-300)",
+          "color-os9-gray-400": "var(--os9-gray-400)",
+          "color-os9-gray-500": "var(--os9-gray-500)",
+          "color-os9-gray-600": "var(--os9-gray-600)",
+          "color-os9-gray-700": "var(--os9-gray-700)",
+          "color-os9-gray-800": "var(--os9-gray-800)",
+          "color-os9-azul": "var(--os9-azul)",
+          "color-os9-lavender": "var(--os9-lavender)",
+          "color-os9-focus": "var(--os9-focus)",
+          "font-heading": "\"Charcoal\", \"ChicagoFLF\", \"Geneva\", \"Arial\", sans-serif"
+        },
+        "light": {
+          "os9-black": "#262626",
+          "os9-white": "#ffffff",
+          "os9-gray-200": "#eeeeee",
+          "os9-gray-300": "#dddddd",
+          "os9-gray-400": "#cccccc",
+          "os9-gray-500": "#bbbbbb",
+          "os9-gray-600": "#999999",
+          "os9-gray-700": "#808080",
+          "os9-gray-800": "#666666",
+          "os9-azul": "#333399",
+          "os9-lavender": "#ccccff",
+          "os9-focus": "#6666cc",
+          "os9-shadow-raised": "inset 1px 1px 0 var(--os9-white), inset -1px -1px 0 var(--os9-gray-700)",
+          "os9-shadow-pressed": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
+          "os9-shadow-inset": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
+          "os9-shadow-window": "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4)"
+        }
+      },
+      "css": {
+        "@utility os9-raised": {
+          "border": "1px solid var(--os9-black)",
+          "background-color": "var(--os9-gray-300)",
+          "box-shadow": "var(--os9-shadow-raised)"
+        },
+        "@utility os9-pressed": {
+          "border": "1px solid var(--os9-black)",
+          "background-color": "var(--os9-gray-700)",
+          "box-shadow": "var(--os9-shadow-pressed)"
+        },
+        "@utility os9-inset": {
+          "border": "1px solid var(--os9-black)",
+          "background-color": "var(--os9-white)",
+          "box-shadow": "var(--os9-shadow-inset)"
+        },
+        "@utility os9-window": {
+          "border": "1px solid var(--os9-black)",
+          "background-color": "var(--os9-gray-200)",
+          "box-shadow": "var(--os9-shadow-window)"
+        },
+        "@utility os9-stripes": {
+          "background-image": "repeating-linear-gradient(to bottom, transparent, transparent 1px, var(--os9-gray-600) 1px, var(--os9-gray-600) 2px)",
+          "background-color": "var(--os9-gray-300)"
+        },
+        "@utility os9-focus-ring": {
+          "outline": "none",
+          "box-shadow": "0 0 0 2px var(--os9-focus)"
+        },
+        "@utility os9-heading": {
+          "font-family": "var(--font-heading)",
+          "letter-spacing": "0.42px",
+          "line-height": "0.98"
+        },
+        "@keyframes os9-caret-blink": {
+          "0%, 100%": {
+            "opacity": "1"
+          },
+          "50%": {
+            "opacity": "0"
+          }
+        }
+      }
+    },
+    {
       "name": "retro-label",
       "type": "registry:ui",
       "title": "RetroLabel",
@@ -15,9 +99,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-label.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-label.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -32,9 +118,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-button.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-button.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -48,9 +136,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-input.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-input.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -64,9 +154,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-radio.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-radio.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -81,9 +173,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-tabs.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-tabs.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -91,13 +185,14 @@
       "type": "registry:ui",
       "title": "RetroProgress",
       "description": "A Mac OS 9 styled progress bar with inset bevel track and candy-stripe azul fill pattern.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-progress.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-progress.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -105,13 +200,14 @@
       "type": "registry:ui",
       "title": "RetroTitleBar",
       "description": "A Mac OS 9 styled title bar with striped drag region, close/collapse/zoom control boxes, and centered title text.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-title-bar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-title-bar.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -125,9 +221,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-slider.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-slider.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -141,9 +239,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-checkbox.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-checkbox.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -157,9 +257,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-menu-bar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-menu-bar.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -167,15 +269,14 @@
       "type": "registry:ui",
       "title": "RetroWindow",
       "description": "A Mac OS 9 styled window frame with title bar, close/collapse/zoom controls, active/inactive states, and content area.",
-      "dependencies": [],
       "registryDependencies": [
-        "retro-title-bar"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-title-bar.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-window.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-window.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -190,9 +291,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-select.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-select.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -206,9 +309,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-separator.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-separator.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -222,9 +327,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-textarea.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-textarea.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -238,9 +345,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-badge.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-badge.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -254,9 +363,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-popover.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-popover.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -271,9 +382,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-toggle.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-toggle.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -281,13 +394,14 @@
       "type": "registry:ui",
       "title": "RetroCard",
       "description": "A Mac OS 9 styled card with raised bevel effect, header with bevel separator, title, description, content area, and footer with action buttons.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-card.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-card.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -301,9 +415,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-switch.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-switch.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -317,9 +433,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-tooltip.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-tooltip.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -333,9 +451,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-hover-card.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-hover-card.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -349,9 +469,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-alert.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-alert.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -359,13 +481,14 @@
       "type": "registry:ui",
       "title": "RetroPagination",
       "description": "A Mac OS 9 styled pagination component with raised bevel page buttons, active/pressed state, previous/next navigation, and ellipsis indicator.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-pagination.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-pagination.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -380,9 +503,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-avatar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-avatar.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -390,13 +515,14 @@
       "type": "registry:ui",
       "title": "RetroSkeleton",
       "description": "A Mac OS 9 styled skeleton loading placeholder with dithered diagonal hatching pattern and optional pulse animation.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-skeleton.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-skeleton.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -404,13 +530,14 @@
       "type": "registry:ui",
       "title": "RetroChevron",
       "description": "A Mac OS 9 styled chevron arrow (filled triangle) with configurable direction, two color variants, and two sizes.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-chevron.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-chevron.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -418,13 +545,14 @@
       "type": "registry:ui",
       "title": "RetroBreadcrumb",
       "description": "A Mac OS 9 Finder-style breadcrumb navigation with Geneva 10px text, azul links, right-pointing triangle separators, and ellipsis for collapsed paths.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-breadcrumb.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-breadcrumb.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -432,13 +560,14 @@
       "type": "registry:ui",
       "title": "RetroToast",
       "description": "A Mac OS 9 styled custom toast system with mini-window appearance, striped title bar, beveled close box, and auto-dismiss via useRetroToast hook.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-toast.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-toast.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -452,9 +581,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-nav-button.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-nav-button.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -468,9 +599,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-context-menu.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-context-menu.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -484,9 +617,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-dialog.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-dialog.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -500,9 +635,12 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-alert-dialog.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-alert-dialog.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-icons.json"
       ]
     },
     {
@@ -517,9 +655,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-toggle-group.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-toggle-group.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -527,13 +667,14 @@
       "type": "registry:ui",
       "title": "RetroTable",
       "description": "A Mac OS 9 styled data table with raised bevel column headers, hover highlight, azul selected row, and Finder list-view appearance.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-table.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-table.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -548,9 +689,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-sheet.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-sheet.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -564,9 +707,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-scrollbar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-scrollbar.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -580,9 +725,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-navigation-menu.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-navigation-menu.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -596,9 +743,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-accordion.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-accordion.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -612,9 +761,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-collapsible.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-collapsible.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -628,9 +779,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-dropdown-menu.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-dropdown-menu.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -638,13 +791,14 @@
       "type": "registry:ui",
       "title": "NostalgiaProvider",
       "description": "A Mac OS 9 theme provider that injects all OS9 CSS variables and utility classes so consumers can use nostalgia-ui components without manual globals.css setup.",
-      "dependencies": [],
       "files": [
         {
           "path": "registry/new-york/ui/retro-theme-provider.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-theme-provider.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -658,9 +812,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-typography.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-typography.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -671,9 +827,14 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-toolbar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-toolbar.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "dependencies": [
+        "@radix-ui/react-toolbar"
       ]
     },
     {
@@ -687,9 +848,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-aspect-ratio.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-aspect-ratio.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -703,9 +866,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-spinner.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-spinner.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -719,9 +884,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-carousel.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-carousel.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -735,9 +902,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-input-otp.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-input-otp.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -751,9 +920,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-resizable.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-resizable.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -767,9 +938,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-drawer.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-drawer.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -779,19 +952,17 @@
       "description": "A React Hook Form integration with Mac OS 9 styling. Provides RetroForm, RetroFormField, RetroFormItem, RetroFormLabel, RetroFormControl, RetroFormDescription, and RetroFormMessage components following the shadcn Form pattern.",
       "dependencies": [
         "react-hook-form",
-        "@hookform/resolvers",
-        "zod",
         "@radix-ui/react-label",
         "@radix-ui/react-slot"
       ],
       "registryDependencies": [
-        "retro-label"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-label.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-form.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-form.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -807,9 +978,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-command.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-command.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -823,9 +996,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-calendar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-calendar.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -839,9 +1014,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-chart.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-chart.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     },
     {
@@ -854,14 +1031,14 @@
         "react-day-picker"
       ],
       "registryDependencies": [
-        "retro-popover",
-        "retro-calendar"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-popover.json",
+        "https://nostalgia-ui.com/r/retro-calendar.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-date-picker.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-date-picker.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -875,15 +1052,15 @@
         "react-day-picker"
       ],
       "registryDependencies": [
-        "retro-popover",
-        "retro-calendar",
-        "retro-date-picker"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-popover.json",
+        "https://nostalgia-ui.com/r/retro-calendar.json",
+        "https://nostalgia-ui.com/r/retro-date-picker.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-date-range-picker.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-date-range-picker.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -893,14 +1070,17 @@
       "title": "RetroCombobox",
       "description": "A Mac OS 9 styled searchable select / autocomplete combobox with inset bevel trigger, search input, azul-highlighted items, checkmark selection indicator, and group headings, built on Radix UI Popover.",
       "registryDependencies": [
-        "retro-popover"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-popover.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-combobox.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-combobox.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "dependencies": [
+        "cmdk"
       ]
     },
     {
@@ -912,15 +1092,13 @@
         "@tanstack/react-table"
       ],
       "registryDependencies": [
-        "retro-table",
-        "retro-button",
-        "retro-input"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-table.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-data-table.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-data-table.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -929,16 +1107,13 @@
       "type": "registry:ui",
       "title": "RetroDesktop",
       "description": "A Mac OS 9 styled full-viewport desktop layout with pinned menu bar (Apple logo + live clock), desktop area with optional dot-pattern wallpaper, and selectable desktop shortcut icons with 32x32 icon area and Geneva 9px labels.",
-      "dependencies": [],
       "registryDependencies": [
-        "retro-menu-bar",
-        "retro-window"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-desktop.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-desktop.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -948,21 +1123,17 @@
       "title": "RetroSidebar",
       "description": "A Mac OS 9 styled app shell layout with collapsible sidebar, context-driven open/closed state, menu items with azul active and lavender hover, keyboard shortcut (Cmd+B) toggle, and icon-only collapsed mode. Provides RetroSidebarProvider, RetroSidebar, RetroSidebarHeader, RetroSidebarContent, RetroSidebarFooter, RetroSidebarMenu, RetroSidebarMenuItem, RetroSidebarMenuButton, RetroSidebarGroup, RetroSidebarGroupLabel, RetroSidebarTrigger, and RetroSidebarInset.",
       "dependencies": [
-        "@radix-ui/react-slot",
-        "@radix-ui/react-dialog"
+        "@radix-ui/react-slot"
       ],
       "registryDependencies": [
-        "retro-button",
-        "retro-separator",
-        "retro-tooltip",
-        "retro-sheet",
-        "retro-scrollbar"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-sheet.json",
+        "https://nostalgia-ui.com/r/retro-scrollbar.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-sidebar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-sidebar.tsx"
+          "type": "registry:ui"
         }
       ]
     },
@@ -977,9 +1148,11 @@
       "files": [
         {
           "path": "registry/new-york/ui/retro-icons.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/retro-icons.tsx"
+          "type": "registry:ui"
         }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ]
     }
   ]

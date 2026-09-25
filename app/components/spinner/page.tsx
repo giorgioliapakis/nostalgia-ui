@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroSpinner, RetroBeachBall } from "@/registry/new-york/ui/retro-spinner"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Spinner",
+  description:
+    "Loading spinners in watch cursor and beach ball variants inspired by Mac OS 9.",
+}
 
 export default function SpinnerPreview() {
   return (

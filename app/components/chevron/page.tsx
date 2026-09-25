@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroChevron } from "@/registry/new-york/ui/retro-chevron"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Chevron",
+  description:
+    "A directional chevron arrow indicator in default and accent variants.",
+}
 
 const directions = ["up", "down", "left", "right"] as const
 

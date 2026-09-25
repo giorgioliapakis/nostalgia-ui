@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroNavButton } from "@/registry/new-york/ui/retro-nav-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Nav Button",
+  description:
+    "A directional navigation button with Mac OS 9 raised bevel and arrow indicators.",
+}
 
 export default function NavButtonPreview() {
   return (

@@ -119,6 +119,8 @@ const RetroDropdownMenuSubTrigger = React.forwardRef<
       "outline-none",
       /* Hover / focus highlight */
       "data-[highlighted]:bg-os9-azul data-[highlighted]:text-os9-white",
+      /* Keep parent highlighted while its submenu is open */
+      "data-[state=open]:bg-os9-azul data-[state=open]:text-os9-white",
       /* Disabled */
       "data-[disabled]:text-os9-gray-600 data-[disabled]:pointer-events-none",
       className

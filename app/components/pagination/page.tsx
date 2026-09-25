@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroPagination,
   RetroPaginationContent,
@@ -8,6 +9,12 @@ import {
   RetroPaginationEllipsis,
 } from "@/registry/new-york/ui/retro-pagination"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Pagination",
+  description:
+    "Page navigation controls with Mac OS 9 beveled page number links and prev/next buttons.",
+}
 
 export default function PaginationPreview() {
   return (

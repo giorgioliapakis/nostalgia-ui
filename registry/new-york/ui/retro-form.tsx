@@ -24,9 +24,8 @@ type RetroFormFieldContextValue<
   name: TName
 }
 
-const RetroFormFieldContext = React.createContext<RetroFormFieldContextValue>(
-  {} as RetroFormFieldContextValue
-)
+const RetroFormFieldContext =
+  React.createContext<RetroFormFieldContextValue | null>(null)
 
 const RetroFormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -46,11 +45,14 @@ const useRetroFormField = () => {
   const itemContext = React.useContext(RetroFormItemContext)
   const { getFieldState, formState } = useFormContext()
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
   if (!fieldContext) {
     throw new Error("useRetroFormField should be used within <RetroFormField>")
   }
+  if (!itemContext) {
+    throw new Error("useRetroFormField should be used within <RetroFormItem>")
+  }
+
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   const { id } = itemContext
 
@@ -68,9 +70,8 @@ type RetroFormItemContextValue = {
   id: string
 }
 
-const RetroFormItemContext = React.createContext<RetroFormItemContextValue>(
-  {} as RetroFormItemContextValue
-)
+const RetroFormItemContext =
+  React.createContext<RetroFormItemContextValue | null>(null)
 
 const RetroFormItem = React.forwardRef<
   HTMLDivElement,
@@ -84,6 +85,7 @@ const RetroFormItem = React.forwardRef<
     </RetroFormItemContext.Provider>
   )
 })
+RetroFormItem.displayName = "RetroFormItem"
 
 const RetroFormLabel = React.forwardRef<
   React.ComponentRef<typeof LabelPrimitive.Root>,
@@ -104,6 +106,7 @@ const RetroFormLabel = React.forwardRef<
     />
   )
 })
+RetroFormLabel.displayName = "RetroFormLabel"
 
 const RetroFormControl = React.forwardRef<
   React.ComponentRef<typeof Slot>,
@@ -126,6 +129,7 @@ const RetroFormControl = React.forwardRef<
     />
   )
 })
+RetroFormControl.displayName = "RetroFormControl"
 
 const RetroFormDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -145,13 +149,14 @@ const RetroFormDescription = React.forwardRef<
     />
   )
 })
+RetroFormDescription.displayName = "RetroFormDescription"
 
 const RetroFormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(function RetroFormMessage({ className, children, ...props }, ref) {
   const { error, formMessageId } = useRetroFormField()
-  const body = error ? String(error?.message) : children
+  const body = error ? String(error.message ?? "") : children
 
   if (!body) {
     return null
@@ -171,6 +176,7 @@ const RetroFormMessage = React.forwardRef<
     </p>
   )
 })
+RetroFormMessage.displayName = "RetroFormMessage"
 
 export {
   useRetroFormField,

@@ -1,11 +1,16 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroHoverCard,
   RetroHoverCardTrigger,
   RetroHoverCardContent,
 } from "@/registry/new-york/ui/retro-hover-card"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Hover Card",
+  description:
+    "A hover-triggered popup card with Mac OS 9 raised bevel for previewing link content.",
+}
 
 export default function HoverCardPreview() {
   return (

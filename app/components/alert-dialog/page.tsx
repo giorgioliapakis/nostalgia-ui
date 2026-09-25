@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroAlertDialog,
   RetroAlertDialogTrigger,
@@ -14,6 +13,12 @@ import {
 } from "@/registry/new-york/ui/retro-alert-dialog"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Alert Dialog",
+  description:
+    "A modal confirmation dialog with Mac OS 9 window chrome for destructive or important actions.",
+}
 
 export default function AlertDialogPreview() {
   return (
@@ -58,7 +63,7 @@ export default function AlertDialogPreview() {
             <RetroAlertDialogHeader>
               <RetroAlertDialogTitle>Warning</RetroAlertDialogTitle>
             </RetroAlertDialogHeader>
-            <RetroAlertDialogBody>
+            <RetroAlertDialogBody variant="stop">
               <RetroAlertDialogDescription>
                 Completely erase disk &ldquo;Macintosh HD&rdquo;? All data will
                 be permanently destroyed.
@@ -67,6 +72,30 @@ export default function AlertDialogPreview() {
             <RetroAlertDialogFooter>
               <RetroAlertDialogCancel>Cancel</RetroAlertDialogCancel>
               <RetroAlertDialogAction>Erase</RetroAlertDialogAction>
+            </RetroAlertDialogFooter>
+          </RetroAlertDialogContent>
+        </RetroAlertDialog>
+      </section>
+
+      {/* Note variant */}
+      <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">Note</h2>
+        <RetroAlertDialog>
+          <RetroAlertDialogTrigger asChild>
+            <RetroButton>Empty Trash</RetroButton>
+          </RetroAlertDialogTrigger>
+          <RetroAlertDialogContent>
+            <RetroAlertDialogHeader>
+              <RetroAlertDialogTitle>Note</RetroAlertDialogTitle>
+            </RetroAlertDialogHeader>
+            <RetroAlertDialogBody variant="note">
+              <RetroAlertDialogDescription>
+                The Trash contains 12 items, which use 4.2 MB of disk space.
+              </RetroAlertDialogDescription>
+            </RetroAlertDialogBody>
+            <RetroAlertDialogFooter>
+              <RetroAlertDialogCancel>Cancel</RetroAlertDialogCancel>
+              <RetroAlertDialogAction>OK</RetroAlertDialogAction>
             </RetroAlertDialogFooter>
           </RetroAlertDialogContent>
         </RetroAlertDialog>

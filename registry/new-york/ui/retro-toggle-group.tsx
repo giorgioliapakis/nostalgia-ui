@@ -83,7 +83,10 @@ function RetroToggleGroupItem(
       className={cn(
         retroToggleGroupVariants({ size: resolvedSize }),
         "-ml-px first:ml-0",
-        disabled && "opacity-50 pointer-events-none",
+        /* Lift the focused item so its ring isn't covered by the -ml-px neighbour */
+        "focus-visible:z-10",
+        /* Reflects both item-level and group-level disabled (Radix sets data-disabled) */
+        "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none",
         className
       )}
       ref={ref}

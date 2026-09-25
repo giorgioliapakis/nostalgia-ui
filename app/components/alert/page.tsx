@@ -1,9 +1,16 @@
+import type { Metadata } from "next"
 import {
   RetroAlert,
   RetroAlertTitle,
   RetroAlertDescription,
 } from "@/registry/new-york/ui/retro-alert"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Alert",
+  description:
+    "An inline alert banner with Mac OS 9 beveled styling for notices, warnings, and errors.",
+}
 
 function InfoIcon() {
   return (

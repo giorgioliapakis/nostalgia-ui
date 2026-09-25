@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroCard,
   RetroCardHeader,
@@ -8,6 +9,12 @@ import {
 } from "@/registry/new-york/ui/retro-card"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Card",
+  description:
+    "A content container with Mac OS 9 raised bevel, header, body, and footer sections.",
+}
 
 export default function CardPreview() {
   return (

@@ -97,6 +97,21 @@ interface NostalgiaProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 /*  NostalgiaProvider                                                   */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Runtime override for the OS9 design tokens.
+ *
+ * Sets the `--os9-*` / `--font-*` custom properties inline on a wrapper div,
+ * so you can re-theme a subtree (or restore the classic values inside a
+ * differently-themed page) without touching your global CSS.
+ *
+ * This is NOT a replacement for the base stylesheet: component classes such
+ * as `bg-os9-gray-300` and `text-os9-black` are Tailwind utilities that only
+ * exist when the `@theme` mappings are in your CSS. Install those once with
+ * the `nostalgia-theme` registry item:
+ *
+ *   npx shadcn@latest add https://nostalgia-ui.com/r/nostalgia-theme.json
+ */
+
 const NostalgiaProvider = React.forwardRef<HTMLDivElement, NostalgiaProviderProps>(
   function NostalgiaProvider({ className, theme = "classic", children, ...props }, ref) {
     /* Build the inline style object from the token map */
@@ -110,7 +125,8 @@ const NostalgiaProvider = React.forwardRef<HTMLDivElement, NostalgiaProviderProp
 
     return (
       <>
-        {/* Inject utility classes so consumers don't need globals.css */}
+        {/* Inject the plain-CSS .os9-* helper classes (Tailwind utilities
+            still come from the nostalgia-theme base stylesheet) */}
         <style
           dangerouslySetInnerHTML={{ __html: os9UtilityCSS }}
           data-nostalgia-ui

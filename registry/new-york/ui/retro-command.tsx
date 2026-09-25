@@ -35,10 +35,20 @@ RetroCommand.displayName = "RetroCommand"
 /*  RetroCommandDialog                                                 */
 /* ------------------------------------------------------------------ */
 
+interface RetroCommandDialogProps
+  extends React.ComponentProps<typeof DialogPrimitive.Root> {
+  /** Accessible (visually hidden) dialog title. Defaults to "Command Palette". */
+  title?: string
+  /** Accessible (visually hidden) dialog description. */
+  description?: string
+}
+
 function RetroCommandDialog({
   children,
+  title = "Command Palette",
+  description = "Search for a command to run...",
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+}: RetroCommandDialogProps) {
   return (
     <DialogPrimitive.Root {...props}>
       <DialogPrimitive.Portal>
@@ -57,6 +67,10 @@ function RetroCommandDialog({
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
           )}
         >
+          <DialogPrimitive.Title className="sr-only">{title}</DialogPrimitive.Title>
+          <DialogPrimitive.Description className="sr-only">
+            {description}
+          </DialogPrimitive.Description>
           <RetroCommand
             className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-[family-name:var(--font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:text-os9-gray-700"
           >
@@ -259,6 +273,8 @@ RetroCommandShortcut.displayName = "RetroCommandShortcut"
 /* ------------------------------------------------------------------ */
 /*  Exports                                                            */
 /* ------------------------------------------------------------------ */
+
+export type { RetroCommandDialogProps }
 
 export {
   RetroCommand,

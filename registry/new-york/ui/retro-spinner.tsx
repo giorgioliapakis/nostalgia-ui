@@ -121,13 +121,17 @@ const RetroSpinner = React.forwardRef<HTMLDivElement, RetroSpinnerProps>(
 
         <span className="sr-only">Loading...</span>
 
-        <style>{`
+        {/* React 19 hoists this <style> into <head> and dedupes it by `href` */}
+        <style href="retro-spinner" precedence="default">{`
           @keyframes retro-spinner-rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
           }
           .retro-spinner-hand {
             animation: retro-spinner-rotate 1.2s steps(12) infinite;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .retro-spinner-hand { animation: none; }
           }
         `}</style>
       </div>
@@ -195,8 +199,7 @@ const RetroBeachBall = React.forwardRef<HTMLDivElement, RetroBeachBallProps>(
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden
-          className="animate-spin"
-          style={{ animationDuration: "1s" }}
+          className="animate-spin motion-reduce:animate-none"
         >
           {/* Colored segments */}
           {segments}
