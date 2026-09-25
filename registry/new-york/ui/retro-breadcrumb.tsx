@@ -20,7 +20,7 @@ function RetroBreadcrumb(
       ref={ref}
       aria-label="breadcrumb"
       className={cn(
-        "font-[family-name:var(--font-sans)] text-[10px] leading-normal select-none",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal select-none",
         className
       )}
       {...props}

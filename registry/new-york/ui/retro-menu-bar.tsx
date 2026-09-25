@@ -64,7 +64,7 @@ function RetroMenuBarTrigger(
       className={cn(
         "flex items-center cursor-pointer select-none whitespace-nowrap",
         "h-[20px] px-[8px] pt-[2px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         "text-os9-black",
         "outline-none",
         /* Active / open state */
@@ -140,7 +140,7 @@ function RetroMenuBarItem(
       className={cn(
         "group flex items-center cursor-default select-none",
         "h-[18px] px-[16px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         "text-os9-black",
         "outline-none",
         /* Hover / focus highlight */
@@ -205,7 +205,7 @@ const RetroMenuBarLabel = React.forwardRef<
       ref={ref}
       className={cn(
         "px-[16px] py-[2px]",
-        "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
         "text-os9-gray-700",
         className
       )}
@@ -235,7 +235,7 @@ const RetroMenuBarSubTrigger = React.forwardRef<
       className={cn(
         "flex items-center cursor-default select-none",
         "h-[18px] px-[16px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         "text-os9-black",
         "outline-none",
         /* Hover / focus highlight */
@@ -312,7 +312,7 @@ const RetroMenuBarCheckboxItem = React.forwardRef<
       className={cn(
         "group relative flex items-center cursor-default select-none",
         "h-[18px] pl-[24px] pr-[16px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         "text-os9-black",
         "outline-none",
         "data-[highlighted]:bg-os9-azul data-[highlighted]:text-os9-white",
@@ -368,7 +368,7 @@ const RetroMenuBarRadioItem = React.forwardRef<
       className={cn(
         "group relative flex items-center cursor-default select-none",
         "h-[18px] pl-[24px] pr-[16px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
         "text-os9-black",
         "outline-none",
         "data-[highlighted]:bg-os9-azul data-[highlighted]:text-os9-white",
@@ -410,7 +410,7 @@ function RetroMenuBarShortcut({
     <span
       className={cn(
         "ml-auto pl-[16px]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px]",
         "text-os9-gray-700",
         /* Inherit parent highlight color */
         "group-data-[highlighted]:text-os9-white",

@@ -70,7 +70,7 @@ function RetroInputOTPSlot(
         "relative flex h-[40px] w-[32px] items-center justify-center",
         "border border-os9-black bg-os9-white text-os9-black",
         "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-        "font-[family-name:var(--font-sans)] text-[14px]",
+        "font-[family-name:var(--os9-font-sans)] text-[14px]",
         "transition-none",
         slot?.isActive &&
           "shadow-[0_0_0_2px_var(--os9-focus)]",
@@ -97,7 +97,7 @@ function RetroInputOTPSeparator(
     <span
       ref={ref}
       role="separator"
-      className="text-os9-gray-700 font-[family-name:var(--font-sans)] text-[14px] select-none"
+      className="text-os9-gray-700 font-[family-name:var(--os9-font-sans)] text-[14px] select-none"
       {...props}
     >
       &ndash;

@@ -22,7 +22,7 @@ const RetroHoverCardContent = React.forwardRef<
         "z-50 max-w-[300px] bg-os9-white p-[8px]",
         "border border-[var(--os9-black)]",
         "shadow-[2px_2px_0_var(--os9-black)]",
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[1.3]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[1.3]",
         "text-os9-black",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0",
         "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",

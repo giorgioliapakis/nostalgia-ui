@@ -142,7 +142,7 @@ const RetroFormDescription = React.forwardRef<
       ref={ref}
       id={formDescriptionId}
       className={cn(
-        "font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700",
+        "font-[family-name:var(--os9-font-sans)] text-[9px] text-os9-gray-700",
         className
       )}
       {...props}
@@ -167,7 +167,7 @@ const RetroFormMessage = React.forwardRef<
       ref={ref}
       id={formMessageId}
       className={cn(
-        "font-[family-name:var(--font-sans)] text-[10px] font-bold text-[#cc0000]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] font-bold text-[#cc0000]",
         className
       )}
       {...props}

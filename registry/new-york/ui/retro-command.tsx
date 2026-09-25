@@ -72,7 +72,7 @@ function RetroCommandDialog({
             {description}
           </DialogPrimitive.Description>
           <RetroCommand
-            className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-[family-name:var(--font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:text-os9-gray-700"
+            className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-[family-name:var(--os9-font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:text-os9-gray-700"
           >
             {children}
           </RetroCommand>
@@ -122,7 +122,7 @@ const RetroCommandInput = React.forwardRef<
       ref={ref}
       className={cn(
         "flex-1 bg-os9-white text-os9-black",
-        "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
         "placeholder:text-os9-gray-600",
         "border border-os9-black",
         "px-[5px] py-[3px]",
@@ -168,7 +168,7 @@ const RetroCommandEmpty = React.forwardRef<
     ref={ref}
     className={cn(
       "py-6 text-center",
-      "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+      "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
       "text-os9-gray-700",
       className
     )}
@@ -190,7 +190,7 @@ const RetroCommandGroup = React.forwardRef<
     className={cn(
       "overflow-hidden",
       "[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5",
-      "[&_[cmdk-group-heading]]:font-[family-name:var(--font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.42px] [&_[cmdk-group-heading]]:leading-[0.98]",
+      "[&_[cmdk-group-heading]]:font-[family-name:var(--os9-font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.42px] [&_[cmdk-group-heading]]:leading-[0.98]",
       "[&_[cmdk-group-heading]]:text-os9-gray-700",
       className
     )}
@@ -212,7 +212,7 @@ const RetroCommandItem = React.forwardRef<
     className={cn(
       "group flex items-center gap-2 cursor-pointer select-none",
       "h-[18px] px-2",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "outline-none",
       /* Selected highlight: azul bg + white text */
@@ -259,7 +259,7 @@ function RetroCommandShortcut({
     <span
       className={cn(
         "ml-auto",
-        "font-[family-name:var(--font-sans)] text-[9px] leading-normal",
+        "font-[family-name:var(--os9-font-sans)] text-[9px] leading-normal",
         "text-os9-gray-700",
         "group-data-[selected=true]:text-os9-white",
         className

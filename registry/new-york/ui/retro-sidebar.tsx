@@ -423,7 +423,7 @@ function RetroSidebarMenuButton(
       className={cn(
         "flex w-full items-center gap-2",
         "h-[28px] px-2",
-        "font-[family-name:var(--font-sans)] text-[10px] leading-[1.3]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-[1.3]",
         "text-os9-black",
         "cursor-pointer select-none",
         "transition-none",
@@ -490,7 +490,7 @@ function RetroSidebarGroupLabel(
     <div
       ref={ref}
       className={cn(
-        "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
         "uppercase text-os9-gray-700",
         "px-2 py-1",
         !open && "sr-only",

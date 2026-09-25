@@ -4,7 +4,7 @@ A shadcn-compatible component registry that recreates Mac OS 9 UI components as 
 
 ## Project Status
 
-**60 components + `nostalgia-theme` built and working.** Complete design system.
+**78 components + 12 blocks + `nostalgia-theme` built and working.**
 
 **Completed plans:**
 - `docs/plans/2026-03-28-001-feat-nostalgia-ui-registry-plan.md` — Phase 1 (11 components)
@@ -16,10 +16,10 @@ A shadcn-compatible component registry that recreates Mac OS 9 UI components as 
 - **What:** Mac OS 9 styled components installable via `npx shadcn@latest add`
 - **Stack:** Next.js 16 + Tailwind v4 + Radix UI (24 packages) + class-variance-authority
 - **Template:** Based on the official `shadcn-ui/registry-template`
-- **Components:** 60 built, prefixed with `retro-` (e.g., `retro-button`, `retro-checkbox`); 59 have doc pages (`retro-date-range-picker` is demoed on /components/all only)
+- **Components:** 78, prefixed with `retro-`, each with a doc page at `/components/<slug>` (nav data: `app/components/_components/nav-data.ts`)
+- **Blocks:** 12 `registry:block` items in `registry/new-york/blocks/<slug>.tsx`, doc pages at `/blocks/<slug>` (data: `app/blocks/_components/blocks-data.ts`)
 - **Theme:** `nostalgia-theme` (registry:theme) ships the `--os9-*` tokens and `os9-*` utilities; every component lists it in `registryDependencies`. There is no install-all item — `npx shadcn add https://nostalgia-ui.com/r` is invalid
 - **Styling:** Pure CSS (box-shadows, borders, gradients) — zero image assets
-- **Code:** ~11,000 lines across 59 component files, all type-check clean
 
 ## To Resume Work
 
@@ -43,6 +43,9 @@ Params:
 
 ## Key Conventions
 
+- **Fonts:** components use `var(--os9-font-sans|heading|mono)`, never `var(--font-*)` — consumers' Tailwind only emits `--font-*` theme vars they use, so those resolve to nothing in installed projects
+- **No literal `asChild` JSX attributes in registry files:** use `{...AS_CHILD}` (see retro-combobox.tsx). The shadcn CLI rewrites literal `asChild` into Base UI `render` props for `base-*` projects (the default for `shadcn init`), which breaks Radix components
+- **Registry deps:** `registryDependencies` use full URLs (`https://nostalgia-ui.com/r/<name>.json`) and always include `nostalgia-theme.json`
 - All design tokens use `--os9-*` CSS custom properties (defined in `app/globals.css`)
 - Components follow shadcn patterns: `React.forwardRef` (inline pattern), `cn()`, `cva()`, `className` prop
 - **forwardRef gotcha:** Always use `const X = React.forwardRef<El, Props>(function X(...) {...})` — NOT the two-step pattern

@@ -20,7 +20,7 @@ const RetroSelectTrigger = React.forwardRef<
     className={cn(
       "inline-flex items-center justify-between",
       "h-[20px] w-full",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "border border-os9-black bg-os9-gray-300",
       "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
@@ -110,7 +110,7 @@ const RetroSelectItem = React.forwardRef<
     className={cn(
       "relative flex items-center",
       "h-[18px] w-full px-[14px]",
-      "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
       "text-os9-black",
       "cursor-pointer select-none outline-none",
       "data-[highlighted]:bg-os9-azul data-[highlighted]:text-os9-white",
@@ -164,7 +164,7 @@ const RetroSelectLabel = React.forwardRef<
     ref={ref}
     className={cn(
       "px-[14px] py-[2px]",
-      "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
+      "font-[family-name:var(--os9-font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
       "text-os9-gray-700",
       className
     )}

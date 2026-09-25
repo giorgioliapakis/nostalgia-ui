@@ -24,11 +24,11 @@ const retroTextareaVariants = cva(
     variants: {
       size: {
         default: [
-          "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+          "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
           "p-[5px]",
         ],
         sm: [
-          "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+          "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
           "px-[5px] py-[3px]",
         ],
       },

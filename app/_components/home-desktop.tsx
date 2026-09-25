@@ -72,6 +72,7 @@ import {
   useRetroToast,
 } from "@/registry/new-york/ui/retro-toast"
 import { RetroSeparator } from "@/registry/new-york/ui/retro-separator"
+import { TOTAL_COMPONENTS } from "../components/_components/nav-data"
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -273,7 +274,7 @@ function SamplerTabs({
           <RetroSeparator />
           <DemoProgress />
           <div className="flex flex-wrap gap-[6px]">
-            <RetroBadge>59 Components</RetroBadge>
+            <RetroBadge>{TOTAL_COMPONENTS} Components</RetroBadge>
             <RetroBadge variant="azul">Tailwind v4</RetroBadge>
             <RetroBadge variant="accent">Radix UI</RetroBadge>
           </div>
@@ -601,7 +602,7 @@ function DesktopInner() {
       }}
     >
       <p className="font-[family-name:var(--font-sans)] text-[10px] text-os9-black">
-        59 components &middot; 0 images &middot; pure CSS
+        {TOTAL_COMPONENTS} components &middot; 0 images &middot; pure CSS
       </p>
       <div className="flex items-center gap-[8px]">
         <a
@@ -643,7 +644,7 @@ function DesktopInner() {
             </p>
             <RetroProgress value={bootProgress} className="w-full" />
             <p className="font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700">
-              Loading 59 components...
+              Loading {TOTAL_COMPONENTS} components...
             </p>
           </div>
         </RetroWindow>
@@ -685,7 +686,7 @@ function DesktopInner() {
                     <div className="flex flex-col gap-[12px]">
                       <h1 className="font-[family-name:var(--font-heading)] text-[14px] tracking-[0.42px] text-os9-black">nostalgia-ui</h1>
                       <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black">
-                        59 Mac OS 9 components for React. Built with Tailwind CSS and Radix UI. Zero image assets. Install via the shadcn CLI.
+                        {TOTAL_COMPONENTS} Mac OS 9 components for React. Built with Tailwind CSS and Radix UI. Zero image assets. Install via the shadcn CLI.
                       </p>
                       <div
                         className="flex items-center gap-[6px] p-[6px] font-mono text-[10px] text-os9-black cursor-pointer hover:bg-os9-lavender"
@@ -721,7 +722,7 @@ function DesktopInner() {
                         <RetroButton variant="primary" onClick={copyCmd}>Copy Command</RetroButton>
                         <RetroButton variant="default" asChild><Link href="/components">All Components</Link></RetroButton>
                       </div>
-                      <p className="font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700">Works with your existing shadcn setup. Any of 59 components&mdash;one command each.</p>
+                      <p className="font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700">Works with your existing shadcn setup. Any of {TOTAL_COMPONENTS} components&mdash;one command each.</p>
                     </div>
                   )}
                 </RetroWindow>
@@ -791,7 +792,7 @@ function DesktopInner() {
                   <RetroCardContent><p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.4] text-os9-black">Drop-in install. Same API, same Radix primitives.</p></RetroCardContent>
                 </RetroCard>
                 <RetroCard>
-                  <RetroCardHeader><RetroCardTitle>59 Components</RetroCardTitle></RetroCardHeader>
+                  <RetroCardHeader><RetroCardTitle>{TOTAL_COMPONENTS} Components</RetroCardTitle></RetroCardHeader>
                   <RetroCardContent><p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.4] text-os9-black">Buttons, dialogs, tables, charts, sidebars, and more.</p></RetroCardContent>
                 </RetroCard>
                 <RetroCard>
@@ -845,7 +846,7 @@ function DesktopInner() {
             <RetroIcon name="application" />
             <div className="text-center">
               <p className="font-[family-name:var(--font-heading)] text-[14px] tracking-[0.42px] text-os9-black">nostalgia-ui</p>
-              <RetroDialogDescription className="mt-[4px]">Version 1.0 &mdash; 59 Components</RetroDialogDescription>
+              <RetroDialogDescription className="mt-[4px]">Version 1.0 &mdash; {TOTAL_COMPONENTS} Components</RetroDialogDescription>
             </div>
             <p className="font-[family-name:var(--font-sans)] text-[10px] leading-[1.5] text-os9-black text-center">
               Mac OS 9 UI components for React. Built with Tailwind CSS, Radix UI, and zero image assets. shadcn-compatible.

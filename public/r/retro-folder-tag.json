@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-folder-tag",
+  "title": "RetroFolderTag",
+  "description": "Mac OS 9 folder tag: the tab of a pop-up window with a small icon and folder name, in active/inactive states, attached above or below its window.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://nostalgia-ui.com/r/nostalgia-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-folder-tag.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\n/*\n * The folder tag is the tab that sticks out of a Mac OS 9 pop-up window\n * (a folder dragged to the bottom of the screen). It is a raised strip,\n * open on the edge that joins the window, holding a small icon and the\n * folder name. `side` names that open edge: \"bottom\" for a tab sitting on\n * top of its window (the usual case), \"top\" for a tab hanging below one.\n *\n * The tag overlaps its window by 1px on the open edge so an active tag\n * merges with the window frame beneath it.\n */\nconst retroFolderTagVariants = cva(\n  [\n    \"relative inline-flex max-w-full items-center gap-[6px]\",\n    \"border-x border-os9-black\",\n    \"font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]\",\n    \"whitespace-nowrap select-none transition-none\",\n    \"focus-visible:z-10 focus-visible:os9-focus-ring\",\n    \"disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-os9-gray-600\",\n  ],\n  {\n    variants: {\n      side: {\n        bottom: [\n          \"border-t -mb-px\",\n          \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_0_0_var(--os9-gray-700)]\",\n          \"active:shadow-[inset_1px_1px_0_var(--os9-gray-800),inset_-1px_0_0_var(--os9-gray-500)]\",\n        ],\n        top: [\n          \"border-b -mt-px\",\n          \"shadow-[inset_1px_0_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]\",\n          \"active:shadow-[inset_1px_0_0_var(--os9-gray-800),inset_-1px_-1px_0_var(--os9-gray-500)]\",\n        ],\n      },\n      active: {\n        true: \"z-[1] bg-os9-gray-200 text-os9-black\",\n        false: \"bg-os9-gray-300 text-os9-gray-800\",\n      },\n      size: {\n        sm: \"h-[18px] px-[8px] text-[10px]\",\n        default: \"h-[22px] px-[12px]\",\n      },\n    },\n    defaultVariants: {\n      side: \"bottom\",\n      active: true,\n      size: \"default\",\n    },\n  }\n)\n\ninterface RetroFolderTagProps\n  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, \"title\">,\n    VariantProps<typeof retroFolderTagVariants> {\n  /** Small (16px) icon before the name, e.g. <RetroIconFolder size=\"sm\" />. */\n  icon?: React.ReactNode\n}\n\nconst RetroFolderTag = React.forwardRef<HTMLButtonElement, RetroFolderTagProps>(\n  function RetroFolderTag(\n    { className, side, active, size, icon, children, type = \"button\", ...props },\n    ref\n  ) {\n    const isActive = active ?? true\n    return (\n      <button\n        ref={ref}\n        type={type}\n        data-state={isActive ? \"active\" : \"inactive\"}\n        className={cn(\n          retroFolderTagVariants({ side, active: isActive, size }),\n          \"cursor-pointer active:bg-os9-gray-700 active:text-os9-white\",\n          className\n        )}\n        {...props}\n      >\n        {icon ? (\n          <span className=\"inline-flex shrink-0 items-center\">{icon}</span>\n        ) : null}\n        <span className=\"truncate\">{children}</span>\n      </button>\n    )\n  }\n)\nRetroFolderTag.displayName = \"RetroFolderTag\"\n\nexport { RetroFolderTag, retroFolderTagVariants }\nexport type { RetroFolderTagProps }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

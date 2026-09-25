@@ -5,7 +5,7 @@ import { ComponentDocLayout } from "../_components/component-doc-layout"
 export const metadata: Metadata = {
   title: "Checkbox",
   description:
-    "A checkbox input with Mac OS 9 beveled box and X-mark indicator.",
+    "A checkbox input with Mac OS 9 beveled box, checkmark indicator and indeterminate dash.",
 }
 
 export default function CheckboxPreview() {
@@ -13,7 +13,7 @@ export default function CheckboxPreview() {
     <ComponentDocLayout
       name="retro-checkbox"
       title="RetroCheckbox"
-      description="A checkbox input with Mac OS 9 beveled box and X-mark indicator."
+      description="A checkbox input with Mac OS 9 beveled box, checkmark indicator and indeterminate dash."
     >
       {/* Unchecked */}
       <section className="mb-8">
@@ -41,6 +41,60 @@ export default function CheckboxPreview() {
             Checked checkbox
           </label>
         </div>
+      </section>
+
+      {/* Indeterminate */}
+      <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">Indeterminate</h2>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <RetroCheckbox id="indeterminate" defaultChecked="indeterminate" />
+            <label
+              htmlFor="indeterminate"
+              className="text-[10px] font-sans select-none cursor-pointer"
+            >
+              Extensions (some enabled)
+            </label>
+          </div>
+          <div className="ml-[20px] flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <RetroCheckbox id="ext-appletalk" defaultChecked />
+              <label
+                htmlFor="ext-appletalk"
+                className="text-[10px] font-sans select-none cursor-pointer"
+              >
+                AppleTalk
+              </label>
+            </div>
+            <div className="flex items-center gap-3">
+              <RetroCheckbox id="ext-quicktime" />
+              <label
+                htmlFor="ext-quicktime"
+                className="text-[10px] font-sans select-none cursor-pointer"
+              >
+                QuickTime
+              </label>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <RetroCheckbox
+              id="indeterminate-disabled"
+              checked="indeterminate"
+              disabled
+            />
+            <label
+              htmlFor="indeterminate-disabled"
+              className="text-[10px] font-sans select-none cursor-not-allowed opacity-50"
+            >
+              Disabled (indeterminate)
+            </label>
+          </div>
+        </div>
+        <p className="text-os9-gray-700 text-[9px] mt-3">
+          Pass <code className="font-mono">checked=&quot;indeterminate&quot;</code>{" "}
+          (or <code className="font-mono">defaultChecked</code>) to show the
+          mixed-state dash, e.g. for a &ldquo;select all&rdquo; parent.
+        </p>
       </section>
 
       {/* Disabled States */}

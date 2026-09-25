@@ -24,7 +24,7 @@ const RetroTooltipContent = React.forwardRef<
         "rounded-[6px] border border-[var(--os9-black)] bg-[#ffffcc]",
         "px-[8px] py-[4px]",
         "shadow-[1px_1px_0_rgba(0,0,0,0.3)]",
-        "font-[family-name:var(--font-heading)] text-[10px] text-[var(--os9-black)]",
+        "font-[family-name:var(--os9-font-heading)] text-[10px] text-[var(--os9-black)]",
         "animate-in fade-in-0 zoom-in-95",
         "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
         "data-[side=bottom]:slide-in-from-top-2",

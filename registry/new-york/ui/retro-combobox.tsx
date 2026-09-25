@@ -10,6 +10,11 @@ import {
   RetroPopoverContent,
 } from "@/registry/new-york/ui/retro-popover"
 
+// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
+// literal `asChild` to Base UI's `render` prop in base-* projects, which
+// breaks these Radix-based components.
+const AS_CHILD = { asChild: true } as const
+
 /* ---------------------------------------------------------------------------
  * Helpers
  * --------------------------------------------------------------------------- */
@@ -193,7 +198,7 @@ const RetroComboboxTrigger = React.forwardRef<
   const hasLabel = label != null && label !== ""
 
   return (
-    <RetroPopoverTrigger asChild>
+    <RetroPopoverTrigger {...AS_CHILD}>
       <button
         ref={ref}
         type="button"
@@ -204,7 +209,7 @@ const RetroComboboxTrigger = React.forwardRef<
         className={cn(
           "inline-flex items-center justify-between",
           "h-[22px] w-full",
-          "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+          "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
           "text-os9-black",
           "border border-os9-black bg-os9-white",
           "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white),-1px_0_0_var(--os9-gray-700),0_-1px_0_var(--os9-gray-700),1px_0_0_var(--os9-white),0_1px_0_var(--os9-white)]",
@@ -310,7 +315,7 @@ const RetroComboboxInput = React.forwardRef<
         className={cn(
           "w-full",
           "h-[18px]",
-          "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+          "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
           "text-os9-black",
           "border border-os9-black bg-os9-white",
           "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
@@ -339,7 +344,7 @@ const RetroComboboxEmpty = React.forwardRef<
       ref={ref}
       className={cn(
         "py-4 text-center",
-        "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
         "text-os9-gray-600",
         className,
       )}
@@ -369,7 +374,7 @@ const RetroComboboxGroup = React.forwardRef<
       className={cn(
         "py-[2px]",
         "[&_[cmdk-group-heading]]:px-[6px] [&_[cmdk-group-heading]]:py-[2px]",
-        "[&_[cmdk-group-heading]]:font-[family-name:var(--font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.42px] [&_[cmdk-group-heading]]:leading-[0.98]",
+        "[&_[cmdk-group-heading]]:font-[family-name:var(--os9-font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.42px] [&_[cmdk-group-heading]]:leading-[0.98]",
         "[&_[cmdk-group-heading]]:text-os9-gray-700 [&_[cmdk-group-heading]]:select-none",
         className,
       )}
@@ -424,7 +429,7 @@ const RetroComboboxItem = React.forwardRef<
       className={cn(
         "relative flex items-center",
         "h-[18px] w-full px-[14px]",
-        "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-normal",
         "text-os9-black",
         "cursor-pointer select-none outline-none",
         /* Highlighted (keyboard or pointer): OS9 menu highlight */

@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "nostalgia-theme",
   "title": "Nostalgia Theme",
-  "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, heading font) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
+  "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, font stacks) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
   "cssVars": {
     "theme": {
       "color-os9-black": "var(--os9-black)",
@@ -16,8 +16,7 @@
       "color-os9-gray-800": "var(--os9-gray-800)",
       "color-os9-azul": "var(--os9-azul)",
       "color-os9-lavender": "var(--os9-lavender)",
-      "color-os9-focus": "var(--os9-focus)",
-      "font-heading": "\"Charcoal\", \"ChicagoFLF\", \"Geneva\", \"Arial\", sans-serif"
+      "color-os9-focus": "var(--os9-focus)"
     },
     "light": {
       "os9-black": "#262626",
@@ -35,7 +34,10 @@
       "os9-shadow-raised": "inset 1px 1px 0 var(--os9-white), inset -1px -1px 0 var(--os9-gray-700)",
       "os9-shadow-pressed": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
       "os9-shadow-inset": "inset 1px 1px 0 var(--os9-gray-700), inset -1px -1px 0 var(--os9-white)",
-      "os9-shadow-window": "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4)"
+      "os9-shadow-window": "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255, 255, 255, 0.6), inset -2px -2px 0 rgba(38, 38, 38, 0.4)",
+      "os9-font-heading": "\"Charcoal\", \"ChicagoFLF\", \"Geneva\", \"Arial\", sans-serif",
+      "os9-font-sans": "\"Geneva\", \"Verdana\", \"Helvetica Neue\", sans-serif",
+      "os9-font-mono": "\"Monaco\", \"Courier New\", monospace"
     }
   },
   "css": {
@@ -68,7 +70,7 @@
       "box-shadow": "0 0 0 2px var(--os9-focus)"
     },
     "@utility os9-heading": {
-      "font-family": "var(--font-heading)",
+      "font-family": "var(--os9-font-heading)",
       "letter-spacing": "0.42px",
       "line-height": "0.98"
     },

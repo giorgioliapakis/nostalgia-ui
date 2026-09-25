@@ -77,7 +77,7 @@ function RetroAccordionTrigger(
           "flex w-full flex-row items-center justify-between",
           "py-[6px]",
           "cursor-pointer select-none",
-          "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px]",
+          "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px]",
           "text-os9-black",
           "hover:bg-[var(--os9-lavender)]",
           "focus-visible:os9-focus-ring",
@@ -130,7 +130,7 @@ function RetroAccordionContent(
       ref={ref}
       className={cn(
         "overflow-hidden",
-        "font-[family-name:var(--font-sans)] text-[10px]",
+        "font-[family-name:var(--os9-font-sans)] text-[10px]",
         "text-os9-black",
         /* Collapse/expand animation via data-state */
         "data-[state=open]:animate-accordion-down",

@@ -11,6 +11,11 @@ import {
   RetroPopoverContent,
 } from "@/registry/new-york/ui/retro-popover"
 
+// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
+// literal `asChild` to Base UI's `render` prop in base-* projects, which
+// breaks these Radix-based components.
+const AS_CHILD = { asChild: true } as const
+
 interface RetroDatePickerProps {
   /** The selected date (controlled) */
   value?: Date
@@ -163,7 +168,7 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
             aria-label="Date"
             className={cn(
               "h-[24px] w-[110px] px-[5px]",
-              "font-[family-name:var(--font-sans)] text-[11px] text-os9-black",
+              "font-[family-name:var(--os9-font-sans)] text-[11px] text-os9-black",
               "border border-os9-black bg-os9-white",
               "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
               "outline-none transition-none",
@@ -171,7 +176,7 @@ const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
               "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-os9-gray-200 disabled:text-os9-gray-600"
             )}
           />
-          <RetroPopoverTrigger asChild>
+          <RetroPopoverTrigger {...AS_CHILD}>
             <button
               type="button"
               disabled={disabled}

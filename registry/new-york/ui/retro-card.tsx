@@ -65,7 +65,7 @@ function RetroCardTitle(
     <h3
       ref={ref}
       className={cn(
-        "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[1.2]",
+        "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[1.2]",
         className
       )}
       {...props}
@@ -88,7 +88,7 @@ function RetroCardDescription(
     <p
       ref={ref}
       className={cn(
-        "font-[family-name:var(--font-sans)] text-[10px] leading-[1.3] text-os9-gray-800",
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-[1.3] text-os9-gray-800",
         className
       )}
       {...props}

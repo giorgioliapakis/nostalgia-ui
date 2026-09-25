@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-kbd",
+  "title": "RetroKbd",
+  "description": "Mac OS 9 keyboard keycaps (RetroKbd, RetroKbdGroup) with a raised bevel and Charcoal lettering, plus RETRO_KBD_KEYS for the command, option, shift and control glyphs.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://nostalgia-ui.com/r/nostalgia-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-kbd.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* ------------------------------------------------------------------ */\n/*  RetroKbd — a single raised keycap                                  */\n/* ------------------------------------------------------------------ */\n\nconst retroKbdVariants = cva(\n  [\n    \"pointer-events-none inline-flex w-fit shrink-0 items-center justify-center gap-[2px] select-none\",\n    \"border border-os9-black bg-os9-gray-300 text-os9-black\",\n    // Keycap bevel: bright top-left, dark bottom-right, and a thicker base\n    // edge so the key reads as sitting proud of the surface.\n    \"shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-2px_0_var(--os9-gray-600)]\",\n    \"font-[family-name:var(--os9-font-heading)] tracking-[0.42px] leading-none whitespace-nowrap\",\n    \"[&_svg]:pointer-events-none [&_svg]:shrink-0\",\n    // Inside a tooltip / highlighted menu the cap stays legible.\n    \"[[data-slot=tooltip-content]_&]:bg-os9-white\",\n  ],\n  {\n    variants: {\n      size: {\n        default: \"h-[18px] min-w-[18px] px-[4px] pb-[1px] text-[11px] [&_svg]:size-[10px]\",\n        sm: \"h-[14px] min-w-[14px] px-[3px] pb-[1px] text-[9px] [&_svg]:size-[8px]\",\n        lg: \"h-[24px] min-w-[24px] px-[6px] pb-[2px] text-[13px] [&_svg]:size-[12px]\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n\ntype RetroKbdProps = React.ComponentProps<\"kbd\"> &\n  VariantProps<typeof retroKbdVariants>\n\nconst RetroKbd = React.forwardRef<HTMLElement, RetroKbdProps>(\n  function RetroKbd({ className, size, ...props }, ref) {\n    return (\n      <kbd\n        ref={ref}\n        data-slot=\"kbd\"\n        className={cn(retroKbdVariants({ size }), className)}\n        {...props}\n      />\n    )\n  }\n)\nRetroKbd.displayName = \"RetroKbd\"\n\n/* ------------------------------------------------------------------ */\n/*  RetroKbdGroup — a chord of keycaps                                 */\n/* ------------------------------------------------------------------ */\n\nconst RetroKbdGroup = React.forwardRef<HTMLElement, React.ComponentProps<\"kbd\">>(\n  function RetroKbdGroup({ className, ...props }, ref) {\n    return (\n      <kbd\n        ref={ref}\n        data-slot=\"kbd-group\"\n        className={cn(\n          \"inline-flex items-center gap-[3px]\",\n          \"font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-gray-700\",\n          className\n        )}\n        {...props}\n      />\n    )\n  }\n)\nRetroKbdGroup.displayName = \"RetroKbdGroup\"\n\n/* ------------------------------------------------------------------ */\n/*  Modifier glyphs                                                    */\n/* ------------------------------------------------------------------ */\n\n/**\n * Mac modifier glyphs. Use them as `<RetroKbd>{RETRO_KBD_KEYS.command}</RetroKbd>`\n * so the symbols stay consistent across menus, tooltips and docs.\n */\nconst RETRO_KBD_KEYS = {\n  command: \"⌘\", // ⌘\n  option: \"⌥\", // ⌥\n  shift: \"⇧\", // ⇧\n  control: \"⌃\", // ⌃\n  capsLock: \"⇪\", // ⇪\n  return: \"↩\", // ↩\n  enter: \"⌤\", // ⌤\n  delete: \"⌫\", // ⌫\n  forwardDelete: \"⌦\", // ⌦\n  escape: \"⎋\", // ⎋\n  tab: \"⇥\", // ⇥\n  up: \"↑\", // ↑\n  down: \"↓\", // ↓\n  left: \"←\", // ←\n  right: \"→\", // →\n  power: \"⏻\", // ⏻\n} as const\n\nexport { RetroKbd, RetroKbdGroup, RETRO_KBD_KEYS, retroKbdVariants }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

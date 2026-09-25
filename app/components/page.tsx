@@ -12,7 +12,7 @@ import {
 import { RetroBadge } from "@/registry/new-york/ui/retro-badge"
 import { RetroSeparator } from "@/registry/new-york/ui/retro-separator"
 
-import { NAV_GROUPS } from "./_components/nav-data"
+import { NAV_GROUPS, TOTAL_COMPONENTS } from "./_components/nav-data"
 
 export const metadata: Metadata = {
   title: "Components",
@@ -33,7 +33,7 @@ export default function ComponentsOverview() {
         <div className="flex flex-col gap-3">
           <h1 className="os9-heading text-[16px]">nostalgia-ui Components</h1>
           <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black">
-            59 Mac OS 9 styled components built with Radix UI and Tailwind CSS.
+            {TOTAL_COMPONENTS} Mac OS 9 styled components built with Radix UI and Tailwind CSS.
             Each component is a drop-in replacement installable via the shadcn
             CLI. Zero image assets — every bevel, stripe, and shadow is pure
             CSS.
@@ -142,7 +142,7 @@ export function MyApp() {
       {/* Browse all */}
       <section className="max-w-[640px]">
         <RetroButton variant="primary" asChild>
-          <Link href="/components/all">View all 59 components on one page</Link>
+          <Link href="/components/all">View all {TOTAL_COMPONENTS} components on one page</Link>
         </RetroButton>
       </section>
     </main>
