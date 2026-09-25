@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { NAV_GROUPS, TOTAL_COMPONENTS } from "./nav-data"
+import { BLOCKS } from "../../blocks/_components/blocks-data"
 
 import {
   RetroSidebarProvider,
@@ -83,6 +84,11 @@ function SidebarNav() {
                     <Link href="/components/all"><span>All Components</span></Link>
                   </RetroSidebarMenuButton>
                 </RetroSidebarMenuItem>
+                <RetroSidebarMenuItem>
+                  <RetroSidebarMenuButton asChild isActive={pathname === "/blocks"}>
+                    <Link href="/blocks"><span>Blocks</span></Link>
+                  </RetroSidebarMenuButton>
+                </RetroSidebarMenuItem>
               </RetroSidebarMenu>
             </RetroSidebarGroup>
             {NAV_GROUPS.map((group) => (
@@ -109,6 +115,23 @@ function SidebarNav() {
                 </RetroSidebarMenu>
               </RetroSidebarGroup>
             ))}
+            <RetroSidebarGroup>
+              <RetroSidebarGroupLabel>Blocks</RetroSidebarGroupLabel>
+              <RetroSidebarMenu>
+                {BLOCKS.map((block) => {
+                  const href = `/blocks/${block.slug}`
+                  return (
+                    <RetroSidebarMenuItem key={block.slug}>
+                      <RetroSidebarMenuButton asChild isActive={pathname === href}>
+                        <Link href={href}>
+                          <span>{block.name}</span>
+                        </Link>
+                      </RetroSidebarMenuButton>
+                    </RetroSidebarMenuItem>
+                  )
+                })}
+              </RetroSidebarMenu>
+            </RetroSidebarGroup>
           </RetroSidebarContent>
 
           <RetroSidebarFooter className="flex-col items-start gap-1.5">
@@ -174,6 +197,9 @@ function ComponentsMenuBar() {
             </RetroDropdownMenuItem>
             <RetroDropdownMenuItem asChild>
               <Link href="/components">Components Overview</Link>
+            </RetroDropdownMenuItem>
+            <RetroDropdownMenuItem asChild>
+              <Link href="/blocks">Blocks</Link>
             </RetroDropdownMenuItem>
             <RetroDropdownMenuSeparator />
             <RetroDropdownMenuItem asChild>
