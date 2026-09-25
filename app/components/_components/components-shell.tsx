@@ -151,6 +151,14 @@ function SidebarNav() {
             >
               GitHub
             </Link>
+            <a
+              href="https://giorgio.co"
+              target="_blank"
+              rel="author noopener"
+              className="font-[family-name:var(--font-sans)] text-[9px] text-os9-black underline hover:text-os9-azul"
+            >
+              by Giorgio Liapakis
+            </a>
           </RetroSidebarFooter>
         </>
       )}

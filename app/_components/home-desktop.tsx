@@ -614,9 +614,14 @@ function DesktopInner() {
           GitHub
         </a>
         <RetroSeparator orientation="vertical" className="h-[10px]" />
-        <span className="font-[family-name:var(--font-sans)] text-[10px] text-os9-black">
+        <a
+          href="https://giorgio.co"
+          target="_blank"
+          rel="author noopener"
+          className="font-[family-name:var(--font-sans)] text-[10px] text-os9-black underline hover:text-os9-azul"
+        >
           by Giorgio Liapakis
-        </span>
+        </a>
       </div>
     </div>
   )
