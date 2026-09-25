@@ -1,7 +1,12 @@
-"use client"
-
+import type { Metadata } from "next"
 import { RetroRadioGroup, RetroRadioGroupItem } from "@/registry/new-york/ui/retro-radio"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Radio",
+  description:
+    "A radio button group with Mac OS 9 circular indicator and beveled styling.",
+}
 
 export default function RadioPreview() {
   return (

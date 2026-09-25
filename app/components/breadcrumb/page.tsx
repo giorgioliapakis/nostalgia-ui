@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroBreadcrumb,
   RetroBreadcrumbList,
@@ -8,6 +9,12 @@ import {
   RetroBreadcrumbEllipsis,
 } from "@/registry/new-york/ui/retro-breadcrumb"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Breadcrumb",
+  description:
+    "Finder-style breadcrumb navigation with right-pointing triangle separators.",
+}
 
 export default function BreadcrumbPreview() {
   return (

@@ -1,20 +1,34 @@
+import type { Metadata } from "next"
 import { NostalgiaProvider } from "@/registry/new-york/ui/retro-theme-provider"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Theme Provider",
+  description:
+    "A runtime override for the Mac OS 9 design tokens, for theming a subtree.",
+}
 
 export default function ThemeProviderPreview() {
   return (
     <ComponentDocLayout
       name="retro-theme-provider"
       title="NostalgiaProvider"
-      description="A provider component that injects all Mac OS 9 design tokens and utility classes."
+      description="A runtime override for the Mac OS 9 design tokens, for theming a subtree."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        The NostalgiaProvider wraps your application (or a subtree) with all OS9
-        design tokens as CSS custom properties and injects utility classes. This
-        allows nostalgia-ui components to work without depending on a global
-        stylesheet.
+        NostalgiaProvider sets the OS9 design tokens as CSS custom properties on
+        a wrapper element at runtime, so you can override or re-theme a subtree.
+        It does not replace the base stylesheet: component classes like{" "}
+        <code>bg-os9-gray-300</code> are Tailwind utilities that need the{" "}
+        <code>@theme</code> mappings in your CSS. Install the base styles once
+        with the <code>nostalgia-theme</code> registry item:
       </p>
+      <div className="border border-os9-black bg-os9-white p-2 mb-6">
+        <pre className="font-[family-name:var(--font-mono)] text-[10px] text-os9-black whitespace-pre-wrap">
+          npx shadcn@latest add https://nostalgia-ui.com/r/nostalgia-theme.json
+        </pre>
+      </div>
 
       {/* Live demo */}
       <section className="mb-8">
@@ -83,8 +97,9 @@ export default function Layout({ children }) {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Wrap your app root or any subtree with NostalgiaProvider to scope OS9
-        styling. Currently only the &quot;classic&quot; theme is supported.
+        Wrap any subtree with NostalgiaProvider to override OS9 tokens there.
+        The base styles still come from the nostalgia-theme stylesheet.
+        Currently only the &quot;classic&quot; theme is supported.
       </p>
     </ComponentDocLayout>
   )

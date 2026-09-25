@@ -194,6 +194,8 @@ const RetroDesktopIcon = React.forwardRef<HTMLDivElement, RetroDesktopIconProps>
       selected = false,
       onSelect,
       onDoubleClick,
+      onClick,
+      onKeyDown,
       className,
       ...props
     },
@@ -204,7 +206,7 @@ const RetroDesktopIcon = React.forwardRef<HTMLDivElement, RetroDesktopIconProps>
         ref={ref}
         role="button"
         tabIndex={0}
-        aria-selected={selected}
+        aria-pressed={selected}
         className={cn(
           "flex w-[72px] cursor-default flex-col items-center gap-[2px] p-[4px]",
           "outline-none",
@@ -212,19 +214,20 @@ const RetroDesktopIcon = React.forwardRef<HTMLDivElement, RetroDesktopIconProps>
           "focus-visible:ring-2 focus-visible:ring-os9-focus focus-visible:ring-offset-1",
           className
         )}
+        {...props}
         onClick={(e) => {
-          onSelect?.()
-          props.onClick?.(e)
+          onClick?.(e)
+          if (!e.defaultPrevented) onSelect?.()
         }}
         onDoubleClick={onDoubleClick}
         onKeyDown={(e) => {
+          onKeyDown?.(e)
+          if (e.defaultPrevented) return
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault()
             onSelect?.()
           }
-          props.onKeyDown?.(e)
         }}
-        {...props}
       >
         {/* Icon area */}
         <div

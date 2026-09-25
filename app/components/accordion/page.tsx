@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroAccordion,
   RetroAccordionItem,
@@ -5,6 +6,12 @@ import {
   RetroAccordionContent,
 } from "@/registry/new-york/ui/retro-accordion"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Accordion",
+  description:
+    "A vertically stacked set of collapsible sections with Mac OS 9 disclosure styling.",
+}
 
 export default function AccordionPreview() {
   return (

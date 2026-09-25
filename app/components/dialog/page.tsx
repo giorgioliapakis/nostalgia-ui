@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroDialog,
   RetroDialogTrigger,
@@ -12,6 +11,12 @@ import {
 } from "@/registry/new-york/ui/retro-dialog"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Dialog",
+  description:
+    "A modal dialog window with Mac OS 9 chrome, title bar, and close box.",
+}
 
 export default function DialogPreview() {
   return (

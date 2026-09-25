@@ -55,13 +55,10 @@ function RetroTableFooter(
   return (
     <tfoot
       ref={ref}
-      className={cn(className)}
-      style={{
-        backgroundColor: "var(--os9-gray-400)",
-        fontFamily: "var(--font-sans)",
-        fontSize: "10px",
-        fontWeight: "bold",
-      }}
+      className={cn(
+        "bg-os9-gray-400 font-[family-name:var(--font-sans)] text-[10px] font-bold",
+        className
+      )}
       {...props}
     />
   )
@@ -82,14 +79,6 @@ function RetroTableRow(
     <tr
       ref={ref}
       className={cn("transition-colors", className)}
-      style={
-        {
-          "--row-bg": "transparent",
-          "--row-color": "inherit",
-          backgroundColor: "var(--row-bg)",
-          color: "var(--row-color)",
-        } as React.CSSProperties
-      }
       {...props}
     />
   )
@@ -109,17 +98,17 @@ function RetroTableHead(
   return (
     <th
       ref={ref}
-      className={cn("text-left select-none", className)}
-      style={{
-        backgroundColor: "var(--os9-gray-400)",
-        border: "1px solid #484848",
-        padding: "4px 8px",
-        fontFamily: "var(--font-sans)",
-        fontSize: "10px",
-        fontWeight: "bold",
-        boxShadow:
-          "inset -2px 0 0 #808080, inset 0 -2px 0 #808080, inset 2px 0 0 white, inset 0 2px 0 white",
-      }}
+      className={cn(
+        "text-left select-none",
+        "bg-os9-gray-400 border border-[#484848] px-[8px] py-[4px]",
+        "font-[family-name:var(--font-sans)] text-[10px] font-bold",
+        /* Raised bevel */
+        "shadow-[inset_-2px_0_0_var(--os9-gray-700),inset_0_-2px_0_var(--os9-gray-700),inset_2px_0_0_var(--os9-white),inset_0_2px_0_var(--os9-white)]",
+        /* Pressed bevel while clicking (e.g. sortable headers) */
+        "active:bg-os9-gray-600",
+        "active:shadow-[inset_2px_0_0_var(--os9-gray-700),inset_0_2px_0_var(--os9-gray-700),inset_-2px_0_0_var(--os9-white),inset_0_-2px_0_var(--os9-white)]",
+        className
+      )}
       {...props}
     />
   )
@@ -139,13 +128,12 @@ function RetroTableCell(
   return (
     <td
       ref={ref}
-      className={cn("align-middle", className)}
-      style={{
-        padding: "4px 8px",
-        fontFamily: "var(--font-sans)",
-        fontSize: "10px",
-        borderBottom: "1px solid var(--os9-gray-400)",
-      }}
+      className={cn(
+        "align-middle px-[8px] py-[4px]",
+        "font-[family-name:var(--font-sans)] text-[10px]",
+        "border-b border-b-os9-gray-400",
+        className
+      )}
       {...props}
     />
   )
@@ -165,13 +153,11 @@ function RetroTableCaption(
   return (
     <caption
       ref={ref}
-      className={cn("mt-1", className)}
-      style={{
-        fontFamily: "var(--font-sans)",
-        fontSize: "10px",
-        color: "var(--os9-gray-800)",
-        padding: "4px",
-      }}
+      className={cn(
+        "mt-1 p-[4px]",
+        "font-[family-name:var(--font-sans)] text-[10px] text-os9-gray-800",
+        className
+      )}
       {...props}
     />
   )
@@ -181,37 +167,7 @@ const ForwardedRetroTableCaption = React.forwardRef(RetroTableCaption)
 ForwardedRetroTableCaption.displayName = "RetroTableCaption"
 
 /* ------------------------------------------------------------------ */
-/*  Stylesheet (hover + selected styles via CSS)                       */
-/* ------------------------------------------------------------------ */
-
-function RetroTableStyles() {
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: `
-          [data-retro-table] tbody tr:hover {
-            --row-bg: var(--os9-lavender) !important;
-          }
-          [data-retro-table] tbody tr[data-state="selected"] {
-            --row-bg: var(--os9-azul) !important;
-            --row-color: white !important;
-          }
-          [data-retro-table] thead th:active {
-            background-color: var(--os9-gray-600) !important;
-            box-shadow:
-              inset 2px 0 0 #808080,
-              inset 0 2px 0 #808080,
-              inset -2px 0 0 white,
-              inset 0 -2px 0 white !important;
-          }
-        `,
-      }}
-    />
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Wrapper that injects styles                                        */
+/*  RetroTable (root)                                                  */
 /* ------------------------------------------------------------------ */
 
 function RetroTableRoot(
@@ -219,24 +175,22 @@ function RetroTableRoot(
   ref: React.ForwardedRef<HTMLTableElement>
 ) {
   return (
-    <>
-      <RetroTableStyles />
-      <div className="w-full overflow-auto">
-        <table
-          ref={ref}
-          data-retro-table=""
-          className={cn("w-full caption-bottom", className)}
-          style={{
-            border: "1px solid var(--os9-black)",
-            borderCollapse: "separate",
-            borderSpacing: 0,
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-          }}
-          {...props}
-        />
-      </div>
-    </>
+    <div className="w-full overflow-auto">
+      <table
+        ref={ref}
+        data-retro-table=""
+        className={cn(
+          "w-full caption-bottom",
+          "border border-os9-black border-separate border-spacing-0",
+          "font-[family-name:var(--font-sans)] text-[10px]",
+          /* Body row hover (lavender) and selected (azul) highlights */
+          "[&_tbody_tr:not([data-state=selected]):hover]:bg-os9-lavender",
+          "[&_tbody_tr[data-state=selected]]:bg-os9-azul [&_tbody_tr[data-state=selected]]:text-os9-white",
+          className
+        )}
+        {...props}
+      />
+    </div>
   )
 }
 

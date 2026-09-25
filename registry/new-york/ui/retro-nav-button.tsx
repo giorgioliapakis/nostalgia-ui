@@ -39,6 +39,14 @@ const arrowPaths: Record<string, string> = {
   down: "M1 1 L3 5 L5 1 Z",
 }
 
+/* Default accessible names (the button is icon-only) */
+const defaultLabels: Record<string, string> = {
+  left: "Previous",
+  right: "Next",
+  up: "Up",
+  down: "Down",
+}
+
 function RetroNavButton(
   {
     className,
@@ -62,6 +70,8 @@ function RetroNavButton(
         className
       )}
       ref={ref}
+      type="button"
+      aria-label={defaultLabels[dir]}
       disabled={disabled}
       {...props}
     >

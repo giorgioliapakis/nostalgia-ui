@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroBadge } from "@/registry/new-york/ui/retro-badge"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Badge",
+  description:
+    "A small status label with Mac OS 9 raised bevel in default, accent, and azul variants.",
+}
 
 export default function BadgePreview() {
   return (

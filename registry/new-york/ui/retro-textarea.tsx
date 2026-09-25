@@ -12,7 +12,7 @@ const retroTextareaVariants = cva(
     "placeholder:text-os9-gray-600",
     "transition-none",
     "outline-none",
-    "min-h-[80px] resize-vertical",
+    "min-h-[80px] resize-y",
     // Default inset bevel: inner shadow top-left gray, outer shadow for 3D effect
     "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white),-1px_0_0_var(--os9-gray-700),0_-1px_0_var(--os9-gray-700),1px_0_0_var(--os9-white),0_1px_0_var(--os9-white)]",
     // Focus: OS9 blue ring matching Figma's active text field

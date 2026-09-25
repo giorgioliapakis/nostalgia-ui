@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroSheet,
   RetroSheetTrigger,
@@ -14,6 +13,12 @@ import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { RetroInput } from "@/registry/new-york/ui/retro-input"
 import { RetroLabel } from "@/registry/new-york/ui/retro-label"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Sheet",
+  description:
+    "A slide-in panel from any screen edge with Mac OS 9 window chrome and bevel styling.",
+}
 
 export default function SheetPreview() {
   return (

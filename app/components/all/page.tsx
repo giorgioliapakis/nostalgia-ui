@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import dynamic from "next/dynamic"
+import Link from "next/link"
 import { type ColumnDef } from "@tanstack/react-table"
 
 /* ------------------------------------------------------------------ */
@@ -156,25 +157,19 @@ import { RetroScrollArea } from "@/registry/new-york/ui/retro-scrollbar"
 
 // Infrastructure
 import { RetroText } from "@/registry/new-york/ui/retro-typography"
-import { RetroChartContainer, type RetroChartConfig } from "@/registry/new-york/ui/retro-chart"
 
-/* ------------------------------------------------------------------ */
-/*  Chart config                                                       */
-/* ------------------------------------------------------------------ */
+import { NAV_ITEMS } from "../_components/nav-data"
 
-const chartConfig = {
-  value: {
-    label: "Usage",
-    color: "#333399",
-  },
-} satisfies RetroChartConfig
-
-const chartData = [
-  { name: "Finder", value: 42 },
-  { name: "SimpleText", value: 28 },
-  { name: "Netscape", value: 35 },
-  { name: "Sherlock", value: 18 },
-]
+// recharts is heavy — load the chart demo on the client only, after the
+// rest of the page has rendered.
+const ChartDemo = dynamic(() => import("./chart-demo"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[200px] w-full max-w-[400px] flex items-center justify-center text-[10px] text-[var(--os9-gray-700)]">
+      Loading chart...
+    </div>
+  ),
+})
 
 /* ------------------------------------------------------------------ */
 /*  Data Table column defs                                             */
@@ -1144,13 +1139,7 @@ export default function Home() {
 
             {/* Chart */}
             <Section title="Chart" fullWidth>
-              <RetroChartContainer config={chartConfig} className="h-[200px] w-full max-w-[400px]">
-                <BarChart data={chartData}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Bar dataKey="value" fill="var(--color-value)" />
-                </BarChart>
-              </RetroChartContainer>
+              <ChartDemo />
             </Section>
 
             {/* Sidebar */}
@@ -1219,31 +1208,20 @@ export default function Home() {
           {/* ============================================================ */}
           {/* Full Component Index                                         */}
           {/* ============================================================ */}
-          <RetroWindow title="All 59 Components" className="max-w-4xl mx-auto">
+          <RetroWindow title={`All ${NAV_ITEMS.length} Components`} className="max-w-4xl mx-auto">
             <div className="p-4">
               <div className="flex flex-wrap gap-x-4 gap-y-1">
-                {[
-                  "accordion", "alert", "alert-dialog", "aspect-ratio", "avatar",
-                  "badge", "breadcrumb", "button", "calendar", "card", "carousel",
-                  "chart", "checkbox", "chevron", "collapsible", "combobox",
-                  "command", "context-menu", "data-table", "date-picker",
-                  "desktop", "dialog", "drawer", "dropdown-menu", "form",
-                  "hover-card", "icons", "input", "input-otp", "label",
-                  "menu-bar", "nav-button", "navigation-menu", "pagination",
-                  "popover", "progress", "radio", "resizable", "scrollbar",
-                  "select", "separator", "sheet", "sidebar", "skeleton",
-                  "slider", "spinner", "switch", "table", "tabs", "textarea",
-                  "theme-provider", "title-bar", "toast", "toggle",
-                  "toggle-group", "toolbar", "tooltip", "typography", "window",
-                ].map((name) => (
-                  <a
-                    key={name}
-                    href={`/preview/${name}`}
-                    className="text-[10px] text-[var(--os9-azul)] underline hover:bg-[var(--os9-lavender)] px-1"
-                  >
-                    {name}
-                  </a>
-                ))}
+                {[...NAV_ITEMS]
+                  .sort((a, b) => a.slug.localeCompare(b.slug))
+                  .map((item) => (
+                    <Link
+                      key={item.slug}
+                      href={`/components/${item.slug}`}
+                      className="text-[10px] text-[var(--os9-azul)] underline hover:bg-[var(--os9-lavender)] px-1"
+                    >
+                      {item.slug}
+                    </Link>
+                  ))}
               </div>
             </div>
           </RetroWindow>

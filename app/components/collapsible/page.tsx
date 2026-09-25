@@ -1,11 +1,16 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroCollapsible,
   RetroCollapsibleTrigger,
   RetroCollapsibleContent,
 } from "@/registry/new-york/ui/retro-collapsible"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Collapsible",
+  description:
+    "A disclosure widget with Mac OS 9 triangle toggle for expanding and collapsing content.",
+}
 
 export default function CollapsiblePreview() {
   return (

@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroAspectRatio } from "@/registry/new-york/ui/retro-aspect-ratio"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Aspect Ratio",
+  description:
+    "Maintains a fixed width-to-height ratio for media containers with optional OS 9 inset border.",
+}
 
 export default function AspectRatioPreview() {
   return (

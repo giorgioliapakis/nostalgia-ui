@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroProgress } from "@/registry/new-york/ui/retro-progress"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Progress",
+  description:
+    "A progress bar with Mac OS 9 candy-stripe pattern in determinate and indeterminate modes.",
+}
 
 export default function ProgressPreview() {
   return (

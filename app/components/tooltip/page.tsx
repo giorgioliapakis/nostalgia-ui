@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import {
   RetroTooltipProvider,
@@ -8,6 +7,12 @@ import {
   RetroTooltipContent,
 } from "@/registry/new-york/ui/retro-tooltip"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Tooltip",
+  description:
+    "A Balloon Help style tooltip with Mac OS 9 raised bevel that appears on hover.",
+}
 
 export default function TooltipPreview() {
   return (

@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroPopover,
   RetroPopoverTrigger,
@@ -8,6 +7,12 @@ import {
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { RetroInput } from "@/registry/new-york/ui/retro-input"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Popover",
+  description:
+    "A click-triggered popup panel with Mac OS 9 raised bevel for forms and information.",
+}
 
 export default function PopoverPreview() {
   return (

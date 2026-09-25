@@ -1,7 +1,12 @@
-"use client"
-
+import type { Metadata } from "next"
 import { RetroSeparator } from "@/registry/new-york/ui/retro-separator"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Separator",
+  description:
+    "A horizontal or vertical divider line with the classic Mac OS 9 beveled light-and-dark effect.",
+}
 
 export default function SeparatorPreview() {
   return (

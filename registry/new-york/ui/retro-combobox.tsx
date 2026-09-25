@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Command as CommandPrimitive } from "cmdk"
 
 import { cn } from "@/lib/utils"
 import {
@@ -10,19 +11,40 @@ import {
 } from "@/registry/new-york/ui/retro-popover"
 
 /* ---------------------------------------------------------------------------
+ * Helpers
+ * --------------------------------------------------------------------------- */
+
+interface RetroComboboxOption {
+  value: string
+  label: string
+}
+
+/** Extract plain text from a React node (strings, numbers, nested elements). */
+function getNodeText(node: React.ReactNode): string {
+  if (node == null || typeof node === "boolean") return ""
+  if (typeof node === "string" || typeof node === "number") return String(node)
+  if (Array.isArray(node)) return node.map(getNodeText).join("")
+  if (React.isValidElement<{ children?: React.ReactNode }>(node)) {
+    return getNodeText(node.props.children)
+  }
+  return ""
+}
+
+/* ---------------------------------------------------------------------------
  * Context
  * --------------------------------------------------------------------------- */
 
 interface ComboboxContextValue {
   open: boolean
   setOpen: (open: boolean) => void
-  search: string
-  setSearch: (search: string) => void
   value: string
   onSelect: (value: string) => void
-  /** Map of value -> label so the trigger can display the selected label */
+  /** id of the popover content, referenced by the trigger's aria-controls */
+  contentId: string
+  /** Register an item's label so the trigger can display it */
   registerItem: (value: string, label: string) => void
   getLabel: (value: string) => string | undefined
+  displayValue?: (value: string) => React.ReactNode
 }
 
 const ComboboxContext = React.createContext<ComboboxContextValue | null>(null)
@@ -46,6 +68,14 @@ interface RetroComboboxProps {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
+  /**
+   * Optional list of options. The most reliable source for resolving the
+   * selected value's label in the trigger (items inside the popover are not
+   * mounted while it is closed).
+   */
+  items?: RetroComboboxOption[]
+  /** Custom resolver for the trigger text. Takes precedence over all labels. */
+  displayValue?: (value: string) => React.ReactNode
   children: React.ReactNode
 }
 
@@ -58,13 +88,15 @@ const RetroCombobox = React.forwardRef<HTMLDivElement, RetroComboboxProps>(
       open: controlledOpen,
       defaultOpen = false,
       onOpenChange,
+      items,
+      displayValue,
       children,
     },
     ref,
   ) {
     const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue)
     const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
-    const [search, setSearch] = React.useState("")
+    const contentId = React.useId()
 
     const isControlledValue = controlledValue !== undefined
     const isControlledOpen = controlledOpen !== undefined
@@ -76,8 +108,6 @@ const RetroCombobox = React.forwardRef<HTMLDivElement, RetroComboboxProps>(
       (next: boolean) => {
         if (!isControlledOpen) setUncontrolledOpen(next)
         onOpenChange?.(next)
-        // Reset search when closing
-        if (!next) setSearch("")
       },
       [isControlledOpen, onOpenChange],
     )
@@ -91,20 +121,42 @@ const RetroCombobox = React.forwardRef<HTMLDivElement, RetroComboboxProps>(
       [isControlledValue, onValueChange, setOpen],
     )
 
-    // Label registry so the trigger can show the selected item's label
-    const labelsRef = React.useRef<Map<string, string>>(new Map())
+    // Labels registered by mounted items (kept in state so the trigger
+    // re-renders once they are known).
+    const [registeredLabels, setRegisteredLabels] = React.useState<
+      Record<string, string>
+    >({})
 
     const registerItem = React.useCallback((itemValue: string, label: string) => {
-      labelsRef.current.set(itemValue, label)
+      setRegisteredLabels((prev) =>
+        prev[itemValue] === label ? prev : { ...prev, [itemValue]: label },
+      )
     }, [])
 
-    const getLabel = React.useCallback((itemValue: string) => {
-      return labelsRef.current.get(itemValue)
-    }, [])
+    // Labels discoverable synchronously from the JSX tree, so the trigger
+    // can show the selected label on first render without opening.
+    const childLabels = React.useMemo(() => collectItemLabels(children), [children])
+
+    const getLabel = React.useCallback(
+      (itemValue: string) =>
+        items?.find((item) => item.value === itemValue)?.label ??
+        registeredLabels[itemValue] ??
+        childLabels[itemValue],
+      [items, registeredLabels, childLabels],
+    )
 
     const ctx = React.useMemo<ComboboxContextValue>(
-      () => ({ open, setOpen, search, setSearch, value, onSelect, registerItem, getLabel }),
-      [open, setOpen, search, value, onSelect, registerItem, getLabel],
+      () => ({
+        open,
+        setOpen,
+        value,
+        onSelect,
+        contentId,
+        registerItem,
+        getLabel,
+        displayValue,
+      }),
+      [open, setOpen, value, onSelect, contentId, registerItem, getLabel, displayValue],
     )
 
     return (
@@ -133,9 +185,12 @@ const RetroComboboxTrigger = React.forwardRef<
   HTMLButtonElement,
   RetroComboboxTriggerProps
 >(function RetroComboboxTrigger({ className, placeholder = "Select...", ...props }, ref) {
-  const { value, getLabel } = useCombobox()
+  const { value, open, contentId, getLabel, displayValue } = useCombobox()
 
-  const label = value ? getLabel(value) : undefined
+  const label: React.ReactNode = value
+    ? (displayValue?.(value) ?? getLabel(value) ?? value)
+    : undefined
+  const hasLabel = label != null && label !== ""
 
   return (
     <RetroPopoverTrigger asChild>
@@ -143,6 +198,9 @@ const RetroComboboxTrigger = React.forwardRef<
         ref={ref}
         type="button"
         role="combobox"
+        aria-expanded={open}
+        aria-controls={contentId}
+        aria-haspopup="listbox"
         className={cn(
           "inline-flex items-center justify-between",
           "h-[22px] w-full",
@@ -160,10 +218,10 @@ const RetroComboboxTrigger = React.forwardRef<
         <span
           className={cn(
             "truncate px-[5px]",
-            !label && "text-os9-gray-600",
+            !hasLabel && "text-os9-gray-600",
           )}
         >
-          {label ?? placeholder}
+          {hasLabel ? label : placeholder}
         </span>
         {/* Down chevron */}
         <span
@@ -181,6 +239,7 @@ const RetroComboboxTrigger = React.forwardRef<
             viewBox="0 0 8 4"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
           >
             <path d="M4 4L0 0H8L4 4Z" fill="currentColor" />
           </svg>
@@ -192,30 +251,44 @@ const RetroComboboxTrigger = React.forwardRef<
 RetroComboboxTrigger.displayName = "RetroComboboxTrigger"
 
 /* ---------------------------------------------------------------------------
- * RetroComboboxContent
+ * RetroComboboxContent (popover + cmdk root)
  * --------------------------------------------------------------------------- */
 
 interface RetroComboboxContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  /** Maximum height of the scrollable item list, in px. Defaults to 200. */
+  extends React.ComponentPropsWithoutRef<typeof CommandPrimitive> {
+  /**
+   * @deprecated Set `maxHeight` on `RetroComboboxList` instead.
+   */
   maxHeight?: number
 }
 
 const RetroComboboxContent = React.forwardRef<
   HTMLDivElement,
   RetroComboboxContentProps
->(function RetroComboboxContent({ className, children, maxHeight = 200, ...props }, ref) {
+>(function RetroComboboxContent(
+  { className, children, maxHeight, ...props },
+  ref,
+) {
+  const { value, contentId } = useCombobox()
+
   return (
     <RetroPopoverContent
+      id={contentId}
       className={cn(
         "w-[var(--radix-popover-trigger-width)] p-0",
         className,
       )}
       sideOffset={2}
     >
-      <div ref={ref} {...props}>
+      <CommandPrimitive
+        ref={ref}
+        // Highlight the currently selected item when the list opens
+        defaultValue={value || undefined}
+        loop
+        {...props}
+      >
         {children}
-      </div>
+      </CommandPrimitive>
     </RetroPopoverContent>
   )
 })
@@ -227,17 +300,12 @@ RetroComboboxContent.displayName = "RetroComboboxContent"
 
 const RetroComboboxInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement>
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(function RetroComboboxInput({ className, placeholder = "Search...", ...props }, ref) {
-  const { search, setSearch } = useCombobox()
-
   return (
     <div className="p-[3px] border-b border-os9-gray-700">
-      <input
+      <CommandPrimitive.Input
         ref={ref}
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
         placeholder={placeholder}
         className={cn(
           "w-full",
@@ -251,8 +319,6 @@ const RetroComboboxInput = React.forwardRef<
           "px-[4px] py-0",
           className,
         )}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
         {...props}
       />
     </div>
@@ -261,15 +327,15 @@ const RetroComboboxInput = React.forwardRef<
 RetroComboboxInput.displayName = "RetroComboboxInput"
 
 /* ---------------------------------------------------------------------------
- * RetroComboboxEmpty
+ * RetroComboboxEmpty (only renders when no items match)
  * --------------------------------------------------------------------------- */
 
 const RetroComboboxEmpty = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
 >(function RetroComboboxEmpty({ className, children, ...props }, ref) {
   return (
-    <div
+    <CommandPrimitive.Empty
       ref={ref}
       className={cn(
         "py-4 text-center",
@@ -280,7 +346,7 @@ const RetroComboboxEmpty = React.forwardRef<
       {...props}
     >
       {children ?? "No results found."}
-    </div>
+    </CommandPrimitive.Empty>
   )
 })
 RetroComboboxEmpty.displayName = "RetroComboboxEmpty"
@@ -289,30 +355,26 @@ RetroComboboxEmpty.displayName = "RetroComboboxEmpty"
  * RetroComboboxGroup
  * --------------------------------------------------------------------------- */
 
-interface RetroComboboxGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading?: string
-}
+type RetroComboboxGroupProps = React.ComponentPropsWithoutRef<
+  typeof CommandPrimitive.Group
+>
 
 const RetroComboboxGroup = React.forwardRef<
   HTMLDivElement,
   RetroComboboxGroupProps
->(function RetroComboboxGroup({ className, heading, children, ...props }, ref) {
+>(function RetroComboboxGroup({ className, ...props }, ref) {
   return (
-    <div ref={ref} role="group" className={cn("py-[2px]", className)} {...props}>
-      {heading && (
-        <div
-          className={cn(
-            "px-[6px] py-[2px]",
-            "font-[family-name:var(--font-heading)] text-[10px] tracking-[0.42px] leading-[0.98]",
-            "text-os9-gray-700",
-            "select-none",
-          )}
-        >
-          {heading}
-        </div>
+    <CommandPrimitive.Group
+      ref={ref}
+      className={cn(
+        "py-[2px]",
+        "[&_[cmdk-group-heading]]:px-[6px] [&_[cmdk-group-heading]]:py-[2px]",
+        "[&_[cmdk-group-heading]]:font-[family-name:var(--font-heading)] [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.42px] [&_[cmdk-group-heading]]:leading-[0.98]",
+        "[&_[cmdk-group-heading]]:text-os9-gray-700 [&_[cmdk-group-heading]]:select-none",
+        className,
       )}
-      {children}
-    </div>
+      {...props}
+    />
   )
 })
 RetroComboboxGroup.displayName = "RetroComboboxGroup"
@@ -322,80 +384,67 @@ RetroComboboxGroup.displayName = "RetroComboboxGroup"
  * --------------------------------------------------------------------------- */
 
 interface RetroComboboxItemProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>,
+    "value" | "onSelect"
+  > {
   value: string
   /** Display label for the item. Falls back to text children. */
   label?: string
-  disabled?: boolean
 }
 
 const RetroComboboxItem = React.forwardRef<
   HTMLDivElement,
   RetroComboboxItemProps
 >(function RetroComboboxItem(
-  { className, value: itemValue, label, disabled = false, children, ...props },
+  { className, value: itemValue, label, disabled = false, keywords, children, ...props },
   ref,
 ) {
-  const { value: selectedValue, onSelect, search, registerItem } = useCombobox()
+  const { value: selectedValue, onSelect, registerItem } = useCombobox()
 
   // Derive a text label from children if label prop is not provided
-  const textLabel = label ?? (typeof children === "string" ? children : "")
+  const textLabel = label ?? getNodeText(children)
 
   // Register this item so the trigger can resolve the label from the value
   React.useEffect(() => {
     registerItem(itemValue, textLabel)
   }, [itemValue, textLabel, registerItem])
 
-  // Filter: hide items that don't match the search
-  const matches =
-    search === "" ||
-    textLabel.toLowerCase().includes(search.toLowerCase()) ||
-    itemValue.toLowerCase().includes(search.toLowerCase())
-
-  if (!matches) return null
-
-  const isSelected = selectedValue === itemValue
+  const isChecked = selectedValue === itemValue
 
   return (
-    <div
+    <CommandPrimitive.Item
       ref={ref}
-      role="option"
-      aria-selected={isSelected}
-      aria-disabled={disabled}
-      data-selected={isSelected ? "" : undefined}
-      data-disabled={disabled ? "" : undefined}
+      value={itemValue}
+      // Match the search against the visible label as well as the value
+      keywords={[textLabel, ...(keywords ?? [])]}
+      disabled={disabled}
+      onSelect={() => onSelect(itemValue)}
+      data-checked={isChecked ? "true" : undefined}
       className={cn(
         "relative flex items-center",
         "h-[18px] w-full px-[14px]",
         "font-[family-name:var(--font-sans)] text-[10px] leading-normal",
         "text-os9-black",
         "cursor-pointer select-none outline-none",
-        "hover:bg-os9-azul hover:text-os9-white",
-        isSelected && "font-bold",
-        disabled && "pointer-events-none text-os9-gray-600",
+        /* Highlighted (keyboard or pointer): OS9 menu highlight */
+        "data-[selected=true]:bg-os9-azul data-[selected=true]:text-os9-white",
+        isChecked && "font-bold",
+        "data-[disabled=true]:pointer-events-none data-[disabled=true]:text-os9-gray-600",
         className,
       )}
-      onClick={() => {
-        if (!disabled) onSelect(itemValue)
-      }}
-      onKeyDown={(e) => {
-        if (!disabled && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault()
-          onSelect(itemValue)
-        }
-      }}
-      tabIndex={disabled ? -1 : 0}
       {...props}
     >
       {/* Checkmark indicator */}
       <span className="absolute left-[2px] flex h-[8px] w-[8px] items-center justify-center">
-        {isSelected && (
+        {isChecked && (
           <svg
             width="8"
             height="8"
             viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
           >
             <path
               d="M3 8.5L6.5 12L13 4"
@@ -408,31 +457,46 @@ const RetroComboboxItem = React.forwardRef<
         )}
       </span>
       {children}
-    </div>
+    </CommandPrimitive.Item>
   )
 })
 RetroComboboxItem.displayName = "RetroComboboxItem"
+
+/** Walk a JSX tree and collect `value -> label` for every RetroComboboxItem. */
+function collectItemLabels(
+  node: React.ReactNode,
+  acc: Record<string, string> = {},
+): Record<string, string> {
+  React.Children.forEach(node, (child) => {
+    if (!React.isValidElement<{ children?: React.ReactNode }>(child)) return
+    if (child.type === RetroComboboxItem) {
+      const { value, label, children } = child.props as RetroComboboxItemProps
+      acc[value] = label ?? getNodeText(children)
+      return
+    }
+    collectItemLabels(child.props.children, acc)
+  })
+  return acc
+}
 
 /* ---------------------------------------------------------------------------
  * RetroComboboxList (scrollable container for items)
  * --------------------------------------------------------------------------- */
 
-interface RetroComboboxListProps extends React.HTMLAttributes<HTMLDivElement> {
+interface RetroComboboxListProps
+  extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.List> {
   maxHeight?: number
 }
 
 const RetroComboboxList = React.forwardRef<HTMLDivElement, RetroComboboxListProps>(
-  function RetroComboboxList({ className, maxHeight = 200, children, ...props }, ref) {
+  function RetroComboboxList({ className, maxHeight = 200, style, ...props }, ref) {
     return (
-      <div
+      <CommandPrimitive.List
         ref={ref}
-        role="listbox"
-        className={cn("overflow-y-auto py-[2px]", className)}
-        style={{ maxHeight }}
+        className={cn("overflow-y-auto overflow-x-hidden py-[2px]", className)}
+        style={{ maxHeight, ...style }}
         {...props}
-      >
-        {children}
-      </div>
+      />
     )
   },
 )
@@ -451,4 +515,12 @@ export {
   RetroComboboxGroup,
   RetroComboboxItem,
   RetroComboboxList,
+}
+export type {
+  RetroComboboxProps,
+  RetroComboboxOption,
+  RetroComboboxTriggerProps,
+  RetroComboboxContentProps,
+  RetroComboboxItemProps,
+  RetroComboboxListProps,
 }

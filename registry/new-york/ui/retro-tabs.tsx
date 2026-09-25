@@ -79,6 +79,7 @@ const retroTabsTriggerVariants = cva(
     "relative z-[1] cursor-pointer select-none whitespace-nowrap",
     "transition-none",
     "focus-visible:os9-focus-ring focus-visible:z-[2]",
+    "data-[disabled]:opacity-50 data-[disabled]:cursor-default data-[disabled]:pointer-events-none",
   ],
   {
     variants: {

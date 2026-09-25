@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroIconFolder,
   RetroIconDocument,
@@ -15,6 +16,12 @@ import {
   RetroIconPreferences,
 } from "@/registry/new-york/ui/retro-icons"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Icons",
+  description:
+    "14 pixel-art SVG icons inspired by Mac OS 9 in sm, default, lg, and xl sizes.",
+}
 
 const allIcons = [
   { name: "Folder", Component: RetroIconFolder },

@@ -4,6 +4,11 @@ import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
 import { cn } from "@/lib/utils"
+import {
+  RetroIconAlert,
+  RetroIconInfo,
+  RetroIconStop,
+} from "@/registry/new-york/ui/retro-icons"
 
 /* ------------------------------------------------------------------ */
 /*  Root & Trigger                                                     */
@@ -35,34 +40,18 @@ const RetroAlertDialogOverlay = React.forwardRef<
 RetroAlertDialogOverlay.displayName = "RetroAlertDialogOverlay"
 
 /* ------------------------------------------------------------------ */
-/*  OS9 Caution Icon (yellow triangle with "!")                        */
+/*  Alert icons (Caution / Stop / Note)                                */
 /* ------------------------------------------------------------------ */
 
-function CautionIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden
-    >
-      {/* Yellow triangle */}
-      <path
-        d="M16 2L1 29h30L16 2z"
-        fill="#FFD600"
-        stroke="#000"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      {/* Exclamation mark body */}
-      <rect x="14.5" y="10" width="3" height="11" rx="0.5" fill="#000" />
-      {/* Exclamation mark dot */}
-      <rect x="14.5" y="23" width="3" height="3" rx="0.5" fill="#000" />
-    </svg>
-  )
+type RetroAlertDialogVariant = "caution" | "stop" | "note"
+
+const alertIcons: Record<
+  RetroAlertDialogVariant,
+  React.ComponentType<{ className?: string }>
+> = {
+  caution: RetroIconAlert,
+  stop: RetroIconStop,
+  note: RetroIconInfo,
 }
 
 /* ------------------------------------------------------------------ */
@@ -81,16 +70,12 @@ const RetroAlertDialogContent = React.forwardRef<
         "fixed left-1/2 top-1/2 z-50 w-full max-w-[420px] -translate-x-1/2 -translate-y-1/2",
         "flex flex-col",
         "outline-none",
+        /* OS9 window frame */
+        "border border-os9-black bg-os9-gray-200 shadow-[var(--os9-shadow-window)]",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
         "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
         className
       )}
-      style={{
-        border: "1px solid var(--os9-black)",
-        backgroundColor: "var(--os9-gray-200)",
-        boxShadow:
-          "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255,255,255,0.6), inset -2px -2px 0 rgba(38,38,38,0.4)",
-      }}
       {...props}
     >
       {children}
@@ -175,7 +160,7 @@ const RetroAlertDialogDescription = React.forwardRef<
     ref={ref}
     className={cn(
       "text-[10px] leading-[1.4] text-os9-black",
-      "font-[family-name:var(--font-body)]",
+      "font-[family-name:var(--font-sans)]",
       className
     )}
     {...props}
@@ -187,23 +172,36 @@ RetroAlertDialogDescription.displayName = "RetroAlertDialogDescription"
 /*  Body (content area with icon + description)                        */
 /* ------------------------------------------------------------------ */
 
+interface RetroAlertDialogBodyProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** Which OS9 alert icon to show: caution (default), stop, or note. */
+  variant?: RetroAlertDialogVariant
+  /** Custom icon — overrides the variant icon. Pass `null` to hide it. */
+  icon?: React.ReactNode
+}
+
 function RetroAlertDialogBody({
   className,
   children,
+  variant = "caution",
+  icon,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: RetroAlertDialogBodyProps) {
+  const Icon = alertIcons[variant]
   return (
     <div
-      className={cn("flex gap-3 px-4 py-3", className)}
-      style={{
-        boxShadow: "-1px -1px 0 rgba(38,38,38,0.4)",
-      }}
+      className={cn(
+        "flex gap-3 px-4 py-3 shadow-[-1px_-1px_0_rgba(38,38,38,0.4)]",
+        className
+      )}
       {...props}
     >
-      {/* Caution icon area */}
-      <div className="flex-shrink-0 pt-0.5">
-        <CautionIcon />
-      </div>
+      {/* Alert icon area */}
+      {icon !== null && (
+        <div className="flex-shrink-0 pt-0.5">
+          {icon !== undefined ? icon : <Icon />}
+        </div>
+      )}
       {/* Description content */}
       <div className="flex-1 flex flex-col justify-center">{children}</div>
     </div>
@@ -301,3 +299,5 @@ export {
   RetroAlertDialogAction,
   RetroAlertDialogCancel,
 }
+
+export type { RetroAlertDialogVariant, RetroAlertDialogBodyProps }

@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroDrawer,
   RetroDrawerTrigger,
@@ -12,6 +11,12 @@ import {
 } from "@/registry/new-york/ui/retro-drawer"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Drawer",
+  description:
+    "A bottom drawer panel with Mac OS 9 styling that slides up from the screen edge.",
+}
 
 export default function DrawerPreview() {
   return (

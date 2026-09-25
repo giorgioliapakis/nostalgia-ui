@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 /* ------------------------------------------------------------------ */
 
 function RetroDrawer({
-  shouldScaleBackground = true,
+  shouldScaleBackground = false,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
   return (
@@ -66,14 +66,11 @@ const RetroDrawerContent = React.forwardRef<
         className={cn(
           "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col",
           "outline-none",
+          /* OS9 panel bevel */
+          "border border-os9-black bg-os9-gray-200",
+          "shadow-[inset_2px_2px_0_rgba(255,255,255,0.6),inset_-2px_-2px_0_rgba(38,38,38,0.4)]",
           className
         )}
-        style={{
-          border: "1px solid var(--os9-black)",
-          backgroundColor: "var(--os9-gray-200)",
-          boxShadow:
-            "inset 2px 2px 0 rgba(255,255,255,0.6), inset -2px -2px 0 rgba(38,38,38,0.4)",
-        }}
         {...props}
       >
         {/* Pull handle */}

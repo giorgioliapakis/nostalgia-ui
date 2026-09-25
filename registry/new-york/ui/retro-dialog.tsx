@@ -54,16 +54,12 @@ const RetroDialogContent = React.forwardRef<
         "fixed left-1/2 top-1/2 z-50 w-full max-w-[425px] -translate-x-1/2 -translate-y-1/2",
         "flex flex-col",
         "outline-none",
+        /* OS9 window frame */
+        "border border-os9-black bg-os9-gray-200 shadow-[var(--os9-shadow-window)]",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
         "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
         className
       )}
-      style={{
-        border: "1px solid var(--os9-black)",
-        backgroundColor: "var(--os9-gray-200)",
-        boxShadow:
-          "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255,255,255,0.6), inset -2px -2px 0 rgba(38,38,38,0.4)",
-      }}
       {...props}
     >
       {children}
@@ -112,7 +108,7 @@ function RetroDialogHeader({
 
       {/* Close button (X) — small bevel box */}
       <DialogPrimitive.Close
-        className="relative size-[13px] shrink-0 cursor-default mr-[4px] ml-[4px]"
+        className="relative size-[13px] shrink-0 cursor-default mr-[4px] ml-[4px] outline-none focus-visible:os9-focus-ring"
         aria-label="Close"
       >
         {/* Outer bevel frame */}
@@ -178,7 +174,7 @@ const RetroDialogDescription = React.forwardRef<
   <DialogPrimitive.Description
     ref={ref}
     className={cn(
-      "text-[10px] font-[family-name:var(--font-body)] text-os9-gray-700",
+      "text-[10px] font-[family-name:var(--font-sans)] text-os9-gray-700",
       className
     )}
     {...props}

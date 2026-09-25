@@ -1,7 +1,12 @@
-"use client"
-
+import type { Metadata } from "next"
 import { RetroSwitch } from "@/registry/new-york/ui/retro-switch"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Switch",
+  description:
+    "A toggle switch with Mac OS 9 beveled track and sliding thumb indicator.",
+}
 
 export default function SwitchPreview() {
   return (

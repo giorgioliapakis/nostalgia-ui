@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroText } from "@/registry/new-york/ui/retro-typography"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Typography",
+  description:
+    "Typography component with 8 variants matching the Mac OS 9 type system.",
+}
 
 const variants = [
   {

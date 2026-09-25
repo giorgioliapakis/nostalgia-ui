@@ -87,6 +87,7 @@ function RetroDataTableColumnHeader<TData, TValue>({
       className={cn(
         "inline-flex items-center gap-1 cursor-pointer select-none",
         "font-[family-name:var(--font-heading)] text-[10px] font-bold",
+        "outline-none focus-visible:os9-focus-ring",
         className
       )}
       onClick={() => column.toggleSorting(sorted === "asc")}
@@ -138,6 +139,7 @@ function RetroDataTableToolbar<TData>({
         <input
           type="text"
           placeholder={filterPlaceholder}
+          aria-label={filterPlaceholder.replace(/\.{3}$|…$/, "") || "Filter"}
           value={(column.getFilterValue() as string) ?? ""}
           onChange={(e) => column.setFilterValue(e.target.value)}
           className={cn(
@@ -176,6 +178,7 @@ const os9BtnBase = [
   "border border-os9-black bg-os9-gray-300 text-os9-black",
   "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
   "cursor-pointer select-none",
+  "outline-none focus-visible:os9-focus-ring",
   "active:bg-os9-gray-800 active:text-os9-white",
   "active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
 ] as const
@@ -221,6 +224,7 @@ function RetroDataTablePagination<TData>({
         <div className="flex items-center gap-1">
           <span className="text-os9-gray-800">Rows:</span>
           <select
+            aria-label="Rows per page"
             value={table.getState().pagination.pageSize}
             onChange={(e) => table.setPageSize(Number(e.target.value))}
             className={cn(
@@ -228,7 +232,7 @@ function RetroDataTablePagination<TData>({
               "border border-os9-black bg-os9-gray-300 text-os9-black",
               "font-[family-name:var(--font-sans)] text-[10px]",
               "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
-              "cursor-pointer outline-none"
+              "cursor-pointer outline-none focus-visible:os9-focus-ring"
             )}
           >
             {pageSizes.map((size) => (

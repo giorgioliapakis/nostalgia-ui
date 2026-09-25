@@ -73,6 +73,7 @@ function RetroAccordionTrigger(
       <AccordionPrimitive.Trigger
         ref={ref}
         className={cn(
+          "group/accordion-trigger",
           "flex w-full flex-row items-center justify-between",
           "py-[6px]",
           "cursor-pointer select-none",
@@ -96,7 +97,8 @@ function RetroAccordionTrigger(
             aria-hidden="true"
             className={cn(
               "transition-transform duration-150",
-              "[[data-state=open]>&]:rotate-90"
+              /* Scoped to this trigger so nested accordions rotate independently */
+              "group-data-[state=open]/accordion-trigger:rotate-90"
             )}
           >
             <polygon points="1,0 7,4 1,8" />

@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import { RetroSkeleton } from "@/registry/new-york/ui/retro-skeleton"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Skeleton",
+  description:
+    "A loading placeholder with Mac OS 9 dithered hatching pattern and pulse animation.",
+}
 
 export default function SkeletonPreview() {
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroTabs,
   RetroTabsList,
@@ -5,6 +6,12 @@ import {
   RetroTabsContent,
 } from "@/registry/new-york/ui/retro-tabs"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Tabs",
+  description:
+    "A tabbed interface with Mac OS 9 folder tab styling in large and small sizes.",
+}
 
 export default function TabsPreview() {
   return (

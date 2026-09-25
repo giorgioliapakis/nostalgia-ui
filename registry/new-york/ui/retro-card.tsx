@@ -15,13 +15,11 @@ function RetroCard(
   return (
     <div
       ref={ref}
-      className={cn("flex flex-col", className)}
-      style={{
-        border: "1px solid var(--os9-black)",
-        backgroundColor: "var(--os9-gray-200)",
-        boxShadow:
-          "inset -2px -2px 0 rgba(38,38,38,0.4), inset 2px 2px 0 rgba(255,255,255,0.6)",
-      }}
+      className={cn(
+        "flex flex-col border border-os9-black bg-os9-gray-200",
+        "shadow-[inset_-2px_-2px_0_rgba(38,38,38,0.4),inset_2px_2px_0_rgba(255,255,255,0.6)]",
+        className
+      )}
       {...props}
     />
   )
@@ -41,12 +39,12 @@ function RetroCardHeader(
   return (
     <div
       ref={ref}
-      className={cn("flex flex-col gap-[2px] px-[10px] py-[8px]", className)}
-      style={{
-        borderBottom: "1px solid var(--os9-black)",
-        boxShadow:
-          "0 1px 0 rgba(255,255,255,0.6), 0 -1px 0 rgba(38,38,38,0.15) inset",
-      }}
+      className={cn(
+        "flex flex-col gap-[2px] px-[10px] py-[8px]",
+        "border-b border-os9-black",
+        "shadow-[0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(38,38,38,0.15)]",
+        className
+      )}
       {...props}
     />
   )
@@ -90,10 +88,9 @@ function RetroCardDescription(
     <p
       ref={ref}
       className={cn(
-        "font-[family-name:var(--font-sans)] text-[10px] leading-[1.3]",
+        "font-[family-name:var(--font-sans)] text-[10px] leading-[1.3] text-os9-gray-800",
         className
       )}
-      style={{ color: "var(--os9-gray-800)" }}
       {...props}
     />
   )
@@ -133,12 +130,12 @@ function RetroCardFooter(
   return (
     <div
       ref={ref}
-      className={cn("flex items-center gap-[8px] px-[10px] py-[8px]", className)}
-      style={{
-        borderTop: "1px solid var(--os9-black)",
-        boxShadow:
-          "0 -1px 0 rgba(255,255,255,0.6), 0 1px 0 rgba(38,38,38,0.15) inset",
-      }}
+      className={cn(
+        "flex items-center gap-[8px] px-[10px] py-[8px]",
+        "border-t border-os9-black",
+        "shadow-[0_-1px_0_rgba(255,255,255,0.6),inset_0_1px_0_rgba(38,38,38,0.15)]",
+        className
+      )}
       {...props}
     />
   )

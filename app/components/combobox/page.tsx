@@ -36,7 +36,7 @@ export default function ComboboxPreview() {
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
         A searchable dropdown (combobox) with OS9 styling. Type to filter the
-        list of items. Built on Radix Popover with custom filtering logic.
+        list of items. Built on Radix Popover.
       </p>
 
       {/* Basic combobox */}

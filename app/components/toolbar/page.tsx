@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroToolbar,
   RetroToolbarButton,
@@ -7,6 +6,12 @@ import {
   RetroToolbarGroup,
 } from "@/registry/new-york/ui/retro-toolbar"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Toolbar",
+  description:
+    "An application toolbar with Mac OS 9 beveled buttons, separators, and grouped controls.",
+}
 
 export default function ToolbarPreview() {
   return (

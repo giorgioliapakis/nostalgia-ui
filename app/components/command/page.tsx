@@ -1,5 +1,4 @@
-"use client"
-
+import type { Metadata } from "next"
 import {
   RetroCommand,
   RetroCommandInput,
@@ -11,6 +10,12 @@ import {
   RetroCommandShortcut,
 } from "@/registry/new-york/ui/retro-command"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Command",
+  description:
+    "A command palette and search interface with Mac OS 9 styling, keyboard navigation, and shortcuts.",
+}
 
 export default function CommandPreview() {
   return (

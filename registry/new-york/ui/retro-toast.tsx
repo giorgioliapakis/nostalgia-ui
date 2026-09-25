@@ -15,17 +15,27 @@ type ToastEntry = {
   duration?: number
 }
 
-type ToastContextValue = {
-  toasts: ToastEntry[]
+type ToastActions = {
   toast: (opts: Omit<ToastEntry, "id">) => string
   dismiss: (id: string) => void
+}
+
+type ToastContextValue = ToastActions & {
+  /**
+   * Snapshot of the current toasts (read at access time). Reading it does not
+   * subscribe the component to updates — use `useRetroToasts()` for that.
+   */
+  readonly toasts: ToastEntry[]
 }
 
 /* ------------------------------------------------------------------ */
 /*  Context                                                            */
 /* ------------------------------------------------------------------ */
 
+// Actions are stable, so components that only fire toasts never re-render
+// when the toast list changes. The list lives in its own context.
 const RetroToastContext = React.createContext<ToastContextValue | null>(null)
+const RetroToastStateContext = React.createContext<ToastEntry[] | null>(null)
 
 function useRetroToast(): ToastContextValue {
   const ctx = React.useContext(RetroToastContext)
@@ -35,63 +45,177 @@ function useRetroToast(): ToastContextValue {
   return ctx
 }
 
+/** Reactive list of the currently visible toasts. */
+function useRetroToasts(): ToastEntry[] {
+  const toasts = React.useContext(RetroToastStateContext)
+  if (!toasts) {
+    throw new Error("useRetroToasts must be used within a <RetroToastProvider>")
+  }
+  return toasts
+}
+
 /* ------------------------------------------------------------------ */
 /*  Provider                                                           */
 /* ------------------------------------------------------------------ */
 
 let counter = 0
 
+/** setTimeout overflows above this; treat larger durations as persistent. */
+const MAX_TIMEOUT = 2_147_483_647
+
+type ToastTimer = {
+  handle: ReturnType<typeof setTimeout> | null
+  remaining: number
+  startedAt: number
+  hovered: boolean
+  focused: boolean
+}
+
 function RetroToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<ToastEntry[]>([])
+  const toastsRef = React.useRef<ToastEntry[]>(toasts)
+  const timersRef = React.useRef(new Map<string, ToastTimer>())
 
-  const dismiss = React.useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id))
+  React.useEffect(() => {
+    toastsRef.current = toasts
+  }, [toasts])
+
+  const clearTimer = React.useCallback((id: string) => {
+    const timer = timersRef.current.get(id)
+    if (timer?.handle) clearTimeout(timer.handle)
+    timersRef.current.delete(id)
   }, [])
+
+  const dismiss = React.useCallback(
+    (id: string) => {
+      clearTimer(id)
+      setToasts((prev) => prev.filter((t) => t.id !== id))
+    },
+    [clearTimer]
+  )
+
+  const runTimer = React.useCallback(
+    (id: string) => {
+      const timer = timersRef.current.get(id)
+      if (!timer || timer.handle || timer.hovered || timer.focused) return
+      timer.startedAt = Date.now()
+      timer.handle = setTimeout(() => dismiss(id), timer.remaining)
+    },
+    [dismiss]
+  )
+
+  const pauseTimer = React.useCallback(
+    (id: string, reason: "hovered" | "focused") => {
+      const timer = timersRef.current.get(id)
+      if (!timer) return
+      timer[reason] = true
+      if (timer.handle) {
+        clearTimeout(timer.handle)
+        timer.handle = null
+        timer.remaining = Math.max(
+          0,
+          timer.remaining - (Date.now() - timer.startedAt)
+        )
+      }
+    },
+    []
+  )
+
+  const resumeTimer = React.useCallback(
+    (id: string, reason: "hovered" | "focused") => {
+      const timer = timersRef.current.get(id)
+      if (!timer) return
+      timer[reason] = false
+      runTimer(id)
+    },
+    [runTimer]
+  )
 
   const toast = React.useCallback(
     (opts: Omit<ToastEntry, "id">) => {
       const id = `retro-toast-${++counter}`
       const duration = opts.duration ?? 5000
       setToasts((prev) => [...prev, { ...opts, id, duration }])
-      setTimeout(() => dismiss(id), duration)
+      // Non-finite (e.g. Infinity) or huge durations = persistent toast
+      if (Number.isFinite(duration) && duration <= MAX_TIMEOUT) {
+        timersRef.current.set(id, {
+          handle: null,
+          remaining: Math.max(0, duration),
+          startedAt: 0,
+          hovered: false,
+          focused: false,
+        })
+        runTimer(id)
+      }
       return id
     },
-    [dismiss]
+    [runTimer]
   )
 
-  const value = React.useMemo(
-    () => ({ toasts, toast, dismiss }),
-    [toasts, toast, dismiss]
+  // Clear all pending timers on unmount
+  React.useEffect(() => {
+    const timers = timersRef.current
+    return () => {
+      timers.forEach((timer) => {
+        if (timer.handle) clearTimeout(timer.handle)
+      })
+      timers.clear()
+    }
+  }, [])
+
+  const actions = React.useMemo<ToastContextValue>(
+    () => ({
+      toast,
+      dismiss,
+      get toasts() {
+        return toastsRef.current
+      },
+    }),
+    [toast, dismiss]
   )
 
   return (
-    <RetroToastContext.Provider value={value}>
-      {children}
-      <RetroToastViewport>
-        {toasts.map((t) => (
-          <RetroToast key={t.id}>
-            {/* Mini title bar stripe */}
-            <div
-              className="os9-stripes mb-[4px] h-[3px] w-full"
-              style={{
-                boxShadow:
-                  "inset 1px 0 0 #eee, inset -1px 0 0 #c5c5c5",
+    <RetroToastContext.Provider value={actions}>
+      <RetroToastStateContext.Provider value={toasts}>
+        {children}
+        <RetroToastViewport>
+          {toasts.map((t) => (
+            <RetroToast
+              key={t.id}
+              onMouseEnter={() => pauseTimer(t.id, "hovered")}
+              onMouseLeave={() => resumeTimer(t.id, "hovered")}
+              onFocus={() => pauseTimer(t.id, "focused")}
+              onBlur={(event) => {
+                // Ignore focus moving between elements inside the toast
+                if (event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  return
+                }
+                resumeTimer(t.id, "focused")
               }}
-              aria-hidden
-            />
+            >
+              {/* Mini title bar stripe */}
+              <div
+                className="os9-stripes mb-[4px] h-[3px] w-full"
+                style={{
+                  boxShadow:
+                    "inset 1px 0 0 #eee, inset -1px 0 0 #c5c5c5",
+                }}
+                aria-hidden
+              />
 
-            <div className="flex items-start gap-[6px]">
-              <div className="flex-1 min-w-0">
-                {t.title && <RetroToastTitle>{t.title}</RetroToastTitle>}
-                {t.description && (
-                  <RetroToastDescription>{t.description}</RetroToastDescription>
-                )}
+              <div className="flex items-start gap-[6px]">
+                <div className="flex-1 min-w-0">
+                  {t.title && <RetroToastTitle>{t.title}</RetroToastTitle>}
+                  {t.description && (
+                    <RetroToastDescription>{t.description}</RetroToastDescription>
+                  )}
+                </div>
+                <RetroToastClose onClick={() => dismiss(t.id)} />
               </div>
-              <RetroToastClose onClick={() => dismiss(t.id)} />
-            </div>
-          </RetroToast>
-        ))}
-      </RetroToastViewport>
+            </RetroToast>
+          ))}
+        </RetroToastViewport>
+      </RetroToastStateContext.Provider>
     </RetroToastContext.Provider>
   )
 }
@@ -101,20 +225,31 @@ RetroToastProvider.displayName = "RetroToastProvider"
 /*  RetroToastViewport                                                 */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Persistent live region. It is always mounted so screen readers announce
+ * toasts as they are appended to the list.
+ */
 function RetroToastViewportInner(
   { className, ...props }: React.HTMLAttributes<HTMLOListElement>,
   ref: React.ForwardedRef<HTMLOListElement>
 ) {
   return (
-    <ol
-      ref={ref}
+    <div
+      role="region"
+      aria-label="Notifications"
       className={cn(
-        "fixed bottom-0 right-0 z-50 flex flex-col gap-2 p-[16px]",
+        "fixed bottom-0 right-0 z-50 p-[16px]",
         "pointer-events-none",
         className
       )}
-      {...props}
-    />
+    >
+      <ol
+        ref={ref}
+        aria-live="polite"
+        className="flex flex-col gap-2 list-none m-0 p-0"
+        {...props}
+      />
+    </div>
   )
 }
 
@@ -132,18 +267,13 @@ function RetroToastInner(
   return (
     <li
       ref={ref}
-      role="status"
-      aria-live="polite"
       className={cn(
         "pointer-events-auto w-[300px] p-[8px]",
         "border border-os9-black bg-os9-gray-200",
+        "shadow-[2px_2px_0_var(--os9-black),inset_2px_2px_0_rgba(255,255,255,0.6),inset_-2px_-2px_0_rgba(38,38,38,0.4)]",
         "animate-in slide-in-from-right-full fade-in-0 duration-200",
         className
       )}
-      style={{
-        boxShadow:
-          "2px 2px 0 var(--os9-black), inset 2px 2px 0 rgba(255,255,255,0.6), inset -2px -2px 0 rgba(38,38,38,0.4)",
-      }}
       {...props}
     />
   )
@@ -260,4 +390,5 @@ export {
   RetroToastClose,
   RetroToastViewport,
   useRetroToast,
+  useRetroToasts,
 }

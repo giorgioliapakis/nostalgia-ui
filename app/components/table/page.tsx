@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
   RetroTable,
   RetroTableHeader,
@@ -9,6 +10,12 @@ import {
   RetroTableFooter,
 } from "@/registry/new-york/ui/retro-table"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
+
+export const metadata: Metadata = {
+  title: "Table",
+  description:
+    "A data table with Mac OS 9 Finder list view styling, beveled headers, and row selection.",
+}
 
 const files = [
   {
