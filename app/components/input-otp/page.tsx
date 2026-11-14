@@ -22,7 +22,8 @@ export default function InputOTPPreview() {
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
         A one-time password input with OS9 styling. Each digit appears in a
-        beveled input slot with a blinking caret. Built on input-otp.
+        beveled input slot with a blinking caret. One real input sits under the
+        slots, so paste, autofill and undo work as usual.
       </p>
 
       {/* 6-digit OTP with separator */}
@@ -76,9 +77,9 @@ export default function InputOTPPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click to focus, then type digits. The active slot shows a blinking
-        caret. Use Backspace to delete. The separator provides a visual break
-        between groups.
+        Click to focus, then type or paste digits. The active slot shows a
+        blinking caret; click a filled slot or use the arrow keys to edit it.
+        The separator provides a visual break between groups.
       </p>
     </ComponentDocLayout>
   )

@@ -1,155 +1,128 @@
 "use client"
 
+/*
+ * RetroResizable: panes split by an OS 9 beveled divider with grip dots, on
+ * UI SDK's Resizable (the WAI-ARIA window splitter). Drag a divider, or
+ * focus it and use the arrow keys (Shift for bigger steps, Home and End to
+ * the limits, Enter to collapse a collapsible pane and bring it back).
+ *
+ * Crafted moment: the divider settles. Drags track the pointer one to one,
+ * but a key step or a collapse eases the panes to their new sizes (160ms,
+ * strong ease-out) instead of jumping, so a keyboard user sees where the
+ * divider went. Classic flair and reduced motion: it jumps.
+ */
+
 import * as React from "react"
 import {
-  Group,
-  Panel,
-  Separator,
-  type GroupProps,
-  type PanelProps,
-  type SeparatorProps,
-} from "react-resizable-panels"
+  Resizable as ResizablePrimitive,
+  ResizableHandle as ResizableHandlePrimitive,
+  ResizablePanel as ResizablePanelPrimitive,
+} from "@ui-sdk/react/resizable"
 
 import { cn } from "@/lib/utils"
 
-/* ------------------------------------------------------------------ */
-/*  RetroResizablePanelGroup                                          */
-/* ------------------------------------------------------------------ */
+/* Panels size by flex-basis (from --resizable-panel-size); ease it except
+ * while a divider is being dragged. Scoped to direct children so a nested
+ * group follows its own drag state. */
+const CSS = `
+.os9-resizable:not([data-dragging]) > [data-slot="resizable-panel"] {
+  transition: flex-basis 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+[data-flair="classic"] .os9-resizable > [data-slot="resizable-panel"] { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .os9-resizable > [data-slot="resizable-panel"] { transition: none; }
+}
+`
+
+/* ── RetroResizablePanelGroup ──────────────────────────── */
+
 function RetroResizablePanelGroup({
   className,
   ...props
-}: GroupProps) {
+}: Omit<React.ComponentProps<typeof ResizablePrimitive>, "className"> & {
+  className?: string
+}) {
   return (
-    <Group
-      className={cn("flex h-full w-full", className)}
-      {...props}
-    />
+    <>
+      <style href="os9-resizable" precedence="default">
+        {CSS}
+      </style>
+      <ResizablePrimitive className={cn("os9-resizable h-full w-full", className)} {...props} />
+    </>
   )
 }
-RetroResizablePanelGroup.displayName = "RetroResizablePanelGroup"
 
-/* ------------------------------------------------------------------ */
-/*  RetroResizablePanel                                               */
-/* ------------------------------------------------------------------ */
+/* ── RetroResizablePanel ───────────────────────────────── */
+
 function RetroResizablePanel({
   className,
   ...props
-}: PanelProps) {
-  return <Panel className={cn(className)} {...props} />
-}
-RetroResizablePanel.displayName = "RetroResizablePanel"
-
-/* ------------------------------------------------------------------ */
-/*  GripDots – 3 small 2x2px squares centered in the handle           */
-/* ------------------------------------------------------------------ */
-function GripDots({
-  orientation,
-}: {
-  orientation: "horizontal" | "vertical"
+}: Omit<React.ComponentProps<typeof ResizablePanelPrimitive>, "className"> & {
+  className?: string
 }) {
-  const isVertical = orientation === "vertical"
+  return <ResizablePanelPrimitive className={className} {...props} />
+}
 
+/* ── GripDots: three 2×2 squares across the divider ────── */
+
+function GripDots() {
   return (
-    <div
-      className={cn(
-        "flex items-center justify-center",
-        isVertical ? "flex-col gap-[2px]" : "flex-row gap-[2px]"
-      )}
+    <span
       aria-hidden="true"
+      className={cn(
+        "pointer-events-none flex items-center justify-center gap-[2px]",
+        /* a horizontal group has an upright divider, so the dots stack */
+        "group-data-[orientation=horizontal]/handle:flex-col",
+        "group-data-[orientation=vertical]/handle:flex-row"
+      )}
     >
       {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className="size-[2px] bg-os9-gray-600"
-        />
+        <span key={i} className="size-[2px] bg-os9-gray-600" />
       ))}
-    </div>
+    </span>
   )
 }
 
-/* ------------------------------------------------------------------ */
-/*  RetroResizableHandle                                              */
-/* ------------------------------------------------------------------ */
+/* ── RetroResizableHandle ──────────────────────────────── */
+
 /**
- * react-resizable-panels v4 sets `aria-orientation` on the Separator div.
- * The value is the *inverse* of the Group orientation:
- *   Group orientation="horizontal" → Separator aria-orientation="vertical"
- *   Group orientation="vertical"   → Separator aria-orientation="horizontal"
- *
- * We use Tailwind's `aria-[orientation=…]` variant to style accordingly
- * (the grip dots use `[[data-separator][aria-orientation=…]>div>&]` since
- * they sit inside an intermediate wrapper div):
- *   aria-[orientation=vertical]   → vertical separator bar (3px wide, left/right bevel)
- *   aria-[orientation=horizontal] → horizontal separator bar (3px tall, top/bottom bevel)
+ * UI SDK puts the group's direction on the handle as `data-orientation`:
+ *   horizontal group → an upright divider, 3px wide, light left / dark right
+ *   vertical group   → a flat divider, 3px tall, light top / dark bottom
  */
 function RetroResizableHandle({
   withHandle = true,
   className,
+  children,
+  "aria-label": ariaLabel = "Resize",
   ...props
-}: SeparatorProps & {
+}: Omit<React.ComponentProps<typeof ResizableHandlePrimitive>, "className" | "children"> & {
+  className?: string
+  children?: React.ReactNode
+  /** Show the grip dots. */
   withHandle?: boolean
 }) {
   return (
-    <Separator
+    <ResizableHandlePrimitive
+      aria-label={ariaLabel}
       className={cn(
-        "relative flex shrink-0 items-center justify-center",
-        "bg-[var(--os9-gray-300)]",
-        /*
-         * Vertical separator (between side-by-side panels):
-         * 3px wide, full height, light left / dark right border
-         */
-        "aria-[orientation=vertical]:w-[3px]",
-        "aria-[orientation=vertical]:border-l",
-        "aria-[orientation=vertical]:border-r",
-        "aria-[orientation=vertical]:border-l-[var(--os9-white)]",
-        "aria-[orientation=vertical]:border-r-[var(--os9-gray-700)]",
-        "aria-[orientation=vertical]:cursor-col-resize",
-        /*
-         * Horizontal separator (between stacked panels):
-         * 3px tall, full width, light top / dark bottom border
-         */
-        "aria-[orientation=horizontal]:h-[3px]",
-        "aria-[orientation=horizontal]:border-t",
-        "aria-[orientation=horizontal]:border-b",
-        "aria-[orientation=horizontal]:border-t-[var(--os9-white)]",
-        "aria-[orientation=horizontal]:border-b-[var(--os9-gray-700)]",
-        "aria-[orientation=horizontal]:cursor-row-resize",
-        /*
-         * Darken slightly when actively dragging
-         */
-        "active:bg-[var(--os9-gray-400)]",
+        "group/handle relative flex shrink-0 items-center justify-center",
+        "bg-os9-gray-300 outline-none",
+        "data-[orientation=horizontal]:w-[3px] data-[orientation=horizontal]:self-stretch",
+        "data-[orientation=horizontal]:border-x data-[orientation=horizontal]:border-l-os9-white data-[orientation=horizontal]:border-r-os9-gray-700",
+        "data-[orientation=vertical]:h-[3px] data-[orientation=vertical]:w-full",
+        "data-[orientation=vertical]:border-y data-[orientation=vertical]:border-t-os9-white data-[orientation=vertical]:border-b-os9-gray-700",
+        /* darkens while dragged, like a grabbed OS 9 splitter */
+        "data-dragging:bg-os9-gray-400",
+        "focus-visible:os9-focus-ring focus-visible:z-10",
+        "data-disabled:opacity-50",
         className
       )}
       {...props}
     >
-      {withHandle && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          {/*
-           * Vertical dots (for a vertical separator between side-by-side panels).
-           * Shown when parent Separator has aria-orientation="vertical".
-           */}
-          <span className="hidden [[data-separator][aria-orientation=vertical]>div>&]:block">
-            <GripDots orientation="vertical" />
-          </span>
-          {/*
-           * Horizontal dots (for a horizontal separator between stacked panels).
-           * Shown when parent Separator has aria-orientation="horizontal".
-           */}
-          <span className="hidden [[data-separator][aria-orientation=horizontal]>div>&]:block">
-            <GripDots orientation="horizontal" />
-          </span>
-        </div>
-      )}
-    </Separator>
+      {children ?? (withHandle && <GripDots />)}
+    </ResizableHandlePrimitive>
   )
 }
-RetroResizableHandle.displayName = "RetroResizableHandle"
 
-/* ------------------------------------------------------------------ */
-/*  Exports                                                           */
-/* ------------------------------------------------------------------ */
-export {
-  RetroResizablePanelGroup,
-  RetroResizablePanel,
-  RetroResizableHandle,
-}
+export { RetroResizablePanelGroup, RetroResizablePanel, RetroResizableHandle }

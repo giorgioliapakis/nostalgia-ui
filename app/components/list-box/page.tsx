@@ -67,7 +67,7 @@ export default function ListBoxPage() {
             </p>
             <p className="text-os9-gray-700">
               Focus the list with Tab, then use the arrows, Home/End, or type a
-              font name.
+              font name. The selection glides to its new row.
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function ListBoxPage() {
         </div>
         <p className="mt-3 text-os9-gray-700 text-[9px]">
           Shift-click or Shift-arrow extends the range; Cmd/Ctrl-click or Space
-          toggles a row.
+          toggles a row; Cmd/Ctrl-arrow moves without selecting.
         </p>
       </section>
 

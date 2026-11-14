@@ -1,10 +1,23 @@
 "use client"
 
+/*
+ * RetroAvatar on UI SDK Avatar.
+ *
+ * Crafted moment: none, static. The image replaces the initials the moment
+ * it loads, as the Finder swapped in a custom icon.
+ */
+
 import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import {
+  Avatar as AvatarPrimitive,
+  AvatarFallback as AvatarFallbackPrimitive,
+  AvatarImage as AvatarImagePrimitive,
+} from "@ui-sdk/react/avatar"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+
+type Common = { className?: string; children?: React.ReactNode }
 
 const retroAvatarVariants = cva(
   [
@@ -26,56 +39,43 @@ const retroAvatarVariants = cva(
   }
 )
 
-function RetroAvatar(
-  {
-    className,
-    size,
-    ...props
-  }: React.ComponentProps<typeof AvatarPrimitive.Root> &
-    VariantProps<typeof retroAvatarVariants>,
-  ref: React.ForwardedRef<React.ComponentRef<typeof AvatarPrimitive.Root>>
-) {
-  return (
-    <AvatarPrimitive.Root
-      ref={ref}
-      className={cn(retroAvatarVariants({ size }), className)}
-      {...props}
-    />
-  )
+function RetroAvatar({
+  className,
+  size,
+  ...props
+}: Omit<React.ComponentProps<typeof AvatarPrimitive>, "className" | "children"> &
+  Common &
+  VariantProps<typeof retroAvatarVariants>) {
+  return <AvatarPrimitive className={cn(retroAvatarVariants({ size }), className)} {...props} />
 }
 
-const ForwardedRetroAvatar = React.forwardRef(RetroAvatar)
-ForwardedRetroAvatar.displayName = "RetroAvatar"
-
-function RetroAvatarImage(
-  {
-    className,
-    ...props
-  }: React.ComponentProps<typeof AvatarPrimitive.Image>,
-  ref: React.ForwardedRef<React.ComponentRef<typeof AvatarPrimitive.Image>>
-) {
+function RetroAvatarImage({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof AvatarImagePrimitive>, "className"> & {
+  className?: string
+}) {
   return (
-    <AvatarPrimitive.Image
-      ref={ref}
+    <AvatarImagePrimitive
       className={cn("aspect-square h-full w-full object-cover", className)}
       {...props}
     />
   )
 }
 
-const ForwardedRetroAvatarImage = React.forwardRef(RetroAvatarImage)
-ForwardedRetroAvatarImage.displayName = "RetroAvatarImage"
-
-function RetroAvatarFallback(
-  {
-    className,
-    ...props
-  }: React.ComponentProps<typeof AvatarPrimitive.Fallback>,
-  ref: React.ForwardedRef<React.ComponentRef<typeof AvatarPrimitive.Fallback>>
-) {
+function RetroAvatarFallback({
+  className,
+  delayMs,
+  delay = delayMs,
+  ...props
+}: Omit<React.ComponentProps<typeof AvatarFallbackPrimitive>, "className" | "children"> &
+  Common & {
+    /** Radix-era name for `delay`. */
+    delayMs?: number
+  }) {
   return (
-    <AvatarPrimitive.Fallback
-      ref={ref}
+    <AvatarFallbackPrimitive
+      delay={delay}
       className={cn(
         "flex h-full w-full items-center justify-center",
         "bg-os9-gray-400 text-os9-black",
@@ -87,12 +87,4 @@ function RetroAvatarFallback(
   )
 }
 
-const ForwardedRetroAvatarFallback = React.forwardRef(RetroAvatarFallback)
-ForwardedRetroAvatarFallback.displayName = "RetroAvatarFallback"
-
-export {
-  ForwardedRetroAvatar as RetroAvatar,
-  ForwardedRetroAvatarImage as RetroAvatarImage,
-  ForwardedRetroAvatarFallback as RetroAvatarFallback,
-  retroAvatarVariants,
-}
+export { RetroAvatar, RetroAvatarImage, RetroAvatarFallback, retroAvatarVariants }

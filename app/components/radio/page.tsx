@@ -23,7 +23,7 @@ export default function RadioPreview() {
             <RetroRadioGroupItem value="option-1" id="r1" />
             <label
               htmlFor="r1"
-              className="font-[family-name:var(--font-sans)] text-[10px] text-os9-black cursor-pointer"
+              className="font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-black cursor-pointer"
             >
               Option One
             </label>
@@ -32,7 +32,7 @@ export default function RadioPreview() {
             <RetroRadioGroupItem value="option-2" id="r2" />
             <label
               htmlFor="r2"
-              className="font-[family-name:var(--font-sans)] text-[10px] text-os9-black cursor-pointer"
+              className="font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-black cursor-pointer"
             >
               Option Two (default)
             </label>
@@ -41,7 +41,7 @@ export default function RadioPreview() {
             <RetroRadioGroupItem value="option-3" id="r3" />
             <label
               htmlFor="r3"
-              className="font-[family-name:var(--font-sans)] text-[10px] text-os9-black cursor-pointer"
+              className="font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-black cursor-pointer"
             >
               Option Three
             </label>
@@ -57,7 +57,7 @@ export default function RadioPreview() {
             <RetroRadioGroupItem value="disabled-1" id="d1" />
             <label
               htmlFor="d1"
-              className="font-[family-name:var(--font-sans)] text-[10px] text-os9-gray-600 cursor-not-allowed"
+              className="font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-gray-600 cursor-not-allowed"
             >
               Disabled selected
             </label>
@@ -66,7 +66,7 @@ export default function RadioPreview() {
             <RetroRadioGroupItem value="disabled-2" id="d2" />
             <label
               htmlFor="d2"
-              className="font-[family-name:var(--font-sans)] text-[10px] text-os9-gray-600 cursor-not-allowed"
+              className="font-[family-name:var(--os9-font-sans)] text-[10px] text-os9-gray-600 cursor-not-allowed"
             >
               Disabled unselected
             </label>

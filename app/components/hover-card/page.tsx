@@ -22,18 +22,11 @@ export default function HoverCardPreview() {
       {/* Basic hover card on a link */}
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Basic Link Hover Card</h2>
-        <p className="os9-heading text-[12px] leading-[1.6]">
+        <div className="os9-heading text-[12px] leading-[1.6]">
           Visit the{" "}
           <RetroHoverCard>
-            <RetroHoverCardTrigger asChild>
-              <a
-                href="https://support.apple.com"
-                target="_blank"
-                rel="noreferrer"
-                className="text-os9-azul underline cursor-pointer"
-              >
-                Apple Support
-              </a>
+            <RetroHoverCardTrigger href="https://support.apple.com" target="_blank" rel="noreferrer" className="text-os9-azul underline cursor-pointer">
+              Apple Support
             </RetroHoverCardTrigger>
             <RetroHoverCardContent>
               <p className="font-bold mb-1">Apple Support</p>
@@ -44,7 +37,7 @@ export default function HoverCardPreview() {
             </RetroHoverCardContent>
           </RetroHoverCard>{" "}
           page for troubleshooting.
-        </p>
+        </div>
       </section>
 
       {/* Multiple hover cards in a sentence */}
@@ -52,16 +45,11 @@ export default function HoverCardPreview() {
         <h2 className="os9-heading text-[14px] mb-4">
           Multiple Inline Hover Cards
         </h2>
-        <p className="os9-heading text-[12px] leading-[1.6]">
+        <div className="os9-heading text-[12px] leading-[1.6]">
           Classic Mac OS shipped with{" "}
           <RetroHoverCard>
-            <RetroHoverCardTrigger asChild>
-              <a
-                href="#"
-                className="text-os9-azul underline cursor-pointer"
-              >
-                SimpleText
-              </a>
+            <RetroHoverCardTrigger href="#" className="text-os9-azul underline cursor-pointer">
+              SimpleText
             </RetroHoverCardTrigger>
             <RetroHoverCardContent>
               <p className="font-bold mb-1">SimpleText</p>
@@ -73,13 +61,8 @@ export default function HoverCardPreview() {
           </RetroHoverCard>
           ,{" "}
           <RetroHoverCard>
-            <RetroHoverCardTrigger asChild>
-              <a
-                href="#"
-                className="text-os9-azul underline cursor-pointer"
-              >
-                Sherlock
-              </a>
+            <RetroHoverCardTrigger href="#" className="text-os9-azul underline cursor-pointer">
+              Sherlock
             </RetroHoverCardTrigger>
             <RetroHoverCardContent>
               <p className="font-bold mb-1">Sherlock</p>
@@ -91,13 +74,8 @@ export default function HoverCardPreview() {
           </RetroHoverCard>
           , and{" "}
           <RetroHoverCard>
-            <RetroHoverCardTrigger asChild>
-              <a
-                href="#"
-                className="text-os9-azul underline cursor-pointer"
-              >
-                Finder
-              </a>
+            <RetroHoverCardTrigger href="#" className="text-os9-azul underline cursor-pointer">
+              Finder
             </RetroHoverCardTrigger>
             <RetroHoverCardContent>
               <p className="font-bold mb-1">Finder</p>
@@ -108,22 +86,17 @@ export default function HoverCardPreview() {
             </RetroHoverCardContent>
           </RetroHoverCard>
           .
-        </p>
+        </div>
       </section>
 
       {/* Hover card with richer content */}
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Rich Content</h2>
-        <p className="os9-heading text-[12px] leading-[1.6]">
+        <div className="os9-heading text-[12px] leading-[1.6]">
           Learn more about the{" "}
           <RetroHoverCard>
-            <RetroHoverCardTrigger asChild>
-              <a
-                href="#"
-                className="text-os9-azul underline cursor-pointer"
-              >
-                Power Macintosh G3
-              </a>
+            <RetroHoverCardTrigger href="#" className="text-os9-azul underline cursor-pointer">
+              Power Macintosh G3
             </RetroHoverCardTrigger>
             <RetroHoverCardContent>
               <p className="font-bold mb-1">Power Macintosh G3</p>
@@ -137,11 +110,11 @@ export default function HoverCardPreview() {
             </RetroHoverCardContent>
           </RetroHoverCard>{" "}
           series.
-        </p>
+        </div>
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Hover over any blue link to see the hover card appear.
+        Rest the pointer on any blue link, or Tab to it, to see its card grow out of the link. Move away and it closes.
       </p>
     </ComponentDocLayout>
   )

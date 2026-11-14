@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client"
+
 import {
   RetroAlertDialog,
   RetroAlertDialogTrigger,
@@ -14,12 +15,6 @@ import {
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
-export const metadata: Metadata = {
-  title: "Alert Dialog",
-  description:
-    "A modal confirmation dialog with Mac OS 9 window chrome for destructive or important actions.",
-}
-
 export default function AlertDialogPreview() {
   return (
     <ComponentDocLayout
@@ -31,9 +26,7 @@ export default function AlertDialogPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Confirmation Dialog</h2>
         <RetroAlertDialog>
-          <RetroAlertDialogTrigger asChild>
-            <RetroButton>Move to Trash</RetroButton>
-          </RetroAlertDialogTrigger>
+          <RetroAlertDialogTrigger render={<RetroButton />}>Move to Trash</RetroAlertDialogTrigger>
           <RetroAlertDialogContent>
             <RetroAlertDialogHeader>
               <RetroAlertDialogTitle>Confirm</RetroAlertDialogTitle>
@@ -56,9 +49,7 @@ export default function AlertDialogPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Destructive Action</h2>
         <RetroAlertDialog>
-          <RetroAlertDialogTrigger asChild>
-            <RetroButton>Erase Disk</RetroButton>
-          </RetroAlertDialogTrigger>
+          <RetroAlertDialogTrigger render={<RetroButton />}>Erase Disk</RetroAlertDialogTrigger>
           <RetroAlertDialogContent>
             <RetroAlertDialogHeader>
               <RetroAlertDialogTitle>Warning</RetroAlertDialogTitle>
@@ -81,9 +72,7 @@ export default function AlertDialogPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Note</h2>
         <RetroAlertDialog>
-          <RetroAlertDialogTrigger asChild>
-            <RetroButton>Empty Trash</RetroButton>
-          </RetroAlertDialogTrigger>
+          <RetroAlertDialogTrigger render={<RetroButton />}>Empty Trash</RetroAlertDialogTrigger>
           <RetroAlertDialogContent>
             <RetroAlertDialogHeader>
               <RetroAlertDialogTitle>Note</RetroAlertDialogTitle>
@@ -102,8 +91,8 @@ export default function AlertDialogPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click a button to open the alert dialog. Use Cancel or the action
-        button to close.
+        Click a button and the alert zooms out of it. Answer with Cancel, the
+        action button, or Escape; clicking outside leaves it open.
       </p>
     </ComponentDocLayout>
   )

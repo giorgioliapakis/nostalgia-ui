@@ -1,7 +1,14 @@
 "use client"
 
+/*
+ * RetroToggle: a two-state bevel button that stays pushed in while on.
+ *
+ * Crafted moment: none on purpose. The bevel inverts the instant it's
+ * pressed, like every OS 9 bevel button; motion here would only add lag.
+ */
+
 import * as React from "react"
-import * as TogglePrimitive from "@radix-ui/react-toggle"
+import { Toggle as TogglePrimitive } from "@ui-sdk/react/toggle"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -14,9 +21,10 @@ const retroToggleVariants = cva(
     "transition-none",
     "border border-os9-black bg-os9-gray-300 text-os9-black",
     "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_#808080]",
-    "data-[state=on]:bg-os9-gray-700 data-[state=on]:text-os9-white",
-    "data-[state=on]:shadow-[inset_1px_1px_0_#808080,inset_-1px_-1px_0_var(--os9-white)]",
+    "data-pressed:bg-os9-gray-700 data-pressed:text-os9-white",
+    "data-pressed:shadow-[inset_1px_1px_0_#808080,inset_-1px_-1px_0_var(--os9-white)]",
     "focus-visible:os9-focus-ring",
+    "data-disabled:opacity-50 data-disabled:pointer-events-none",
   ],
   {
     variants: {
@@ -32,31 +40,17 @@ const retroToggleVariants = cva(
   }
 )
 
-function RetroToggle(
-  {
-    className,
-    size,
-    disabled,
-    ...props
-  }: React.ComponentProps<typeof TogglePrimitive.Root> &
-    VariantProps<typeof retroToggleVariants>,
-  ref: React.ForwardedRef<HTMLButtonElement>
-) {
-  return (
-    <TogglePrimitive.Root
-      className={cn(
-        retroToggleVariants({ size }),
-        disabled && "opacity-50 pointer-events-none",
-        className
-      )}
-      ref={ref}
-      disabled={disabled}
-      {...props}
-    />
-  )
+type RetroToggleProps = Omit<
+  React.ComponentProps<typeof TogglePrimitive>,
+  "className" | "children"
+> &
+  VariantProps<typeof retroToggleVariants> & {
+    className?: string
+    children?: React.ReactNode
+  }
+
+function RetroToggle({ className, size, ...props }: RetroToggleProps) {
+  return <TogglePrimitive className={cn(retroToggleVariants({ size }), className)} {...props} />
 }
 
-const ForwardedRetroToggle = React.forwardRef(RetroToggle)
-ForwardedRetroToggle.displayName = "RetroToggle"
-
-export { ForwardedRetroToggle as RetroToggle, retroToggleVariants }
+export { RetroToggle, retroToggleVariants }

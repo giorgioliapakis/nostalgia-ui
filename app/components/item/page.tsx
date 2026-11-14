@@ -154,23 +154,21 @@ export default function ItemPage() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">As Link</h2>
         <div className="max-w-[420px]">
-          <RetroItem variant="outline" asChild>
-            <a href="#">
-              <RetroItemMedia variant="icon">
-                <RetroIconPreferences size="sm" />
-              </RetroItemMedia>
-              <RetroItemContent>
-                <RetroItemTitle>Control Panels</RetroItemTitle>
-                <RetroItemDescription>
-                  Adjust Appearance, Memory, Monitors and Sound.
-                </RetroItemDescription>
-              </RetroItemContent>
-              <RetroItemActions>
-                <span aria-hidden className="font-[family-name:var(--font-heading)] text-[12px]">
-                  ▸
-                </span>
-              </RetroItemActions>
-            </a>
+          <RetroItem variant="outline" render={<a href="#" />}>
+            <RetroItemMedia variant="icon">
+              <RetroIconPreferences size="sm" />
+            </RetroItemMedia>
+            <RetroItemContent>
+              <RetroItemTitle>Control Panels</RetroItemTitle>
+              <RetroItemDescription>
+                Adjust Appearance, Memory, Monitors and Sound.
+              </RetroItemDescription>
+            </RetroItemContent>
+            <RetroItemActions>
+              <span aria-hidden className="font-[family-name:var(--font-heading)] text-[12px]">
+                ▸
+              </span>
+            </RetroItemActions>
           </RetroItem>
         </div>
       </section>

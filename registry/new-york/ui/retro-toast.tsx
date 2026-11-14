@@ -1,6 +1,31 @@
 "use client"
 
+/*
+ * RetroToast: small OS 9 notification windows in the bottom-right corner, on
+ * UI SDK's Toast. Wrap the app in <RetroToastProvider>, then call
+ * `useRetroToast().toast({ title, description })`. Timers pause while the
+ * pointer or focus is on a toast, a toast swipes away to the right, Escape
+ * closes the focused one, and F6 jumps to the newest from the keyboard.
+ *
+ * Crafted moment: the column settles. A new toast slides in from the right
+ * edge (200ms, strong ease-out); when one closes it fades and the toasts
+ * above it glide down into the gap instead of jumping. Classic flair: toasts
+ * simply appear and the column snaps. Reduced motion: fades only.
+ *
+ * For sonner-style toast() calls, typed alerts and Undo, use retro-sonner.
+ */
+
 import * as React from "react"
+import {
+  Toast as ToastPrimitive,
+  ToastClose as ToastClosePrimitive,
+  ToastDescription as ToastDescriptionPrimitive,
+  ToastRegion as ToastRegionPrimitive,
+  ToastTitle as ToastTitlePrimitive,
+  createToaster,
+  type ToastData,
+  type Toaster,
+} from "@ui-sdk/react/toast"
 
 import { cn } from "@/lib/utils"
 
@@ -12,6 +37,7 @@ type ToastEntry = {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
+  /** How long it shows, in ms. `Infinity` keeps it until it's closed. Default 5000. */
   duration?: number
 }
 
@@ -28,250 +54,189 @@ type ToastContextValue = ToastActions & {
   readonly toasts: ToastEntry[]
 }
 
+type RetroToaster = Toaster<React.ReactNode>
+
 /* ------------------------------------------------------------------ */
 /*  Context                                                            */
 /* ------------------------------------------------------------------ */
 
 // Actions are stable, so components that only fire toasts never re-render
-// when the toast list changes. The list lives in its own context.
-const RetroToastContext = React.createContext<ToastContextValue | null>(null)
-const RetroToastStateContext = React.createContext<ToastEntry[] | null>(null)
+// when the toast list changes. The list is read with useRetroToasts().
+const RetroToastContext = React.createContext<
+  (ToastContextValue & { toaster: RetroToaster }) | null
+>(null)
 
-function useRetroToast(): ToastContextValue {
+function useToastContext(hook: string) {
   const ctx = React.useContext(RetroToastContext)
-  if (!ctx) {
-    throw new Error("useRetroToast must be used within a <RetroToastProvider>")
-  }
+  if (!ctx) throw new Error(`${hook} must be used within a <RetroToastProvider>`)
   return ctx
 }
 
-/** Reactive list of the currently visible toasts. */
+function useRetroToast(): ToastContextValue {
+  return useToastContext("useRetroToast")
+}
+
+const toEntries = (items: readonly ToastData<React.ReactNode>[]): ToastEntry[] =>
+  /* UI SDK keeps newest first; the list reads oldest first, as before */
+  items
+    .map(({ id, title, description, duration }) => ({ id, title, description, duration }))
+    .reverse()
+
+/** Reactive list of the currently visible toasts, oldest first. */
 function useRetroToasts(): ToastEntry[] {
-  const toasts = React.useContext(RetroToastStateContext)
-  if (!toasts) {
-    throw new Error("useRetroToasts must be used within a <RetroToastProvider>")
-  }
-  return toasts
+  const { toaster } = useToastContext("useRetroToasts")
+  const subscribe = React.useCallback((fn: () => void) => toaster.subscribe(fn), [toaster])
+  const snapshot = React.useCallback(() => toaster.toasts(), [toaster])
+  const items = React.useSyncExternalStore(subscribe, snapshot, snapshot)
+  return React.useMemo(() => toEntries(items), [items])
 }
 
 /* ------------------------------------------------------------------ */
 /*  Provider                                                           */
 /* ------------------------------------------------------------------ */
 
-let counter = 0
-
-/** setTimeout overflows above this; treat larger durations as persistent. */
-const MAX_TIMEOUT = 2_147_483_647
-
-type ToastTimer = {
-  handle: ReturnType<typeof setTimeout> | null
-  remaining: number
-  startedAt: number
-  hovered: boolean
-  focused: boolean
-}
-
 function RetroToastProvider({ children }: { children: React.ReactNode }) {
-  const [toasts, setToasts] = React.useState<ToastEntry[]>([])
-  const toastsRef = React.useRef<ToastEntry[]>(toasts)
-  const timersRef = React.useRef(new Map<string, ToastTimer>())
+  const [toaster] = React.useState(() => createToaster<React.ReactNode>({ duration: 5000 }))
 
-  React.useEffect(() => {
-    toastsRef.current = toasts
-  }, [toasts])
+  React.useEffect(() => () => void toaster.dismiss(), [toaster])
 
-  const clearTimer = React.useCallback((id: string) => {
-    const timer = timersRef.current.get(id)
-    if (timer?.handle) clearTimeout(timer.handle)
-    timersRef.current.delete(id)
-  }, [])
-
-  const dismiss = React.useCallback(
-    (id: string) => {
-      clearTimer(id)
-      setToasts((prev) => prev.filter((t) => t.id !== id))
-    },
-    [clearTimer]
-  )
-
-  const runTimer = React.useCallback(
-    (id: string) => {
-      const timer = timersRef.current.get(id)
-      if (!timer || timer.handle || timer.hovered || timer.focused) return
-      timer.startedAt = Date.now()
-      timer.handle = setTimeout(() => dismiss(id), timer.remaining)
-    },
-    [dismiss]
-  )
-
-  const pauseTimer = React.useCallback(
-    (id: string, reason: "hovered" | "focused") => {
-      const timer = timersRef.current.get(id)
-      if (!timer) return
-      timer[reason] = true
-      if (timer.handle) {
-        clearTimeout(timer.handle)
-        timer.handle = null
-        timer.remaining = Math.max(
-          0,
-          timer.remaining - (Date.now() - timer.startedAt)
-        )
-      }
-    },
-    []
-  )
-
-  const resumeTimer = React.useCallback(
-    (id: string, reason: "hovered" | "focused") => {
-      const timer = timersRef.current.get(id)
-      if (!timer) return
-      timer[reason] = false
-      runTimer(id)
-    },
-    [runTimer]
-  )
-
-  const toast = React.useCallback(
-    (opts: Omit<ToastEntry, "id">) => {
-      const id = `retro-toast-${++counter}`
-      const duration = opts.duration ?? 5000
-      setToasts((prev) => [...prev, { ...opts, id, duration }])
-      // Non-finite (e.g. Infinity) or huge durations = persistent toast
-      if (Number.isFinite(duration) && duration <= MAX_TIMEOUT) {
-        timersRef.current.set(id, {
-          handle: null,
-          remaining: Math.max(0, duration),
-          startedAt: 0,
-          hovered: false,
-          focused: false,
-        })
-        runTimer(id)
-      }
-      return id
-    },
-    [runTimer]
-  )
-
-  // Clear all pending timers on unmount
-  React.useEffect(() => {
-    const timers = timersRef.current
-    return () => {
-      timers.forEach((timer) => {
-        if (timer.handle) clearTimeout(timer.handle)
-      })
-      timers.clear()
-    }
-  }, [])
-
-  const actions = React.useMemo<ToastContextValue>(
+  const value = React.useMemo(
     () => ({
-      toast,
-      dismiss,
+      toaster,
+      toast: ({ title, description, duration }: Omit<ToastEntry, "id">) =>
+        toaster({ title, description, ...(duration !== undefined ? { duration } : {}) }),
+      dismiss: (id: string) => toaster.dismiss(id),
       get toasts() {
-        return toastsRef.current
+        return toEntries(toaster.toasts())
       },
     }),
-    [toast, dismiss]
+    [toaster]
   )
 
   return (
-    <RetroToastContext.Provider value={actions}>
-      <RetroToastStateContext.Provider value={toasts}>
-        {children}
-        <RetroToastViewport>
-          {toasts.map((t) => (
-            <RetroToast
-              key={t.id}
-              onMouseEnter={() => pauseTimer(t.id, "hovered")}
-              onMouseLeave={() => resumeTimer(t.id, "hovered")}
-              onFocus={() => pauseTimer(t.id, "focused")}
-              onBlur={(event) => {
-                // Ignore focus moving between elements inside the toast
-                if (event.currentTarget.contains(event.relatedTarget as Node | null)) {
-                  return
-                }
-                resumeTimer(t.id, "focused")
-              }}
-            >
-              {/* Mini title bar stripe */}
-              <div
-                className="os9-stripes mb-[4px] h-[3px] w-full"
-                style={{
-                  boxShadow:
-                    "inset 1px 0 0 #eee, inset -1px 0 0 #c5c5c5",
-                }}
-                aria-hidden
-              />
-
-              <div className="flex items-start gap-[6px]">
-                <div className="flex-1 min-w-0">
-                  {t.title && <RetroToastTitle>{t.title}</RetroToastTitle>}
-                  {t.description && (
-                    <RetroToastDescription>{t.description}</RetroToastDescription>
-                  )}
-                </div>
-                <RetroToastClose onClick={() => dismiss(t.id)} />
-              </div>
-            </RetroToast>
-          ))}
-        </RetroToastViewport>
-      </RetroToastStateContext.Provider>
+    <RetroToastContext.Provider value={value}>
+      {children}
+      <RetroToastViewport />
     </RetroToastContext.Provider>
   )
 }
-RetroToastProvider.displayName = "RetroToastProvider"
 
 /* ------------------------------------------------------------------ */
 /*  RetroToastViewport                                                 */
 /* ------------------------------------------------------------------ */
 
-/**
- * Persistent live region. It is always mounted so screen readers announce
- * toasts as they are appended to the list.
- */
-function RetroToastViewportInner(
-  { className, ...props }: React.HTMLAttributes<HTMLOListElement>,
-  ref: React.ForwardedRef<HTMLOListElement>
-) {
+/* A column in the corner, always laid out (UI SDK's expanded stack), so a
+ * closing toast's neighbours can glide into its place. */
+const CSS = `
+.os9-toast-column {
+  position: fixed; inset: auto; right: 16px; bottom: 16px; z-index: 50;
+  margin: 0; padding: 0; border: 0; background: transparent; overflow: visible;
+  width: 300px; max-width: calc(100vw - 32px);
+  height: calc(var(--toast-stack-height) + (var(--toast-count) - 1) * 8px);
+}
+.os9-toast-column > ol, .os9-toast-column > ul { margin: 0; padding: 0; list-style: none; }
+.os9-toast-column [data-slot="toast"] {
+  position: absolute; inset-inline: 0; bottom: 0;
+  height: var(--toast-height);
+  translate: var(--toast-swipe-x, 0px) calc(-1 * (var(--toast-offset) + var(--toast-index) * 8px));
+  transition:
+    translate 240ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+}
+.os9-toast-column [data-slot="toast"][data-starting-style] {
+  translate: calc(100% + 24px) calc(-1 * (var(--toast-offset) + var(--toast-index) * 8px));
+  opacity: 0;
+}
+.os9-toast-column [data-slot="toast"][data-ending-style] { opacity: 0; transition-duration: 150ms; }
+.os9-toast-column [data-slot="toast"][data-swiping] { transition: none; }
+[data-flair="classic"] .os9-toast-column [data-slot="toast"] { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .os9-toast-column [data-slot="toast"] { transition: opacity 150ms; }
+  .os9-toast-column [data-slot="toast"][data-starting-style] {
+    translate: 0 calc(-1 * (var(--toast-offset) + var(--toast-index) * 8px));
+  }
+}
+`
+
+type RetroToastViewportProps = {
+  className?: string
+  /** Accessible name of the region. */
+  "aria-label"?: string
+  /** Renders each toast; defaults to the standard OS 9 toast. */
+  children?: (toast: ToastData<React.ReactNode>) => React.ReactNode
+  /** The queue to show; defaults to the provider's. */
+  toaster?: RetroToaster
+}
+
+function DefaultToast() {
   return (
-    <div
-      role="region"
-      aria-label="Notifications"
-      className={cn(
-        "fixed bottom-0 right-0 z-50 p-[16px]",
-        "pointer-events-none",
-        className
-      )}
-    >
-      <ol
-        ref={ref}
-        aria-live="polite"
-        className="flex flex-col gap-2 list-none m-0 p-0"
-        {...props}
+    <RetroToast>
+      {/* Mini title bar stripe */}
+      <div
+        className="os9-stripes mb-[4px] h-[3px] w-full"
+        style={{ boxShadow: "inset 1px 0 0 #eee, inset -1px 0 0 #c5c5c5" }}
+        aria-hidden
       />
-    </div>
+      <div className="flex items-start gap-[6px]">
+        <div className="min-w-0 flex-1">
+          <RetroToastTitle />
+          <RetroToastDescription />
+        </div>
+        <RetroToastClose />
+      </div>
+    </RetroToast>
   )
 }
 
-const RetroToastViewport = React.forwardRef(RetroToastViewportInner)
-RetroToastViewport.displayName = "RetroToastViewport"
+/**
+ * The notifications region. It is always mounted, so screen readers announce
+ * toasts as they arrive. <RetroToastProvider> renders one for you.
+ */
+function RetroToastViewport({
+  className,
+  "aria-label": ariaLabel = "Notifications",
+  children,
+  toaster,
+}: RetroToastViewportProps) {
+  const ctx = React.useContext(RetroToastContext)
+  const queue = toaster ?? ctx?.toaster
+  if (!queue) throw new Error("RetroToastViewport needs a `toaster` or a <RetroToastProvider>")
+  return (
+    <>
+      <style href="os9-toast-column" precedence="default">
+        {CSS}
+      </style>
+      <ToastRegionPrimitive
+        toaster={queue}
+        side="bottom"
+        align="end"
+        maxVisible={5}
+        expanded
+        aria-label={ariaLabel}
+        className={cn("os9-toast-column", className)}
+      >
+        {(item) => (children ? children(item) : <DefaultToast />)}
+      </ToastRegionPrimitive>
+    </>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  RetroToast                                                         */
 /* ------------------------------------------------------------------ */
 
-function RetroToastInner(
-  { className, ...props }: React.HTMLAttributes<HTMLLIElement>,
-  ref: React.ForwardedRef<HTMLLIElement>
-) {
+function RetroToast({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof ToastPrimitive>, "className"> & { className?: string }) {
   return (
-    <li
-      ref={ref}
+    <ToastPrimitive
       className={cn(
-        "pointer-events-auto w-[300px] p-[8px]",
+        "pointer-events-auto w-full p-[8px] text-os9-black",
         "border border-os9-black bg-os9-gray-200",
         "shadow-[2px_2px_0_var(--os9-black),inset_2px_2px_0_rgba(255,255,255,0.6),inset_-2px_-2px_0_rgba(38,38,38,0.4)]",
-        "animate-in slide-in-from-right-full fade-in-0 duration-200",
+        "outline-none focus-visible:os9-focus-ring",
         className
       )}
       {...props}
@@ -279,20 +244,17 @@ function RetroToastInner(
   )
 }
 
-const RetroToast = React.forwardRef(RetroToastInner)
-RetroToast.displayName = "RetroToast"
-
 /* ------------------------------------------------------------------ */
-/*  RetroToastTitle                                                    */
+/*  RetroToastTitle / RetroToastDescription                            */
+/*  Empty, they show the toast's own title and description.            */
 /* ------------------------------------------------------------------ */
 
-function RetroToastTitleInner(
-  { className, ...props }: React.HTMLAttributes<HTMLDivElement>,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
+function RetroToastTitle({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof ToastTitlePrimitive>, "className"> & { className?: string }) {
   return (
-    <div
-      ref={ref}
+    <ToastTitlePrimitive
       className={cn(
         "font-[family-name:var(--os9-font-heading)] text-[12px] font-bold leading-[1.2] tracking-[0.42px] text-os9-black",
         className
@@ -302,20 +264,14 @@ function RetroToastTitleInner(
   )
 }
 
-const RetroToastTitle = React.forwardRef(RetroToastTitleInner)
-RetroToastTitle.displayName = "RetroToastTitle"
-
-/* ------------------------------------------------------------------ */
-/*  RetroToastDescription                                              */
-/* ------------------------------------------------------------------ */
-
-function RetroToastDescriptionInner(
-  { className, ...props }: React.HTMLAttributes<HTMLDivElement>,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
+function RetroToastDescription({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof ToastDescriptionPrimitive>, "className"> & {
+  className?: string
+}) {
   return (
-    <div
-      ref={ref}
+    <ToastDescriptionPrimitive
       className={cn(
         "font-[family-name:var(--os9-font-sans)] text-[10px] leading-[1.4] mt-[2px] text-os9-black",
         className
@@ -325,24 +281,22 @@ function RetroToastDescriptionInner(
   )
 }
 
-const RetroToastDescription = React.forwardRef(RetroToastDescriptionInner)
-RetroToastDescription.displayName = "RetroToastDescription"
-
 /* ------------------------------------------------------------------ */
-/*  RetroToastClose                                                    */
+/*  RetroToastClose: the OS 9 close box                                */
 /* ------------------------------------------------------------------ */
 
-function RetroToastCloseInner(
-  { className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>,
-  ref: React.ForwardedRef<HTMLButtonElement>
-) {
+function RetroToastClose({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof ToastClosePrimitive>, "className" | "children"> & {
+  className?: string
+}) {
   return (
-    <button
-      ref={ref}
-      type="button"
+    <ToastClosePrimitive
       aria-label="Close"
       className={cn(
-        "relative size-[13px] shrink-0 cursor-default",
+        "relative size-[13px] shrink-0 cursor-default p-0 outline-none",
+        "focus-visible:os9-focus-ring",
         className
       )}
       {...props}
@@ -350,33 +304,25 @@ function RetroToastCloseInner(
       {/* Bevel frame */}
       <span
         className="absolute inset-[2px] border border-os9-black"
-        style={{
-          backgroundImage:
-            "linear-gradient(135deg, #9a9a9a 0%, #f1f1f1 100%)",
-        }}
+        style={{ backgroundImage: "linear-gradient(135deg, #9a9a9a 0%, #f1f1f1 100%)" }}
       />
       {/* Inner shadow */}
       <span
         className="absolute inset-[2px]"
         style={{
-          boxShadow:
-            "inset 1px 1px 0 rgba(255,255,255,0.6), inset -1px -1px 0 rgba(0,0,0,0.15)",
+          boxShadow: "inset 1px 1px 0 rgba(255,255,255,0.6), inset -1px -1px 0 rgba(0,0,0,0.15)",
         }}
       />
       {/* Outer pixel highlights */}
       <span
         className="absolute inset-0"
         style={{
-          boxShadow:
-            "inset 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 0 rgba(0,0,0,0.12)",
+          boxShadow: "inset 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 0 rgba(0,0,0,0.12)",
         }}
       />
-    </button>
+    </ToastClosePrimitive>
   )
 }
-
-const RetroToastClose = React.forwardRef(RetroToastCloseInner)
-RetroToastClose.displayName = "RetroToastClose"
 
 /* ------------------------------------------------------------------ */
 /*  Exports                                                            */
@@ -392,3 +338,4 @@ export {
   useRetroToast,
   useRetroToasts,
 }
+export type { ToastEntry, RetroToastViewportProps }

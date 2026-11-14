@@ -1,8 +1,20 @@
 "use client"
 
+/*
+ * RetroForm: react-hook-form wiring with OS 9 labels, help text and errors.
+ *
+ * Crafted moment: none, static. Errors appear in red bold Geneva as soon
+ * as react-hook-form reports them.
+ *
+ * RetroFormControl hands its id and aria-* to the one element inside it
+ * (or to `render`), via UI SDK's renderElement. RetroFormLabel is UI SDK's
+ * Label, so it names controls that render buttons (checkbox, switch,
+ * radio group) as well as inputs.
+ */
+
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
+import { Label as LabelPrimitive } from "@ui-sdk/react/label"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
 import {
   Controller,
   FormProvider,
@@ -87,15 +99,17 @@ const RetroFormItem = React.forwardRef<
 })
 RetroFormItem.displayName = "RetroFormItem"
 
-const RetroFormLabel = React.forwardRef<
-  React.ComponentRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(function RetroFormLabel({ className, ...props }, ref) {
+function RetroFormLabel({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof LabelPrimitive>, "className" | "children"> & {
+  className?: string
+  children?: React.ReactNode
+}) {
   const { error, formItemId } = useRetroFormField()
 
   return (
-    <LabelPrimitive.Root
-      ref={ref}
+    <LabelPrimitive
       className={cn(
         retroLabelVariants(),
         error && "text-[#cc0000]",
@@ -105,31 +119,37 @@ const RetroFormLabel = React.forwardRef<
       {...props}
     />
   )
-})
-RetroFormLabel.displayName = "RetroFormLabel"
+}
 
-const RetroFormControl = React.forwardRef<
-  React.ComponentRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(function RetroFormControl({ ...props }, ref) {
+/**
+ * Passes the field's id and aria-* to its only child element (or to `render`),
+ * so the label and messages point at the real control.
+ */
+function RetroFormControl({
+  children,
+  render,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLElement>, "children"> & {
+  children?: React.ReactElement<Record<string, unknown>>
+  render?: RenderProp
+  ref?: React.Ref<HTMLElement>
+}) {
   const { error, formItemId, formDescriptionId, formMessageId } =
     useRetroFormField()
 
-  return (
-    <Slot
-      ref={ref}
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
+  return renderElement(
+    "div",
+    {
+      id: formItemId,
+      "aria-describedby": !error
+        ? `${formDescriptionId}`
+        : `${formDescriptionId} ${formMessageId}`,
+      "aria-invalid": !!error,
+      ...props,
+    },
+    render ?? children
   )
-})
-RetroFormControl.displayName = "RetroFormControl"
+}
 
 const RetroFormDescription = React.forwardRef<
   HTMLParagraphElement,

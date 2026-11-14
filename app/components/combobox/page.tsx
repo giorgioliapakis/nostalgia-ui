@@ -35,8 +35,9 @@ export default function ComboboxPreview() {
       description="A searchable dropdown select with Mac OS 9 styling and typeahead filtering."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        A searchable dropdown (combobox) with OS9 styling. Type to filter the
-        list of items. Built on Radix Popover.
+        A searchable dropdown (combobox) with OS9 styling, built on UI SDK&apos;s
+        Combobox. Type to filter the list of items; the azul highlight glides
+        between matches.
       </p>
 
       {/* Basic combobox */}
@@ -49,8 +50,8 @@ export default function ComboboxPreview() {
             <RetroComboboxTrigger placeholder="Choose application..." />
             <RetroComboboxContent>
               <RetroComboboxInput placeholder="Search applications..." />
+              <RetroComboboxEmpty>No application found.</RetroComboboxEmpty>
               <RetroComboboxList>
-                <RetroComboboxEmpty>No application found.</RetroComboboxEmpty>
                 {apps.map((app) => (
                   <RetroComboboxItem key={app.value} value={app.value}>
                     {app.label}
@@ -75,8 +76,8 @@ export default function ComboboxPreview() {
             <RetroComboboxTrigger placeholder="Choose application..." />
             <RetroComboboxContent>
               <RetroComboboxInput />
+              <RetroComboboxEmpty>No results.</RetroComboboxEmpty>
               <RetroComboboxList>
-                <RetroComboboxEmpty>No results.</RetroComboboxEmpty>
                 {apps.map((app) => (
                   <RetroComboboxItem key={app.value} value={app.value}>
                     {app.label}

@@ -1,8 +1,20 @@
 "use client"
 
+/*
+ * RetroWindow: a Platinum document window.
+ *
+ * Crafted moment: WindowShade. Double-click the title bar (or press the
+ * collapse box) and the window rolls up into its title bar with the house
+ * height morph (180ms up, 220ms down, strong ease-out) instead of snapping;
+ * the content stays in place and is clipped as the window shortens, like a
+ * blind. A second press mid-roll reverses from where it is. Classic flair
+ * and reduced motion snap, as Mac OS 8 did.
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { EASE_OUT_STRONG, motionOff } from "@/registry/new-york/lib/retro-motion"
 import { RetroTitleBar } from "@/registry/new-york/ui/retro-title-bar"
 
 /* ------------------------------------------------------------------ */
@@ -149,6 +161,80 @@ const RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(
       onCollapsedChange?.(next)
     }
 
+    /*
+     * `shaded` is what's painted. It lags `collapsed` while the window rolls
+     * up, so the content stays visible (and clipped) until the roll ends.
+     */
+    const [shaded, setShaded] = React.useState(collapsed)
+    const prevCollapsed = React.useRef(collapsed)
+    const shadeAnim = React.useRef<Animation | null>(null)
+    const unrollFrom = React.useRef<number | null>(null)
+
+    /* cancels a roll in flight and puts the root's own overflow back */
+    const stopShade = React.useCallback(() => {
+      const anim = shadeAnim.current
+      if (!anim) return
+      shadeAnim.current = null
+      anim.cancel()
+      if (rootRef.current) rootRef.current.style.overflow = ""
+    }, [])
+
+    const playShade = React.useCallback(
+      (from: number, to: number, duration: number, done?: () => void) => {
+        const el = rootRef.current
+        if (!el) return done?.()
+        el.style.overflow = "hidden"
+        const anim = el.animate([{ height: `${from}px` }, { height: `${to}px` }], {
+          duration,
+          easing: EASE_OUT_STRONG,
+        })
+        shadeAnim.current = anim
+        anim.onfinish = () => {
+          if (shadeAnim.current !== anim) return
+          shadeAnim.current = null
+          el.style.overflow = ""
+          done?.()
+        }
+      },
+      []
+    )
+
+    React.useLayoutEffect(() => {
+      if (prevCollapsed.current === collapsed) return
+      prevCollapsed.current = collapsed
+      const el = rootRef.current
+      /* the current painted height, mid-roll included */
+      const from = el?.getBoundingClientRect().height ?? 0
+      stopShade()
+
+      if (!el || motionOff(el)) {
+        setShaded(collapsed)
+        return
+      }
+      if (collapsed) {
+        const bar = el.firstElementChild as HTMLElement | null
+        const borders = el.offsetHeight - el.clientHeight
+        playShade(from, (bar?.offsetHeight ?? 0) + borders, 180, () => setShaded(true))
+      } else if (!shaded) {
+        /* reversed mid-roll: the content is still there, roll back down */
+        playShade(from, el.offsetHeight, 220)
+      } else {
+        unrollFrom.current = from
+        setShaded(false)
+      }
+    }, [collapsed, shaded, playShade, stopShade])
+
+    /* after the content is back in the page, unroll to its natural height */
+    React.useLayoutEffect(() => {
+      const from = unrollFrom.current
+      const el = rootRef.current
+      if (shaded || from == null || !el) return
+      unrollFrom.current = null
+      playShade(from, el.offsetHeight, 220)
+    }, [shaded, playShade])
+
+    React.useEffect(() => stopShade, [stopShade])
+
     /* ---- Resize ---- */
     const [size, setSize] = React.useState<RetroWindowSize | null>(null)
     const resizeRef = React.useRef<{
@@ -239,7 +325,7 @@ const RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(
       mergedStyle.width = size.width
       mergedStyle.height = size.height
     }
-    if (collapsed) {
+    if (shaded) {
       mergedStyle.height = "auto"
       mergedStyle.minHeight = 0
     }
@@ -247,7 +333,7 @@ const RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(
       mergedStyle.transform = `translate(${position.x}px, ${position.y}px)`
     }
 
-    const showSizeBox = resizable && !collapsed
+    const showSizeBox = resizable && !shaded
 
     return (
       <div
@@ -283,7 +369,7 @@ const RetroWindow = React.forwardRef<HTMLDivElement, RetroWindowProps>(
           className={cn("shrink-0", draggable && "touch-none select-none")}
         />
 
-        {!collapsed && (
+        {!shaded && (
           <>
             {/* Content area */}
             <div

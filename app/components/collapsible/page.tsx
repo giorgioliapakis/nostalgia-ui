@@ -79,7 +79,9 @@ export default function CollapsiblePreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click the disclosure triangle to expand or collapse each section.
+        Click the disclosure triangle to expand or collapse each section. The
+        triangle turns in two frames, like the Finder&apos;s, and the content
+        slides open.
       </p>
     </ComponentDocLayout>
   )

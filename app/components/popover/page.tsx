@@ -1,18 +1,14 @@
-import type { Metadata } from "next"
+"use client"
+
 import {
   RetroPopover,
   RetroPopoverTrigger,
   RetroPopoverContent,
+  RetroPopoverClose,
 } from "@/registry/new-york/ui/retro-popover"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { RetroInput } from "@/registry/new-york/ui/retro-input"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
-
-export const metadata: Metadata = {
-  title: "Popover",
-  description:
-    "A click-triggered popup panel with Mac OS 9 raised bevel for forms and information.",
-}
 
 export default function PopoverPreview() {
   return (
@@ -25,9 +21,7 @@ export default function PopoverPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">With Form Content</h2>
         <RetroPopover>
-          <RetroPopoverTrigger asChild>
-            <RetroButton>Edit Name</RetroButton>
-          </RetroPopoverTrigger>
+          <RetroPopoverTrigger render={<RetroButton />}>Edit Name</RetroPopoverTrigger>
           <RetroPopoverContent className="w-[240px]">
             <div className="flex flex-col gap-2">
               <label className="os9-heading text-[12px]">First Name</label>
@@ -35,12 +29,12 @@ export default function PopoverPreview() {
               <label className="os9-heading text-[12px] mt-1">Last Name</label>
               <RetroInput placeholder="Wozniak" />
               <div className="flex justify-end gap-2 mt-2">
-                <RetroButton variant="default" size="sm">
+                <RetroPopoverClose render={<RetroButton variant="default" size="sm" />}>
                   Cancel
-                </RetroButton>
-                <RetroButton variant="default" size="sm">
+                </RetroPopoverClose>
+                <RetroPopoverClose render={<RetroButton variant="default" size="sm" />}>
                   Save
-                </RetroButton>
+                </RetroPopoverClose>
               </div>
             </div>
           </RetroPopoverContent>
@@ -51,9 +45,7 @@ export default function PopoverPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Simple Info Popover</h2>
         <RetroPopover>
-          <RetroPopoverTrigger asChild>
-            <RetroButton>About This Mac</RetroButton>
-          </RetroPopoverTrigger>
+          <RetroPopoverTrigger render={<RetroButton />}>About This Mac</RetroPopoverTrigger>
           <RetroPopoverContent className="w-[200px]">
             <p className="os9-heading text-[12px] mb-1">Mac OS 9.2.2</p>
             <p className="text-[11px] text-os9-gray-700">
@@ -67,8 +59,8 @@ export default function PopoverPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click a button to open the popover. Click outside or press Escape to
-        close.
+        Click a button and the popover grows out of it. Click outside or press
+        Escape to close. With classic flair or reduced motion it appears at once.
       </p>
     </ComponentDocLayout>
   )

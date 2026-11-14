@@ -26,7 +26,7 @@ const USAGE = `<RetroBevelButton icon={<RetroIconFolder size="default" />} iconP
 <RetroBevelButton defaultPressed>Bold</RetroBevelButton>
 <RetroBevelButton pressed={on} onPressedChange={setOn}>Bold</RetroBevelButton>
 
-// Pop-up bevel button (pair with RetroDropdownMenuTrigger asChild)
+// Pop-up bevel button (pass it as RetroDropdownMenuTrigger render)
 <RetroBevelButton menu>View</RetroBevelButton>`
 
 export default function BevelButtonPage() {

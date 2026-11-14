@@ -39,7 +39,14 @@ To install only the theme:
 npx shadcn@latest add https://nostalgia-ui.com/r/nostalgia-theme.json
 ```
 
-Components are built on Radix UI and work in both Radix (`new-york`) and Base UI (`base-*`) shadcn projects. The Radix packages are installed as regular dependencies.
+Components are built on [UI SDK](https://ui-sdk.dev) (`@ui-sdk/react`, installed as a regular dependency at a pinned version) and work in any shadcn project, `new-york` or `base-*`. Add one line above `@import "tailwindcss"` in your global CSS so your utilities win over UI SDK's popup resets:
+
+```css
+@layer ui-sdk;
+@import "tailwindcss";
+```
+
+Motion comes in two flairs. The default, modern, adds refinements (a gliding menu highlight, zoom rects, height morphs). Set `data-flair="classic"` on `<html>` for OS 9 exactly as it shipped. Reduced-motion settings are always respected.
 
 ## Development
 

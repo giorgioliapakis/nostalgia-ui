@@ -1,22 +1,31 @@
 "use client"
 
+/*
+ * RetroSeparator: the OS 9 etched groove (dark line over a white one).
+ *
+ * Crafted moment: none, static.
+ */
+
 import * as React from "react"
-import * as SeparatorPrimitive from "@radix-ui/react-separator"
+import { Separator as SeparatorPrimitive } from "@ui-sdk/react/separator"
 
 import { cn } from "@/lib/utils"
 
-function RetroSeparator(
-  {
-    className,
-    orientation = "horizontal",
-    decorative = true,
-    ...props
-  }: React.ComponentProps<typeof SeparatorPrimitive.Root>,
-  ref: React.ForwardedRef<React.ComponentRef<typeof SeparatorPrimitive.Root>>
-) {
+type RetroSeparatorProps = Omit<
+  React.ComponentProps<typeof SeparatorPrimitive>,
+  "className" | "children"
+> & {
+  className?: string
+}
+
+function RetroSeparator({
+  className,
+  orientation = "horizontal",
+  decorative = true,
+  ...props
+}: RetroSeparatorProps) {
   return (
-    <SeparatorPrimitive.Root
-      ref={ref}
+    <SeparatorPrimitive
       decorative={decorative}
       orientation={orientation}
       className={cn(
@@ -31,7 +40,4 @@ function RetroSeparator(
   )
 }
 
-const ForwardedRetroSeparator = React.forwardRef(RetroSeparator)
-ForwardedRetroSeparator.displayName = "RetroSeparator"
-
-export { ForwardedRetroSeparator as RetroSeparator }
+export { RetroSeparator }

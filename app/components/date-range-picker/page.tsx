@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import type { DateRange } from "react-day-picker"
-
+import type { DateRange } from "@/registry/new-york/ui/retro-calendar"
 import { RetroDateRangePicker } from "@/registry/new-york/ui/retro-date-range-picker"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 

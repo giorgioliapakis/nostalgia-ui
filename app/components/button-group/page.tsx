@@ -94,9 +94,7 @@ export default function ButtonGroupPage() {
             <RetroButton>Connect</RetroButton>
           </RetroButtonGroup>
           <RetroButtonGroup>
-            <RetroButtonGroupText asChild>
-              <label htmlFor="bg-zoom">Zoom</label>
-            </RetroButtonGroupText>
+            <RetroButtonGroupText render={<label htmlFor="bg-zoom" />}>Zoom</RetroButtonGroupText>
             <RetroButton aria-label="Zoom out">−</RetroButton>
             <RetroInput
               id="bg-zoom"

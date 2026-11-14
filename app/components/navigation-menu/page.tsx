@@ -22,6 +22,13 @@ export default function NavigationMenuPreview() {
       title="RetroNavigationMenu"
       description="A horizontal navigation menu with Mac OS 9 styled triggers and dropdown content panels."
     >
+      <p className="text-os9-gray-700 text-[10px]">
+        Rest on a title, or press Enter on it, to show its links. Moving to
+        the next title keeps the panel and reshapes it around the new links.
+        Tab moves through titles and links like any links on a page, the
+        arrow keys move between them, and Escape closes the panel.
+      </p>
+
       {/* ---- Full-width navigation menu ---- */}
       <section className="space-y-2">
         <h2 className="font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px]">

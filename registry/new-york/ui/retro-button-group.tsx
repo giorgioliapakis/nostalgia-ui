@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -71,31 +71,32 @@ RetroButtonGroup.displayName = "RetroButtonGroup"
 /* ------------------------------------------------------------------ */
 
 type RetroButtonGroupTextProps = React.ComponentProps<"div"> & {
-  asChild?: boolean
+  /** Render a different element (e.g. a `<label />`) with the text look. */
+  render?: RenderProp
 }
 
-const RetroButtonGroupText = React.forwardRef<
-  HTMLDivElement,
-  RetroButtonGroupTextProps
->(function RetroButtonGroupText({ className, asChild = false, ...props }, ref) {
-  const Comp = asChild ? Slot : "div"
-  return (
-    <Comp
-      ref={ref}
-      data-slot="button-group-text"
-      className={cn(
+function RetroButtonGroupText({
+  className,
+  render,
+  ...props
+}: RetroButtonGroupTextProps) {
+  return renderElement(
+    "div",
+    {
+      "data-slot": "button-group-text",
+      className: cn(
         "flex items-center gap-[6px] whitespace-nowrap px-[8px]",
         "border border-os9-black bg-os9-gray-200 text-os9-black",
         "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-500)]",
         "font-[family-name:var(--os9-font-sans)] text-[10px] leading-none",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
-      )}
-      {...props}
-    />
+      ),
+      ...props,
+    },
+    render
   )
-})
-RetroButtonGroupText.displayName = "RetroButtonGroupText"
+}
 
 /* ------------------------------------------------------------------ */
 /*  RetroButtonGroupSeparator                                          */

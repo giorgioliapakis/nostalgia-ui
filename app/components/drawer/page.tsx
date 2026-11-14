@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client"
+
 import {
   RetroDrawer,
   RetroDrawerTrigger,
@@ -12,12 +13,6 @@ import {
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
-export const metadata: Metadata = {
-  title: "Drawer",
-  description:
-    "A bottom drawer panel with Mac OS 9 styling that slides up from the screen edge.",
-}
-
 export default function DrawerPreview() {
   return (
     <ComponentDocLayout
@@ -26,17 +21,16 @@ export default function DrawerPreview() {
       description="A bottom drawer panel with Mac OS 9 styling that slides up from the screen edge."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        A bottom drawer/sheet component with OS9 styling. Slides up from the
-        bottom with a pull handle. Built on Vaul.
+        A bottom drawer with OS9 styling. It rises from the bottom edge and
+        follows your pointer: drag the sheet down and let go to dismiss it, or
+        release early and it springs back. Built on UI SDK&apos;s drawer.
       </p>
 
       {/* Basic drawer */}
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Basic Drawer</h2>
         <RetroDrawer>
-          <RetroDrawerTrigger asChild>
-            <RetroButton>Open Drawer</RetroButton>
-          </RetroDrawerTrigger>
+          <RetroDrawerTrigger render={<RetroButton />}>Open Drawer</RetroDrawerTrigger>
           <RetroDrawerContent>
             <RetroDrawerHeader>
               <RetroDrawerTitle>System Information</RetroDrawerTitle>
@@ -61,9 +55,7 @@ export default function DrawerPreview() {
               </div>
             </div>
             <RetroDrawerFooter>
-              <RetroDrawerClose asChild>
-                <RetroButton>OK</RetroButton>
-              </RetroDrawerClose>
+              <RetroDrawerClose render={<RetroButton />}>OK</RetroDrawerClose>
             </RetroDrawerFooter>
           </RetroDrawerContent>
         </RetroDrawer>
@@ -73,9 +65,7 @@ export default function DrawerPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Confirmation Drawer</h2>
         <RetroDrawer>
-          <RetroDrawerTrigger asChild>
-            <RetroButton>Empty Trash</RetroButton>
-          </RetroDrawerTrigger>
+          <RetroDrawerTrigger render={<RetroButton />}>Empty Trash</RetroDrawerTrigger>
           <RetroDrawerContent>
             <RetroDrawerHeader>
               <RetroDrawerTitle>Empty Trash</RetroDrawerTitle>
@@ -85,20 +75,16 @@ export default function DrawerPreview() {
               </RetroDrawerDescription>
             </RetroDrawerHeader>
             <RetroDrawerFooter>
-              <RetroDrawerClose asChild>
-                <RetroButton>Cancel</RetroButton>
-              </RetroDrawerClose>
-              <RetroDrawerClose asChild>
-                <RetroButton>OK</RetroButton>
-              </RetroDrawerClose>
+              <RetroDrawerClose render={<RetroButton />}>Cancel</RetroDrawerClose>
+              <RetroDrawerClose render={<RetroButton />}>OK</RetroDrawerClose>
             </RetroDrawerFooter>
           </RetroDrawerContent>
         </RetroDrawer>
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click a button to open the drawer. Drag the pull handle or click outside
-        to dismiss. The drawer slides up from the bottom edge.
+        Click a button to open the drawer. Drag it down, click outside, or press
+        Escape to dismiss.
       </p>
     </ComponentDocLayout>
   )

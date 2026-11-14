@@ -16,8 +16,8 @@ export default function AspectRatioPreview() {
       description="Maintains a fixed width-to-height ratio for media containers with optional OS 9 inset border."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        Maintains a consistent width-to-height ratio for its children. Built on
-        Radix UI AspectRatio. Useful for images, videos, and media containers.
+        Maintains a consistent width-to-height ratio for its children. Uses CSS
+        aspect-ratio, no JavaScript. Useful for images, videos, and media containers.
       </p>
 
       {/* 16:9 ratio */}

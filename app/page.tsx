@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     absolute: "nostalgia-ui — Mac OS 9 components for React",
   },
   description:
-    `${TOTAL_COMPONENTS} Mac OS 9 components for React, installable with the shadcn CLI. Built with Tailwind CSS v4 and Radix UI. Zero image assets.`,
+    `${TOTAL_COMPONENTS} Mac OS 9 components for React, installable with the shadcn CLI. Built with Tailwind CSS v4 and UI SDK. Zero image assets.`,
   alternates: { canonical: "/" },
 }
 

@@ -128,14 +128,14 @@ const retroFieldVariants = cva(
         vertical: ["flex-col", "[&>*]:w-full [&>.sr-only]:w-auto"],
         horizontal: [
           "flex-row items-center gap-[8px]",
-          "[&>[data-slot=field-label]]:flex-auto",
+          "[&>[data-field-label]]:flex-auto",
           "has-[>[data-slot=field-content]]:items-start",
           "has-[>[data-slot=field-content]]:[&>[role=checkbox]]:mt-[1px]",
         ],
         responsive: [
           "flex-col [&>*]:w-full [&>.sr-only]:w-auto",
           "@md/field-group:flex-row @md/field-group:items-center @md/field-group:[&>*]:w-auto",
-          "@md/field-group:[&>[data-slot=field-label]]:flex-auto",
+          "@md/field-group:[&>[data-field-label]]:flex-auto",
           "@md/field-group:has-[>[data-slot=field-content]]:items-start",
         ],
       },
@@ -199,6 +199,8 @@ const RetroFieldLabel = React.forwardRef<
     <RetroLabel
       ref={ref}
       data-slot="field-label"
+      /* UI SDK's Label owns data-slot ("label"); this marker survives */
+      data-field-label=""
       className={cn(
         "group/field-label peer/field-label flex w-fit items-center gap-[6px] leading-snug",
         "group-data-[invalid=true]/field:text-[#cc0000]",
@@ -209,7 +211,7 @@ const RetroFieldLabel = React.forwardRef<
         "has-[>[data-slot=field]]:bg-os9-gray-300",
         "has-[>[data-slot=field]]:shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
         "[&>*]:data-[slot=field]:p-[8px]",
-        "has-[[data-state=checked]]:bg-os9-lavender!",
+        "has-[[data-checked]]:bg-os9-lavender!",
         className
       )}
       {...props}

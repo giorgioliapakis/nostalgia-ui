@@ -99,7 +99,8 @@ export default function WindowPreview() {
         <h2 className="os9-heading text-[14px] mb-2">Window Shade</h2>
         <p className="text-os9-gray-700 text-[10px] mb-3">
           Click the collapse box (far right) or double-click the title bar to
-          roll the window up to just its title bar. Controlled via{" "}
+          roll the window up into its title bar; it rolls back down the same
+          way, and a second press mid-roll reverses it. Controlled via{" "}
           <code className="font-mono">collapsed</code> /{" "}
           <code className="font-mono">onCollapsedChange</code>, or uncontrolled
           with <code className="font-mono">defaultCollapsed</code>.

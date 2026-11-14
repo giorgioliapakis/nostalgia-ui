@@ -167,7 +167,7 @@ function DemoProgress() {
   return (
     <div>
       <RetroLabel className="mb-[3px] block">Loading... {value}%</RetroLabel>
-      <RetroProgress value={value} />
+      <RetroProgress aria-label="Loading" value={value} />
     </div>
   )
 }
@@ -199,9 +199,9 @@ function SamplerTabs({
             <RetroInput id={`${idPrefix}-demo-name`} placeholder="Woz" size="sm" />
           </div>
           <div>
-            <RetroLabel className="mb-[3px] block">Favorite OS</RetroLabel>
+            <RetroLabel id={`${idPrefix}-demo-os`} className="mb-[3px] block">Favorite OS</RetroLabel>
             <RetroSelect defaultValue="os9">
-              <RetroSelectTrigger className="w-full">
+              <RetroSelectTrigger aria-labelledby={`${idPrefix}-demo-os`} className="w-full">
                 <RetroSelectValue />
               </RetroSelectTrigger>
               <RetroSelectContent>
@@ -232,7 +232,7 @@ function SamplerTabs({
           </div>
           <div>
             <RetroLabel className="mb-[3px] block">Volume</RetroLabel>
-            <RetroSlider defaultValue={[65]} max={100} />
+            <RetroSlider defaultValue={[65]} max={100} aria-label="Volume" />
           </div>
         </div>
       </RetroTabsContent>
@@ -276,7 +276,7 @@ function SamplerTabs({
           <div className="flex flex-wrap gap-[6px]">
             <RetroBadge>{TOTAL_COMPONENTS} Components</RetroBadge>
             <RetroBadge variant="azul">Tailwind v4</RetroBadge>
-            <RetroBadge variant="accent">Radix UI</RetroBadge>
+            <RetroBadge variant="accent">UI SDK</RetroBadge>
           </div>
         </div>
       </RetroTabsContent>
@@ -344,7 +344,7 @@ function SamplerTabs({
 /* ------------------------------------------------------------------ */
 
 const MENU_TRIGGER_CLS =
-  "bg-transparent border-none cursor-default select-none px-[4px] py-0 outline-none font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98] text-os9-black data-[state=open]:bg-os9-azul data-[state=open]:text-os9-white"
+  "bg-transparent border-none cursor-default select-none px-[4px] py-0 outline-none font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98] text-os9-black data-open:bg-os9-azul data-open:text-os9-white"
 
 /* ------------------------------------------------------------------ */
 /*  DesktopInner (needs toast context)                                 */
@@ -551,12 +551,8 @@ function DesktopInner() {
             <span className="font-bold">File</span>
           </RetroDropdownMenuTrigger>
           <RetroDropdownMenuContent align="start" sideOffset={2}>
-            <RetroDropdownMenuItem asChild>
-              <Link href="/components">Browse Components</Link>
-            </RetroDropdownMenuItem>
-            <RetroDropdownMenuItem asChild>
-              <a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </RetroDropdownMenuItem>
+            <RetroDropdownMenuItem render={<Link href="/components" />}>Browse Components</RetroDropdownMenuItem>
+            <RetroDropdownMenuItem render={<a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer" />}>GitHub</RetroDropdownMenuItem>
             <RetroDropdownMenuSeparator />
             <RetroDropdownMenuItem onClick={showAll}>Show All Windows</RetroDropdownMenuItem>
           </RetroDropdownMenuContent>
@@ -647,7 +643,7 @@ function DesktopInner() {
             <p className="font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] text-os9-black">
               Starting up...
             </p>
-            <RetroProgress value={bootProgress} className="w-full" />
+            <RetroProgress aria-label="Starting up" value={bootProgress} className="w-full" />
             <p className="font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700">
               Loading {TOTAL_COMPONENTS} components...
             </p>
@@ -691,7 +687,7 @@ function DesktopInner() {
                     <div className="flex flex-col gap-[12px]">
                       <h1 className="font-[family-name:var(--font-heading)] text-[14px] tracking-[0.42px] text-os9-black">nostalgia-ui</h1>
                       <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black">
-                        {TOTAL_COMPONENTS} Mac OS 9 components for React. Built with Tailwind CSS and Radix UI. Zero image assets. Install via the shadcn CLI.
+                        {TOTAL_COMPONENTS} Mac OS 9 components for React. Built with Tailwind CSS and UI SDK. Zero image assets. Install via the shadcn CLI.
                       </p>
                       <div
                         className="flex items-center gap-[6px] p-[6px] font-mono text-[10px] text-os9-black cursor-pointer hover:bg-os9-lavender"
@@ -703,8 +699,8 @@ function DesktopInner() {
                         <span className="truncate select-all">npx shadcn@latest add https://nostalgia-ui.com/r/retro-button.json</span>
                       </div>
                       <div className="flex flex-wrap gap-[8px] pt-[4px]">
-                        <RetroButton variant="primary" asChild><Link href="/components">Browse Components</Link></RetroButton>
-                        <RetroButton variant="default" asChild><a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer">GitHub</a></RetroButton>
+                        <RetroButton variant="primary" render={<Link href="/components" />}>Browse Components</RetroButton>
+                        <RetroButton variant="default" render={<a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer" />}>GitHub</RetroButton>
                       </div>
                     </div>
                   )}
@@ -725,7 +721,7 @@ function DesktopInner() {
                       </div>
                       <div className="flex items-center gap-[8px]">
                         <RetroButton variant="primary" onClick={copyCmd}>Copy Command</RetroButton>
-                        <RetroButton variant="default" asChild><Link href="/components">All Components</Link></RetroButton>
+                        <RetroButton variant="default" render={<Link href="/components" />}>All Components</RetroButton>
                       </div>
                       <p className="font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700">Works with your existing shadcn setup. Any of {TOTAL_COMPONENTS} components&mdash;one command each.</p>
                     </div>
@@ -767,7 +763,7 @@ function DesktopInner() {
                 </h1>
                 <p className="font-[family-name:var(--font-sans)] text-[13px] leading-[1.5] text-os9-black mb-[16px]">
                   59 Mac&nbsp;OS&nbsp;9 components for React. Built with
-                  Tailwind&nbsp;CSS and Radix&nbsp;UI. Zero image assets.
+                  Tailwind&nbsp;CSS and UI&nbsp;SDK. Zero image assets.
                 </p>
                 <div
                   className="p-[8px] mb-[16px] font-mono text-[11px] text-os9-black text-left cursor-pointer active:bg-os9-lavender"
@@ -779,8 +775,8 @@ function DesktopInner() {
                   <div className="mt-[4px] text-os9-gray-600 text-[9px]">Tap to copy</div>
                 </div>
                 <div className="flex justify-center gap-[8px]">
-                  <RetroButton variant="primary" asChild><Link href="/components">Browse Components</Link></RetroButton>
-                  <RetroButton variant="default" asChild><a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer">GitHub</a></RetroButton>
+                  <RetroButton variant="primary" render={<Link href="/components" />}>Browse Components</RetroButton>
+                  <RetroButton variant="default" render={<a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer" />}>GitHub</RetroButton>
                 </div>
               </div>
             </section>
@@ -794,7 +790,7 @@ function DesktopInner() {
                 </RetroCard>
                 <RetroCard>
                   <RetroCardHeader><RetroCardTitle>shadcn CLI</RetroCardTitle></RetroCardHeader>
-                  <RetroCardContent><p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.4] text-os9-black">Drop-in install. Same API, same Radix primitives.</p></RetroCardContent>
+                  <RetroCardContent><p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.4] text-os9-black">Drop-in install. Same shadcn API, same className prop.</p></RetroCardContent>
                 </RetroCard>
                 <RetroCard>
                   <RetroCardHeader><RetroCardTitle>{TOTAL_COMPONENTS} Components</RetroCardTitle></RetroCardHeader>
@@ -802,7 +798,7 @@ function DesktopInner() {
                 </RetroCard>
                 <RetroCard>
                   <RetroCardHeader><RetroCardTitle>Accessible</RetroCardTitle></RetroCardHeader>
-                  <RetroCardContent><p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.4] text-os9-black">Built on Radix UI. Keyboard and screen reader ready.</p></RetroCardContent>
+                  <RetroCardContent><p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.4] text-os9-black">Built on UI SDK. Keyboard and screen reader ready.</p></RetroCardContent>
                 </RetroCard>
               </div>
             </section>
@@ -819,7 +815,7 @@ function DesktopInner() {
               <div className="flex flex-wrap gap-[6px] justify-center">
                 <RetroBadge>Next.js 16</RetroBadge>
                 <RetroBadge>Tailwind v4</RetroBadge>
-                <RetroBadge>Radix UI</RetroBadge>
+                <RetroBadge>UI SDK</RetroBadge>
                 <RetroBadge>TypeScript</RetroBadge>
                 <RetroBadge>CVA</RetroBadge>
               </div>
@@ -854,12 +850,12 @@ function DesktopInner() {
               <RetroDialogDescription className="mt-[4px]">Version 1.0 &mdash; {TOTAL_COMPONENTS} Components</RetroDialogDescription>
             </div>
             <p className="font-[family-name:var(--font-sans)] text-[10px] leading-[1.5] text-os9-black text-center">
-              Mac OS 9 UI components for React. Built with Tailwind CSS, Radix UI, and zero image assets. shadcn-compatible.
+              Mac OS 9 UI components for React. Built with Tailwind CSS, UI SDK, and zero image assets. shadcn-compatible.
             </p>
             <div className="flex flex-wrap gap-[4px] justify-center">
               <RetroBadge>Next.js 16</RetroBadge>
               <RetroBadge>Tailwind v4</RetroBadge>
-              <RetroBadge>Radix UI</RetroBadge>
+              <RetroBadge>UI SDK</RetroBadge>
               <RetroBadge>TypeScript</RetroBadge>
             </div>
             <p className="font-[family-name:var(--font-sans)] text-[9px] text-os9-gray-700">A project by Giorgio Liapakis</p>

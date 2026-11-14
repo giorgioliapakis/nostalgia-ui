@@ -3,11 +3,6 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 
-// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
-// literal `asChild` to Base UI's `render` prop in base-* projects, which
-// breaks these Radix-based components.
-const AS_CHILD = { asChild: true } as const
-
 /* ------------------------------------------------------------------ */
 /*  Sad Mac artwork — pixel-grid SVG, no image assets                  */
 /* ------------------------------------------------------------------ */
@@ -125,8 +120,8 @@ const SadMac404Block = React.forwardRef<HTMLDivElement, SadMac404BlockProps>(
           </p>
         )}
 
-        <RetroButton {...AS_CHILD} className="min-w-[90px] no-underline">
-          <a href={homeHref}>{restartLabel}</a>
+        <RetroButton render={<a href={homeHref} />} className="min-w-[90px] no-underline">
+          {restartLabel}
         </RetroButton>
       </div>
     )

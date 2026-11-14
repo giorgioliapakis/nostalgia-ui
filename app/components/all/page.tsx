@@ -258,7 +258,7 @@ export default function Home() {
               <div className="flex items-center gap-4">
                 <RetroBadge variant="accent">{TOTAL_COMPONENTS} Components</RetroBadge>
                 <RetroBadge variant="azul">Tailwind v4</RetroBadge>
-                <RetroBadge>Radix UI</RetroBadge>
+                <RetroBadge>UI SDK</RetroBadge>
               </div>
             </div>
           </RetroWindow>
@@ -326,7 +326,7 @@ export default function Home() {
             {/* Select */}
             <Section title="Select">
               <RetroSelect defaultValue="apple">
-                <RetroSelectTrigger className="w-[180px]">
+                <RetroSelectTrigger aria-label="Fruit" className="w-[180px]">
                   <RetroSelectValue placeholder="Pick a fruit" />
                 </RetroSelectTrigger>
                 <RetroSelectContent>
@@ -385,13 +385,13 @@ export default function Home() {
                 <RetroComboboxTrigger placeholder="Select application..." />
                 <RetroComboboxContent>
                   <RetroComboboxInput placeholder="Search..." />
+                  <RetroComboboxEmpty />
                   <RetroComboboxList>
                     <RetroComboboxItem value="simpletext">SimpleText</RetroComboboxItem>
                     <RetroComboboxItem value="finder">Finder</RetroComboboxItem>
                     <RetroComboboxItem value="sherlock">Sherlock</RetroComboboxItem>
                     <RetroComboboxItem value="netscape">Netscape Navigator</RetroComboboxItem>
                     <RetroComboboxItem value="appleworks">AppleWorks</RetroComboboxItem>
-                    <RetroComboboxEmpty />
                   </RetroComboboxList>
                 </RetroComboboxContent>
               </RetroCombobox>
@@ -679,9 +679,7 @@ export default function Home() {
             {/* Dropdown Menu */}
             <Section title="Dropdown Menu">
               <RetroDropdownMenu>
-                <RetroDropdownMenuTrigger asChild>
-                  <RetroButton>Open Menu</RetroButton>
-                </RetroDropdownMenuTrigger>
+                <RetroDropdownMenuTrigger render={<RetroButton />}>Open Menu</RetroDropdownMenuTrigger>
                 <RetroDropdownMenuContent>
                   <RetroDropdownMenuItem>New Folder</RetroDropdownMenuItem>
                   <RetroDropdownMenuItem>Get Info</RetroDropdownMenuItem>
@@ -765,11 +763,11 @@ export default function Home() {
               <div className="space-y-3">
                 <div>
                   <p className="text-[10px] mb-1">Determinate (65%)</p>
-                  <RetroProgress value={65} />
+                  <RetroProgress aria-label="Determinate progress" value={65} />
                 </div>
                 <div>
                   <p className="text-[10px] mb-1">Indeterminate</p>
-                  <RetroProgress indeterminate />
+                  <RetroProgress aria-label="Indeterminate progress" indeterminate />
                 </div>
               </div>
             </Section>
@@ -781,9 +779,7 @@ export default function Home() {
             {/* Dialog */}
             <Section title="Dialog">
               <RetroDialog>
-                <RetroDialogTrigger asChild>
-                  <RetroButton>Open Dialog</RetroButton>
-                </RetroDialogTrigger>
+                <RetroDialogTrigger render={<RetroButton />}>Open Dialog</RetroDialogTrigger>
                 <RetroDialogContent>
                   <RetroDialogHeader>
                     <RetroDialogTitle>About This Mac</RetroDialogTitle>
@@ -795,9 +791,7 @@ export default function Home() {
                     <p className="text-[10px]">Mac OS 9.2.2 — Built-in Memory: 256 MB</p>
                   </div>
                   <RetroDialogFooter className="p-4">
-                    <RetroDialogClose asChild>
-                      <RetroButton variant="primary">OK</RetroButton>
-                    </RetroDialogClose>
+                    <RetroDialogClose render={<RetroButton variant="primary" />}>OK</RetroDialogClose>
                   </RetroDialogFooter>
                 </RetroDialogContent>
               </RetroDialog>
@@ -806,9 +800,7 @@ export default function Home() {
             {/* Alert Dialog */}
             <Section title="Alert Dialog">
               <RetroAlertDialog>
-                <RetroAlertDialogTrigger asChild>
-                  <RetroButton>Empty Trash</RetroButton>
-                </RetroAlertDialogTrigger>
+                <RetroAlertDialogTrigger render={<RetroButton />}>Empty Trash</RetroAlertDialogTrigger>
                 <RetroAlertDialogContent>
                   <RetroAlertDialogHeader>
                     <RetroAlertDialogTitle>Confirm</RetroAlertDialogTitle>
@@ -830,9 +822,7 @@ export default function Home() {
             {/* Sheet */}
             <Section title="Sheet">
               <RetroSheet>
-                <RetroSheetTrigger asChild>
-                  <RetroButton>Open Sheet</RetroButton>
-                </RetroSheetTrigger>
+                <RetroSheetTrigger render={<RetroButton />}>Open Sheet</RetroSheetTrigger>
                 <RetroSheetContent>
                   <RetroSheetHeader>
                     <RetroSheetTitle>Inspector</RetroSheetTitle>
@@ -849,9 +839,7 @@ export default function Home() {
             {/* Drawer */}
             <Section title="Drawer">
               <RetroDrawer>
-                <RetroDrawerTrigger asChild>
-                  <RetroButton>Open Drawer</RetroButton>
-                </RetroDrawerTrigger>
+                <RetroDrawerTrigger render={<RetroButton />}>Open Drawer</RetroDrawerTrigger>
                 <RetroDrawerContent>
                   <RetroDrawerHeader>
                     <RetroDrawerTitle>System Information</RetroDrawerTitle>
@@ -863,9 +851,7 @@ export default function Home() {
                     <p className="text-[10px]">Processor: PowerPC G3 — Memory: 256 MB</p>
                   </div>
                   <RetroDrawerFooter>
-                    <RetroDrawerClose asChild>
-                      <RetroButton>Done</RetroButton>
-                    </RetroDrawerClose>
+                    <RetroDrawerClose render={<RetroButton />}>Done</RetroDrawerClose>
                   </RetroDrawerFooter>
                 </RetroDrawerContent>
               </RetroDrawer>
@@ -874,9 +860,7 @@ export default function Home() {
             {/* Popover */}
             <Section title="Popover">
               <RetroPopover>
-                <RetroPopoverTrigger asChild>
-                  <RetroButton>Show Popover</RetroButton>
-                </RetroPopoverTrigger>
+                <RetroPopoverTrigger render={<RetroButton />}>Show Popover</RetroPopoverTrigger>
                 <RetroPopoverContent className="w-[200px]">
                   <p className="text-[10px]">This is a popover with OS9 styling. It appears near its trigger.</p>
                 </RetroPopoverContent>
@@ -886,10 +870,8 @@ export default function Home() {
             {/* Hover Card */}
             <Section title="Hover Card">
               <RetroHoverCard>
-                <RetroHoverCardTrigger asChild>
-                  <span className="text-[10px] text-[var(--os9-azul)] underline cursor-pointer">
-                    Hover over me
-                  </span>
+                <RetroHoverCardTrigger href="/components/hover-card" className="text-[10px] text-[var(--os9-azul)] underline cursor-pointer">
+                  Hover over me
                 </RetroHoverCardTrigger>
                 <RetroHoverCardContent>
                   <p className="text-[10px]">
@@ -902,9 +884,7 @@ export default function Home() {
             {/* Tooltip */}
             <Section title="Tooltip">
               <RetroTooltip>
-                <RetroTooltipTrigger asChild>
-                  <RetroButton>Hover for Balloon Help</RetroButton>
-                </RetroTooltipTrigger>
+                <RetroTooltipTrigger render={<RetroButton />}>Hover for Balloon Help</RetroTooltipTrigger>
                 <RetroTooltipContent>
                   <p>This is OS9 Balloon Help!</p>
                 </RetroTooltipContent>
@@ -982,8 +962,8 @@ export default function Home() {
             <Section title="Command" fullWidth>
               <RetroCommand className="max-w-[350px]">
                 <RetroCommandInput placeholder="Type a command..." />
+                <RetroCommandEmpty>No results found.</RetroCommandEmpty>
                 <RetroCommandList>
-                  <RetroCommandEmpty>No results found.</RetroCommandEmpty>
                   <RetroCommandGroup heading="Applications">
                     <RetroCommandItem>SimpleText</RetroCommandItem>
                     <RetroCommandItem>Finder</RetroCommandItem>

@@ -17,7 +17,7 @@ import { NAV_GROUPS, TOTAL_COMPONENTS } from "./_components/nav-data"
 export const metadata: Metadata = {
   title: "Components",
   description:
-    "Mac OS 9 styled React components built with Radix UI and Tailwind CSS v4. Install any component with the shadcn CLI.",
+    "Mac OS 9 styled React components built with UI SDK and Tailwind CSS v4. Install any component with the shadcn CLI.",
   alternates: { canonical: "/components" },
 }
 
@@ -33,7 +33,7 @@ export default function ComponentsOverview() {
         <div className="flex flex-col gap-3">
           <h1 className="os9-heading text-[16px]">nostalgia-ui Components</h1>
           <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black">
-            {TOTAL_COMPONENTS} Mac OS 9 styled components built with Radix UI and Tailwind CSS.
+            {TOTAL_COMPONENTS} Mac OS 9 styled components built with UI SDK and Tailwind CSS.
             Each component is a drop-in replacement installable via the shadcn
             CLI. Zero image assets — every bevel, stripe, and shadow is pure
             CSS.
@@ -74,6 +74,52 @@ export default function ComponentsOverview() {
           }}
         >
           npx shadcn@latest add &quot;https://nostalgia-ui.com/r/nostalgia-theme.json&quot;
+        </pre>
+      </section>
+
+      {/* Setup */}
+      <section className="max-w-[640px] mb-8">
+        <h2 className="os9-heading text-[13px] mb-3">One line of CSS</h2>
+        <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black mb-3">
+          Components get their behaviour (focus, keyboard, popups, dismissal)
+          from 
+          <a href="https://ui-sdk.dev" className="underline">UI SDK</a>,
+          which installs with them. Declare its cascade layer first in your
+          global stylesheet, so your Tailwind utilities win over its resets:
+        </p>
+        <pre
+          className="p-3 font-mono text-[11px] text-os9-black leading-[1.6] overflow-x-auto"
+          style={{
+            backgroundColor: "var(--os9-white)",
+            border: "1px solid var(--os9-black)",
+            boxShadow: "var(--os9-shadow-inset)",
+          }}
+        >
+{`@layer ui-sdk;
+@import "tailwindcss";`}
+        </pre>
+      </section>
+
+      {/* Flair */}
+      <section className="max-w-[640px] mb-8">
+        <h2 className="os9-heading text-[13px] mb-3">Modern or classic flair</h2>
+        <p className="font-[family-name:var(--font-sans)] text-[11px] leading-[1.5] text-os9-black mb-3">
+          By default components carry a modern flair: the menu highlight
+          glides between rows, dialogs zoom out of their trigger, disclosure
+          panels morph open. For OS 9 exactly as it shipped (instant menus,
+          stepped motion), set <code className="font-mono">data-flair=&quot;classic&quot;</code> 
+          on any ancestor, usually <code className="font-mono">&lt;html&gt;</code>.
+          Reduced-motion settings are always respected.
+        </p>
+        <pre
+          className="p-3 font-mono text-[11px] text-os9-black leading-[1.6] overflow-x-auto"
+          style={{
+            backgroundColor: "var(--os9-white)",
+            border: "1px solid var(--os9-black)",
+            boxShadow: "var(--os9-shadow-inset)",
+          }}
+        >
+{`<html lang="en" data-flair="classic">`}
         </pre>
       </section>
 
@@ -141,9 +187,7 @@ export function MyApp() {
 
       {/* Browse all */}
       <section className="max-w-[640px]">
-        <RetroButton variant="primary" asChild>
-          <Link href="/components/all">View all {TOTAL_COMPONENTS} components on one page</Link>
-        </RetroButton>
+        <RetroButton variant="primary" render={<Link href="/components/all" />}>View all {TOTAL_COMPONENTS} components on one page</RetroButton>
       </section>
     </main>
   )

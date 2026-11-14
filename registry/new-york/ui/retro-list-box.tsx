@@ -1,40 +1,60 @@
 "use client"
 
+/*
+ * RetroListBox: a Mac OS 9 inset list box on UI SDK's Listbox.
+ *
+ * Crafted moment: the gliding selection (modern flair, single selection).
+ * The azul selection bar slides to the newly chosen row as you click or
+ * arrow through the list, and the row's ink flips to white as it arrives.
+ * Classic flair, reduced motion and multiple selection paint each selected
+ * row in place, as OS 9 did.
+ *
+ * Keyboard (from UI SDK): arrows, Home/End and type-ahead move the selection;
+ * with `multiple`, Shift extends a range, Cmd/Ctrl toggles a row or moves
+ * without selecting, Space toggles, Cmd/Ctrl+A selects all.
+ */
+
 import * as React from "react"
+import {
+  Listbox as ListboxPrimitive,
+  ListboxItem as ListboxItemPrimitive,
+} from "@ui-sdk/react/listbox"
 
 import { cn } from "@/lib/utils"
+import { useGlide } from "@/registry/new-york/lib/retro-motion"
 
-/* ------------------------------------------------------------------ */
-/*  Context                                                            */
-/* ------------------------------------------------------------------ */
-
-interface ListBoxContextValue {
-  selected: ReadonlySet<string>
-  activeId: string | null
-  disabled: boolean
-  select: (value: string, id: string, mode: "replace" | "toggle" | "range") => void
+/* Unlayered, so it beats the row utilities without !important. */
+const LIST_BOX_CSS = `
+.os9-list-box[data-glide]:not([data-glide-off]) [role="option"][data-selected] {
+  background-color: transparent;
 }
-
-const ListBoxContext = React.createContext<ListBoxContextValue | null>(null)
-
-function useListBoxContext() {
-  const ctx = React.useContext(ListBoxContext)
-  if (!ctx) {
-    throw new Error("RetroListBoxItem must be used inside <RetroListBox>")
-  }
-  return ctx
+.os9-list-box[data-glide-off] > [data-glide-layer] {
+  opacity: 0 !important;
+  transition: none !important;
 }
+.os9-list-box[data-glide] [role="option"] { transition: color 0s linear 60ms; }
+.os9-list-box[data-glide-off] [role="option"] { transition: none; }
+`
+
+/* the selected row that belongs to this list */
+function findSelectedRow(root: HTMLElement) {
+  return root.querySelector<HTMLElement>('[role="option"][data-selected]')
+}
+const WATCH_SELECTED = ["data-selected"]
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
 type ListBoxBaseProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "defaultValue" | "onChange"
+  React.ComponentProps<"div">,
+  "defaultValue" | "onChange" | "children"
 > & {
+  children?: React.ReactNode
   /** Disables the whole list. */
   disabled?: boolean
+  /** Slide the selection between rows (single selection, modern flair). Default true. */
+  glide?: boolean
 }
 
 type ListBoxSingleProps = {
@@ -53,302 +73,119 @@ type ListBoxMultipleProps = {
   onValueChange?: (value: string[]) => void
 }
 
-type RetroListBoxProps = ListBoxBaseProps &
-  (ListBoxSingleProps | ListBoxMultipleProps)
-
-function toArray(v: string | string[] | null | undefined): string[] {
-  if (v == null) return []
-  return Array.isArray(v) ? v : [v]
-}
-
-const TYPEAHEAD_TIMEOUT = 600
+type RetroListBoxProps = ListBoxBaseProps & (ListBoxSingleProps | ListBoxMultipleProps)
 
 /* ------------------------------------------------------------------ */
 /*  RetroListBox                                                       */
 /* ------------------------------------------------------------------ */
 
-const RetroListBox = React.forwardRef<HTMLDivElement, RetroListBoxProps>(
-  function RetroListBox(props, forwardedRef) {
-    const {
-      className,
-      children,
-      disabled = false,
-      multiple = false,
-      value: valueProp,
-      defaultValue,
-      onValueChange,
-      onKeyDown,
-      onFocus,
-      ...rest
-    } = props
+function RetroListBox({
+  className,
+  children,
+  disabled = false,
+  glide = true,
+  multiple = false,
+  value,
+  defaultValue,
+  onValueChange,
+  ref,
+  ...props
+}: RetroListBoxProps) {
+  const glides = glide && !multiple
+  const glideRef = useGlide(ref, findSelectedRow, WATCH_SELECTED)
 
-    const rootRef = React.useRef<HTMLDivElement>(null)
-    React.useImperativeHandle(forwardedRef, () => rootRef.current!, [])
+  const shared = {
+    ...props,
+    ref: glides ? glideRef : ref,
+    disabled,
+    /* selection follows the keyboard, and a click replaces it (Cmd/Ctrl adds) */
+    activation: "automatic" as const,
+    "data-glide": glides ? "" : undefined,
+    className: cn(
+      "os9-list-box group/listbox relative flex flex-col overflow-y-auto",
+      "border border-os9-black bg-os9-white text-os9-black",
+      "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
+      "p-[2px] outline-none",
+      "font-[family-name:var(--os9-font-sans)] text-[10px]",
+      "has-[:focus-visible]:os9-focus-ring",
+      "data-disabled:cursor-not-allowed data-disabled:opacity-50",
+      className
+    ),
+  }
 
-    const isControlled = valueProp !== undefined
-    const [uncontrolled, setUncontrolled] = React.useState<string[]>(() =>
-      toArray(defaultValue)
-    )
-    const selectedList = isControlled ? toArray(valueProp) : uncontrolled
-    const selected = React.useMemo(() => new Set(selectedList), [selectedList])
+  const content = (
+    <>
+      <style href="os9-list-box" precedence="default">
+        {LIST_BOX_CSS}
+      </style>
+      {glides && (
+        <span
+          aria-hidden
+          data-glide-layer
+          className="pointer-events-none absolute top-0 left-0 bg-os9-azul opacity-0"
+        />
+      )}
+      {children}
+    </>
+  )
 
-    const [activeId, setActiveId] = React.useState<string | null>(null)
-    const anchorRef = React.useRef<string | null>(null)
-    const typeahead = React.useRef<{
-      query: string
-      timer?: ReturnType<typeof setTimeout>
-    }>({ query: "" })
-
-    React.useEffect(() => {
-      const t = typeahead.current
-      return () => clearTimeout(t.timer)
-    }, [])
-
-    const getOptions = React.useCallback(() => {
-      const root = rootRef.current
-      if (!root) return []
-      return Array.from(
-        root.querySelectorAll<HTMLElement>(
-          '[role="option"]:not([aria-disabled="true"])'
-        )
-      )
-    }, [])
-
-    const emit = (next: string[]) => {
-      if (!isControlled) setUncontrolled(next)
-      if (multiple) {
-        ;(onValueChange as ((v: string[]) => void) | undefined)?.(next)
-      } else {
-        ;(onValueChange as ((v: string | null) => void) | undefined)?.(
-          next[0] ?? null
-        )
-      }
-    }
-
-    const select = (
-      value: string,
-      id: string,
-      mode: "replace" | "toggle" | "range"
-    ) => {
-      if (disabled) return
-      setActiveId(id)
-      document.getElementById(id)?.scrollIntoView({ block: "nearest" })
-
-      if (!multiple) {
-        anchorRef.current = value
-        if (selectedList[0] !== value || selectedList.length !== 1) emit([value])
-        return
-      }
-
-      if (mode === "toggle") {
-        anchorRef.current = value
-        emit(
-          selected.has(value)
-            ? selectedList.filter((v) => v !== value)
-            : [...selectedList, value]
-        )
-        return
-      }
-
-      if (mode === "range" && anchorRef.current !== null) {
-        const values = getOptions().map((el) => el.dataset.value ?? "")
-        const a = values.indexOf(anchorRef.current)
-        const b = values.indexOf(value)
-        if (a !== -1 && b !== -1) {
-          const [start, end] = a < b ? [a, b] : [b, a]
-          emit(values.slice(start, end + 1))
-          return
-        }
-      }
-
-      anchorRef.current = value
-      emit([value])
-    }
-
-    const moveTo = (el: HTMLElement | undefined, extend: boolean) => {
-      if (!el) return
-      select(el.dataset.value ?? "", el.id, extend && multiple ? "range" : "replace")
-    }
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      onKeyDown?.(event)
-      if (event.defaultPrevented || disabled) return
-
-      const options = getOptions()
-      if (options.length === 0) return
-      const index = options.findIndex((el) => el.id === activeId)
-      const extend = event.shiftKey
-
-      switch (event.key) {
-        case "ArrowDown":
-          event.preventDefault()
-          moveTo(options[index === -1 ? 0 : Math.min(index + 1, options.length - 1)], extend)
-          return
-        case "ArrowUp":
-          event.preventDefault()
-          moveTo(options[index === -1 ? 0 : Math.max(index - 1, 0)], extend)
-          return
-        case "Home":
-          event.preventDefault()
-          moveTo(options[0], extend)
-          return
-        case "End":
-          event.preventDefault()
-          moveTo(options[options.length - 1], extend)
-          return
-        case " ":
-          if (multiple && index !== -1) {
-            event.preventDefault()
-            const el = options[index]
-            select(el.dataset.value ?? "", el.id, "toggle")
-          }
-          return
-        case "a":
-          if (multiple && (event.metaKey || event.ctrlKey)) {
-            event.preventDefault()
-            emit(options.map((el) => el.dataset.value ?? ""))
-            return
-          }
-          break
-      }
-
-      // Type-ahead: printable single characters without modifiers
-      if (
-        event.key.length === 1 &&
-        !event.metaKey &&
-        !event.ctrlKey &&
-        !event.altKey
-      ) {
-        const t = typeahead.current
-        clearTimeout(t.timer)
-        t.query += event.key.toLowerCase()
-        t.timer = setTimeout(() => {
-          t.query = ""
-        }, TYPEAHEAD_TIMEOUT)
-
-        const labelOf = (el: HTMLElement) =>
-          (el.dataset.textValue ?? el.textContent ?? "").trim().toLowerCase()
-        // Repeating the same letter cycles through matches
-        const cycling =
-          t.query.length > 1 && t.query.split("").every((c) => c === t.query[0])
-        const needle = cycling ? t.query[0] : t.query
-        const start = cycling || t.query.length === 1 ? index + 1 : Math.max(index, 0)
-        const ordered = [...options.slice(start), ...options.slice(0, start)]
-        const match = ordered.find((el) => labelOf(el).startsWith(needle))
-        if (match) {
-          event.preventDefault()
-          moveTo(match, false)
-        }
-      }
-    }
-
-    const handleFocus = (event: React.FocusEvent<HTMLDivElement>) => {
-      onFocus?.(event)
-      if (event.target !== event.currentTarget || activeId !== null) return
-      // Put the keyboard cursor on the first selected option (or the first)
-      const options = getOptions()
-      const first =
-        options.find((el) => selected.has(el.dataset.value ?? "")) ?? options[0]
-      if (first) setActiveId(first.id)
-    }
-
-    const ctx: ListBoxContextValue = { selected, activeId, disabled, select }
-
+  if (multiple) {
     return (
-      <ListBoxContext.Provider value={ctx}>
-        <div
-          ref={rootRef}
-          role="listbox"
-          tabIndex={disabled ? -1 : 0}
-          aria-multiselectable={multiple || undefined}
-          aria-disabled={disabled || undefined}
-          aria-activedescendant={activeId ?? undefined}
-          data-disabled={disabled ? "" : undefined}
-          className={cn(
-            "group/listbox relative flex flex-col overflow-y-auto",
-            "border border-os9-black bg-os9-white text-os9-black",
-            "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-            "p-[2px] outline-none",
-            "font-[family-name:var(--os9-font-sans)] text-[10px]",
-            "focus-visible:os9-focus-ring",
-            disabled && "cursor-not-allowed opacity-50",
-            className
-          )}
-          onKeyDown={handleKeyDown}
-          onFocus={handleFocus}
-          {...rest}
-        >
-          {children}
-        </div>
-      </ListBoxContext.Provider>
+      <ListboxPrimitive<string, true>
+        {...shared}
+        multiple
+        value={value as string[] | undefined}
+        defaultValue={defaultValue as string[] | undefined}
+        onValueChange={(next) => (onValueChange as ((v: string[]) => void) | undefined)?.(next)}
+      >
+        {content}
+      </ListboxPrimitive>
     )
   }
-)
-RetroListBox.displayName = "RetroListBox"
+  return (
+    <ListboxPrimitive<string, false>
+      {...shared}
+      value={value as string | null | undefined}
+      defaultValue={defaultValue as string | null | undefined}
+      onValueChange={(next) => (onValueChange as ((v: string | null) => void) | undefined)?.(next)}
+    >
+      {content}
+    </ListboxPrimitive>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  RetroListBoxItem                                                   */
 /* ------------------------------------------------------------------ */
 
-interface RetroListBoxItemProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "id"> {
-  /** Unique value identifying this option. */
-  value: string
-  /** Disables this option. */
-  disabled?: boolean
+type RetroListBoxItemProps = Omit<
+  React.ComponentProps<typeof ListboxItemPrimitive<string>>,
+  "className" | "children" | "label"
+> & {
+  className?: string
+  children?: React.ReactNode
   /** Text used for type-ahead when children aren't plain text. */
   textValue?: string
 }
 
-const RetroListBoxItem = React.forwardRef<HTMLDivElement, RetroListBoxItemProps>(
-  function RetroListBoxItem(
-    { className, value, disabled = false, textValue, onClick, children, ...props },
-    ref
-  ) {
-    const ctx = useListBoxContext()
-    const id = React.useId()
-    const isSelected = ctx.selected.has(value)
-    const isActive = ctx.activeId === id
-    const isDisabled = disabled || ctx.disabled
-
-    return (
-      <div
-        ref={ref}
-        id={id}
-        role="option"
-        aria-selected={isSelected}
-        aria-disabled={isDisabled || undefined}
-        data-value={value}
-        data-text-value={textValue}
-        data-selected={isSelected ? "" : undefined}
-        data-active={isActive ? "" : undefined}
-        data-disabled={isDisabled ? "" : undefined}
-        className={cn(
-          "flex h-[16px] shrink-0 items-center gap-[4px] px-[4px]",
-          "cursor-default select-none whitespace-nowrap",
-          "data-[selected]:bg-os9-azul data-[selected]:text-os9-white",
-          // Keyboard cursor: dotted outline while the list has keyboard focus
-          "group-focus-visible/listbox:data-[active]:outline-1 group-focus-visible/listbox:data-[active]:outline-dotted",
-          "group-focus-visible/listbox:data-[active]:-outline-offset-1 group-focus-visible/listbox:data-[active]:outline-os9-black",
-          "group-focus-visible/listbox:data-[active]:data-[selected]:outline-os9-white",
-          "data-[disabled]:text-os9-gray-600",
-          className
-        )}
-        onClick={(event) => {
-          onClick?.(event)
-          if (event.defaultPrevented || isDisabled) return
-          const mode =
-            event.shiftKey ? "range" : event.metaKey || event.ctrlKey ? "toggle" : "replace"
-          ctx.select(value, id, mode)
-        }}
-        {...props}
-      >
-        {children}
-      </div>
-    )
-  }
-)
-RetroListBoxItem.displayName = "RetroListBoxItem"
+function RetroListBoxItem({ className, textValue, ...props }: RetroListBoxItemProps) {
+  return (
+    <ListboxItemPrimitive
+      label={textValue}
+      className={cn(
+        "relative z-[1] flex h-[16px] shrink-0 items-center gap-[4px] px-[4px]",
+        "cursor-default select-none whitespace-nowrap outline-none",
+        "data-selected:bg-os9-azul data-selected:text-os9-white",
+        /* keyboard cursor: a dotted outline on the focused row */
+        "focus-visible:outline-1 focus-visible:outline-dotted focus-visible:-outline-offset-1 focus-visible:outline-os9-black",
+        "data-selected:focus-visible:outline-os9-white",
+        "data-disabled:text-os9-gray-600",
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
 export { RetroListBox, RetroListBoxItem }
 export type { RetroListBoxProps, RetroListBoxItemProps }

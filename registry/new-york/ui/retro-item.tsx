@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -88,27 +88,30 @@ const retroItemVariants = cva(
 )
 
 type RetroItemProps = React.ComponentProps<"div"> &
-  VariantProps<typeof retroItemVariants> & { asChild?: boolean }
-
-const RetroItem = React.forwardRef<HTMLDivElement, RetroItemProps>(
-  function RetroItem(
-    { className, variant = "default", size = "default", asChild = false, ...props },
-    ref
-  ) {
-    const Comp = asChild ? Slot : "div"
-    return (
-      <Comp
-        ref={ref}
-        data-slot="item"
-        data-variant={variant}
-        data-size={size}
-        className={cn(retroItemVariants({ variant, size }), className)}
-        {...props}
-      />
-    )
+  VariantProps<typeof retroItemVariants> & {
+    /** Render a different element (e.g. `<a href />`) with the item's look. */
+    render?: RenderProp
   }
-)
-RetroItem.displayName = "RetroItem"
+
+function RetroItem({
+  className,
+  variant = "default",
+  size = "default",
+  render,
+  ...props
+}: RetroItemProps) {
+  return renderElement(
+    "div",
+    {
+      "data-slot": "item",
+      "data-variant": variant,
+      "data-size": size,
+      className: cn(retroItemVariants({ variant, size }), className),
+      ...props,
+    },
+    render
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  RetroItemMedia                                                     */

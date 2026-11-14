@@ -36,8 +36,7 @@ export default function ContextMenuPreview() {
         </h2>
 
         <RetroContextMenu>
-          <RetroContextMenuTrigger asChild>
-            <div
+          <RetroContextMenuTrigger render={<div
               className={
                 "flex items-center justify-center " +
                 "w-[480px] h-[240px] " +
@@ -45,11 +44,9 @@ export default function ContextMenuPreview() {
                 "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)] " +
                 "font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] text-os9-gray-700 " +
                 "select-none cursor-default"
-              }
-            >
+              } />}>
               Right-click here
-            </div>
-          </RetroContextMenuTrigger>
+            </RetroContextMenuTrigger>
 
           <RetroContextMenuContent>
             <RetroContextMenuItem>

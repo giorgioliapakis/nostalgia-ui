@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client"
+
 import {
   RetroPlacard,
   RetroPlacardButton,
@@ -20,17 +21,10 @@ import { ComponentDocLayout } from "../_components/component-doc-layout"
 const DESCRIPTION =
   "The small raised strip at the bottom-left of a Mac OS 9 window, sharing the row with the horizontal scroll bar. Shows status text (RetroPlacard) or acts as a pop-up (RetroPlacardButton)."
 
-export const metadata: Metadata = {
-  title: "Placard",
-  description: DESCRIPTION,
-}
-
 const USAGE = `<RetroPlacard>12 items, 1.2 GB available</RetroPlacard>
 
 <RetroDropdownMenu>
-  <RetroDropdownMenuTrigger asChild>
-    <RetroPlacardButton>100%</RetroPlacardButton>
-  </RetroDropdownMenuTrigger>
+  <RetroDropdownMenuTrigger render={<RetroPlacardButton />}>100%</RetroDropdownMenuTrigger>
   <RetroDropdownMenuContent>…</RetroDropdownMenuContent>
 </RetroDropdownMenu>`
 
@@ -124,10 +118,8 @@ export default function PlacardPage() {
             </div>
             <div className="flex">
               <RetroDropdownMenu>
-                <RetroDropdownMenuTrigger asChild>
-                  <RetroPlacardButton className="w-[56px] border-r-0">
-                    100%
-                  </RetroPlacardButton>
+                <RetroDropdownMenuTrigger render={<RetroPlacardButton className="w-[56px] border-r-0" />}>
+                  100%
                 </RetroDropdownMenuTrigger>
                 <RetroDropdownMenuContent align="start" side="top">
                   <RetroDropdownMenuItem>50%</RetroDropdownMenuItem>

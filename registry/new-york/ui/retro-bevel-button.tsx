@@ -24,6 +24,7 @@ const retroBevelButtonVariants = cva(
     "focus-visible:os9-focus-ring",
     "active:bg-os9-gray-700 active:text-os9-white",
     "data-[state=on]:bg-os9-gray-700 data-[state=on]:text-os9-white",
+    "data-open:bg-os9-gray-700 data-open:text-os9-white",
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-os9-gray-600 disabled:border-os9-gray-600 disabled:[&_svg]:opacity-50",
   ],
   {

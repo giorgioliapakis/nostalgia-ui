@@ -17,6 +17,7 @@ import {
   RetroSelect,
   RetroSelectContent,
   RetroSelectItem,
+  RetroSelectItemIcon,
   RetroSelectSeparator,
   RetroSelectTrigger,
   RetroSelectValue,
@@ -268,10 +269,10 @@ const GetInfoBlock = React.forwardRef<HTMLDivElement, GetInfoBlockProps>(
                     {LABELS.map((l, i) => (
                       <React.Fragment key={l.id}>
                         <RetroSelectItem value={l.id}>
-                          <span className="flex items-center gap-[6px]">
+                          <RetroSelectItemIcon>
                             <Swatch color={l.color} />
-                            {l.name}
-                          </span>
+                          </RetroSelectItemIcon>
+                          {l.name}
                         </RetroSelectItem>
                         {i === 0 && <RetroSelectSeparator />}
                       </React.Fragment>

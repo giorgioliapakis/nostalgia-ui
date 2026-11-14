@@ -11,11 +11,6 @@ import {
   RetroDropdownMenuTrigger,
 } from "@/registry/new-york/ui/retro-dropdown-menu"
 
-// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
-// literal `asChild` to Base UI's `render` prop in base-* projects, which
-// breaks these Radix-based components.
-const AS_CHILD = { asChild: true } as const
-
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
@@ -128,30 +123,32 @@ const RetroAppSwitcher = React.forwardRef<HTMLButtonElement, RetroAppSwitcherPro
 
     return (
       <RetroDropdownMenu open={open} onOpenChange={onOpenChange} modal={false}>
-        <RetroDropdownMenuTrigger {...AS_CHILD}>
-          <button
-            ref={ref}
-            type="button"
-            aria-label={`Application menu: ${active?.name ?? "none"}`}
-            className={cn(
-              "relative flex h-[19px] shrink-0 cursor-default select-none items-center gap-[4px] px-[8px] pt-[1px]",
-              /* Divider separating the app menu from the rest of the bar */
-              "border-l border-os9-gray-700 shadow-[inset_1px_0_0_var(--os9-white)]",
-              "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
-              "text-os9-black outline-none whitespace-nowrap",
-              "data-[state=open]:bg-os9-azul data-[state=open]:text-os9-white data-[state=open]:shadow-none",
-              "focus-visible:bg-os9-azul focus-visible:text-os9-white",
-              className
-            )}
-            {...props}
-          >
-            {active && (
-              <span className="flex size-[16px] items-center justify-center" aria-hidden="true">
-                {iconFor(active)}
-              </span>
-            )}
-            {showLabel && active && <span>{active.name}</span>}
-          </button>
+        <RetroDropdownMenuTrigger
+          render={
+            <button
+              ref={ref}
+              type="button"
+              aria-label={`Application menu: ${active?.name ?? "none"}`}
+              className={cn(
+                "relative flex h-[19px] shrink-0 cursor-default select-none items-center gap-[4px] px-[8px] pt-[1px]",
+                /* Divider separating the app menu from the rest of the bar */
+                "border-l border-os9-gray-700 shadow-[inset_1px_0_0_var(--os9-white)]",
+                "font-[family-name:var(--os9-font-heading)] text-[12px] tracking-[0.42px] leading-[0.98]",
+                "text-os9-black outline-none whitespace-nowrap",
+                "data-open:bg-os9-azul data-open:text-os9-white data-open:shadow-none",
+                "focus-visible:bg-os9-azul focus-visible:text-os9-white",
+                className
+              )}
+              {...props}
+            />
+          }
+        >
+          {active && (
+            <span className="flex size-[16px] items-center justify-center" aria-hidden="true">
+              {iconFor(active)}
+            </span>
+          )}
+          {showLabel && active && <span>{active.name}</span>}
         </RetroDropdownMenuTrigger>
         <RetroDropdownMenuContent align="end" sideOffset={0} className="min-w-[180px]">
           <RetroDropdownMenuItem

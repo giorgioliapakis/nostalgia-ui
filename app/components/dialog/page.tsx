@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client"
+
 import {
   RetroDialog,
   RetroDialogTrigger,
@@ -12,11 +13,6 @@ import {
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
-export const metadata: Metadata = {
-  title: "Dialog",
-  description:
-    "A modal dialog window with Mac OS 9 chrome, title bar, and close box.",
-}
 
 export default function DialogPreview() {
   return (
@@ -29,9 +25,7 @@ export default function DialogPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Basic Dialog</h2>
         <RetroDialog>
-          <RetroDialogTrigger asChild>
-            <RetroButton>Open Dialog</RetroButton>
-          </RetroDialogTrigger>
+          <RetroDialogTrigger render={<RetroButton />}>Open Dialog</RetroDialogTrigger>
           <RetroDialogContent>
             <RetroDialogHeader>
               <RetroDialogTitle>About This Mac</RetroDialogTitle>
@@ -42,11 +36,9 @@ export default function DialogPreview() {
                 on. Largest Unused Block: 180 MB.
               </RetroDialogDescription>
               <RetroDialogFooter className="mt-4">
-                <RetroDialogClose asChild>
-                  <RetroButton variant="default" size="sm">
+                <RetroDialogClose render={<RetroButton variant="default" size="sm" />}>
                     OK
-                  </RetroButton>
-                </RetroDialogClose>
+                  </RetroDialogClose>
               </RetroDialogFooter>
             </div>
           </RetroDialogContent>
@@ -57,9 +49,7 @@ export default function DialogPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Confirmation Dialog</h2>
         <RetroDialog>
-          <RetroDialogTrigger asChild>
-            <RetroButton>Empty Trash</RetroButton>
-          </RetroDialogTrigger>
+          <RetroDialogTrigger render={<RetroButton />}>Empty Trash</RetroDialogTrigger>
           <RetroDialogContent>
             <RetroDialogHeader>
               <RetroDialogTitle>Empty Trash</RetroDialogTitle>
@@ -70,16 +60,12 @@ export default function DialogPreview() {
                 Trash? This action cannot be undone.
               </RetroDialogDescription>
               <RetroDialogFooter className="mt-4">
-                <RetroDialogClose asChild>
-                  <RetroButton variant="default" size="sm">
+                <RetroDialogClose render={<RetroButton variant="default" size="sm" />}>
                     Cancel
-                  </RetroButton>
-                </RetroDialogClose>
-                <RetroDialogClose asChild>
-                  <RetroButton variant="default" size="sm">
+                  </RetroDialogClose>
+                <RetroDialogClose render={<RetroButton variant="default" size="sm" />}>
                     OK
-                  </RetroButton>
-                </RetroDialogClose>
+                  </RetroDialogClose>
               </RetroDialogFooter>
             </div>
           </RetroDialogContent>

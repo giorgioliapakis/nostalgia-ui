@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import type { DateRange } from "react-day-picker"
+import type { DateRange } from "@/registry/new-york/ui/retro-calendar"
 import { RetroDatePicker } from "@/registry/new-york/ui/retro-date-picker"
 import { RetroDateRangePicker } from "@/registry/new-york/ui/retro-date-range-picker"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
@@ -17,8 +17,9 @@ export default function DatePickerPreview() {
       description="A full-featured date picker with typed input and calendar popover in Mac OS 9 styling."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        Full-featured date pickers with typed input and calendar popover
-        selection. Type a date (MM/DD/YYYY) or click the calendar button.
+        Date pickers with a typed field and a calendar popover, built on UI
+        SDK&apos;s Date Picker. Type a date in your language&apos;s order (like
+        10/16/2026) and press Return, or click the calendar button.
       </p>
 
       {/* Single date picker — controlled */}
@@ -60,9 +61,11 @@ export default function DatePickerPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Type dates directly in MM/DD/YYYY format, or click the calendar icon to
-        open the date picker. For ranges, select the start date then the end
-        date.
+        Typed dates commit on Return or when you leave the field; text that
+        isn&apos;t a date stays marked until it&apos;s fixed. In the calendar,
+        arrow keys move by day and week, Page Up and Page Down by month, and
+        Escape closes it. For ranges, pick the start, watch the range preview,
+        then pick the end.
       </p>
     </ComponentDocLayout>
   )

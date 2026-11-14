@@ -25,8 +25,10 @@ export default function CommandPreview() {
       description="A command palette and search interface with Mac OS 9 styling, keyboard navigation, and shortcuts."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        A command palette / search interface styled for OS9. Built on cmdk.
-        Supports keyboard navigation, grouped items, shortcuts, and filtering.
+        A command palette / search interface styled for OS9, built on UI SDK&apos;s
+        Command. Supports keyboard navigation, grouped items, shortcuts, and
+        filtering. The highlight glides between commands, and a chosen command
+        blinks before it runs, like a menu item.
       </p>
 
       {/* Full command palette */}
@@ -35,8 +37,8 @@ export default function CommandPreview() {
         <div className="w-[400px]">
           <RetroCommand>
             <RetroCommandInput placeholder="Type a command or search..." />
+            <RetroCommandEmpty>No results found.</RetroCommandEmpty>
             <RetroCommandList>
-              <RetroCommandEmpty>No results found.</RetroCommandEmpty>
 
               <RetroCommandGroup heading="File">
                 <RetroCommandItem>
@@ -92,7 +94,9 @@ export default function CommandPreview() {
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
         Type in the search field to filter commands. Use arrow keys to navigate
-        and Enter to select. Keyboard shortcuts are displayed on the right.
+        and Enter to run. Escape clears the search. Keyboard shortcuts are
+        displayed on the right. Put <code>RetroCommandEmpty</code> next to the
+        list, not inside it.
       </p>
     </ComponentDocLayout>
   )

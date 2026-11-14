@@ -1,129 +1,123 @@
 "use client"
 
+/*
+ * RetroInputOTP: a one-time code in OS 9 inset digit boxes.
+ *
+ * Crafted moment: none beyond OS 9's own blinking insertion point, drawn
+ * in the active empty slot (a hard step blink, not a fade). Reduced motion
+ * keeps the caret solid.
+ *
+ * Built on UI SDK's OTP Input: one real input under the slots handles
+ * typing, paste, autofill (autocomplete="one-time-code"), undo and forms.
+ */
+
 import * as React from "react"
-import { OTPInput, OTPInputContext } from "input-otp"
+import {
+  OTPInput as OTPInputPrimitive,
+  OTPInputGroup as OTPInputGroupPrimitive,
+  OTPInputSeparator as OTPInputSeparatorPrimitive,
+  OTPInputSlot as OTPInputSlotPrimitive,
+} from "@ui-sdk/react/otp-input"
 
 import { cn } from "@/lib/utils"
 
-function RetroInputOTP(
-  {
-    className,
-    containerClassName,
-    ...props
-  }: React.ComponentProps<typeof OTPInput>,
-  ref: React.ForwardedRef<React.ComponentRef<typeof OTPInput>>
-) {
-  return (
-    <OTPInput
-      ref={ref}
-      containerClassName={cn(
-        "flex items-center gap-2 has-[:disabled]:opacity-50",
-        containerClassName
-      )}
-      className={cn("disabled:cursor-not-allowed", className)}
-      {...props}
-    />
-  )
+type RetroInputOTPProps = Omit<
+  React.ComponentProps<typeof OTPInputPrimitive>,
+  "className" | "children"
+> & {
+  className?: string
+  /** @deprecated kept for input-otp compatibility; merged into className */
+  containerClassName?: string
+  children?: React.ReactNode
 }
 
-const ForwardedRetroInputOTP = React.forwardRef(RetroInputOTP)
-ForwardedRetroInputOTP.displayName = "RetroInputOTP"
-
-/* -------------------------------------------------------------------------- */
-
-function RetroInputOTPGroup(
-  {
-    className,
-    ...props
-  }: React.ComponentPropsWithoutRef<"div">,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
+function RetroInputOTP({ className, containerClassName, ...props }: RetroInputOTPProps) {
   return (
-    <div
-      ref={ref}
-      className={cn("flex items-center gap-1", className)}
-      {...props}
-    />
-  )
-}
-
-const ForwardedRetroInputOTPGroup = React.forwardRef(RetroInputOTPGroup)
-ForwardedRetroInputOTPGroup.displayName = "RetroInputOTPGroup"
-
-/* -------------------------------------------------------------------------- */
-
-function RetroInputOTPSlot(
-  {
-    index,
-    className,
-    ...props
-  }: { index: number } & React.ComponentPropsWithoutRef<"div">,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const slot = inputOTPContext.slots[index]
-
-  return (
-    <div
-      ref={ref}
+    <OTPInputPrimitive
       className={cn(
-        "relative flex h-[40px] w-[32px] items-center justify-center",
+        "relative flex items-center gap-2 data-disabled:opacity-50 data-disabled:cursor-not-allowed",
+        containerClassName,
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+
+type RetroInputOTPGroupProps = Omit<
+  React.ComponentProps<typeof OTPInputGroupPrimitive>,
+  "className" | "children"
+> & {
+  className?: string
+  children?: React.ReactNode
+}
+
+function RetroInputOTPGroup({ className, ...props }: RetroInputOTPGroupProps) {
+  return <OTPInputGroupPrimitive className={cn("flex items-center gap-1", className)} {...props} />
+}
+
+/* -------------------------------------------------------------------------- */
+
+type RetroInputOTPSlotProps = Omit<
+  React.ComponentProps<typeof OTPInputSlotPrimitive>,
+  "className" | "children"
+> & {
+  className?: string
+}
+
+function RetroInputOTPSlot({ className, ...props }: RetroInputOTPSlotProps) {
+  return (
+    <OTPInputSlotPrimitive
+      className={cn(
+        "group/slot relative flex h-[40px] w-[32px] items-center justify-center",
         "border border-os9-black bg-os9-white text-os9-black",
         "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
         "font-[family-name:var(--os9-font-sans)] text-[14px]",
         "transition-none",
-        slot?.isActive &&
-          "shadow-[0_0_0_2px_var(--os9-focus)]",
+        "data-active:shadow-[0_0_0_2px_var(--os9-focus)]",
         className
       )}
       {...props}
     >
-      {slot?.char}
-      {slot?.hasFakeCaret && <RetroFakeCaret />}
-    </div>
+      {(state) => (
+        <>
+          {state.char}
+          {state.hasFakeCaret && (
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <span className="h-[20px] w-px animate-[os9-caret-blink_1s_step-end_infinite] bg-os9-black motion-reduce:animate-none" />
+            </span>
+          )}
+        </>
+      )}
+    </OTPInputSlotPrimitive>
   )
 }
 
-const ForwardedRetroInputOTPSlot = React.forwardRef(RetroInputOTPSlot)
-ForwardedRetroInputOTPSlot.displayName = "RetroInputOTPSlot"
-
 /* -------------------------------------------------------------------------- */
 
-function RetroInputOTPSeparator(
-  { ...props }: React.ComponentPropsWithoutRef<"span">,
-  ref: React.ForwardedRef<HTMLSpanElement>
-) {
+type RetroInputOTPSeparatorProps = Omit<
+  React.ComponentProps<typeof OTPInputSeparatorPrimitive>,
+  "className" | "children"
+> & {
+  className?: string
+}
+
+function RetroInputOTPSeparator({ className, ...props }: RetroInputOTPSeparatorProps) {
   return (
-    <span
-      ref={ref}
-      role="separator"
-      className="text-os9-gray-700 font-[family-name:var(--os9-font-sans)] text-[14px] select-none"
+    <OTPInputSeparatorPrimitive
+      className={cn(
+        "text-os9-gray-700 font-[family-name:var(--os9-font-sans)] text-[14px] select-none",
+        className
+      )}
       {...props}
     >
       &ndash;
-    </span>
-  )
-}
-
-const ForwardedRetroInputOTPSeparator = React.forwardRef(RetroInputOTPSeparator)
-ForwardedRetroInputOTPSeparator.displayName = "RetroInputOTPSeparator"
-
-/* -------------------------------------------------------------------------- */
-
-/** Blinking caret rendered inside the active slot. */
-function RetroFakeCaret() {
-  return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-      <div className="h-[20px] w-px animate-[os9-caret-blink_1s_step-end_infinite] bg-os9-black" />
-    </div>
+    </OTPInputSeparatorPrimitive>
   )
 }
 
 /* -------------------------------------------------------------------------- */
 
-export {
-  ForwardedRetroInputOTP as RetroInputOTP,
-  ForwardedRetroInputOTPGroup as RetroInputOTPGroup,
-  ForwardedRetroInputOTPSlot as RetroInputOTPSlot,
-  ForwardedRetroInputOTPSeparator as RetroInputOTPSeparator,
-}
+export { RetroInputOTP, RetroInputOTPGroup, RetroInputOTPSlot, RetroInputOTPSeparator }
