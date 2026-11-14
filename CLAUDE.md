@@ -4,7 +4,7 @@ A shadcn-compatible component registry that recreates Mac OS 9 UI components as 
 
 ## Project Status
 
-**78 components + 12 blocks + `nostalgia-theme` built and working.**
+**86 components + 13 blocks + `nostalgia-theme` built and working.**
 
 **Completed plans:**
 - `docs/plans/2026-03-28-001-feat-nostalgia-ui-registry-plan.md` — Phase 1 (11 components)
@@ -16,8 +16,8 @@ A shadcn-compatible component registry that recreates Mac OS 9 UI components as 
 - **What:** Mac OS 9 styled components installable via `npx shadcn@latest add`
 - **Stack:** Next.js 16 + Tailwind v4 + UI SDK (`@ui-sdk/react`, pinned beta) + class-variance-authority
 - **Template:** Based on the official `shadcn-ui/registry-template`
-- **Components:** 78, prefixed with `retro-`, each with a doc page at `/components/<slug>` (nav data: `app/components/_components/nav-data.ts`)
-- **Blocks:** 12 `registry:block` items in `registry/new-york/blocks/<slug>.tsx`, doc pages at `/blocks/<slug>` (data: `app/blocks/_components/blocks-data.ts`)
+- **Components:** 86 (incl. an AI group sharing `registry/new-york/lib/retro-ai.ts` message types), prefixed with `retro-`, each with a doc page at `/components/<slug>` (nav data: `app/components/_components/nav-data.ts`)
+- **Blocks:** 13 `registry:block` items in `registry/new-york/blocks/<slug>.tsx`, doc pages at `/blocks/<slug>` (data: `app/blocks/_components/blocks-data.ts`)
 - **Theme:** `nostalgia-theme` (registry:theme) ships the `--os9-*` tokens and `os9-*` utilities; every component lists it in `registryDependencies`. There is no install-all item — `npx shadcn add https://nostalgia-ui.com/r` is invalid
 - **Styling:** Pure CSS (box-shadows, borders, gradients) — zero image assets
 

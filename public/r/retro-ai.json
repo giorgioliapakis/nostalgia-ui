@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-ai",
+  "title": "Retro AI",
+  "description": "Shared message shapes for nostalgia-ui's AI components, structurally compatible with the Vercel AI SDK's UIMessage parts. Installed automatically by the components that use it.",
+  "registryDependencies": [
+    "https://nostalgia-ui.com/r/nostalgia-theme.json"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/lib/retro-ai.ts",
+      "content": "/*\n * retro-ai: the shared message shapes for nostalgia-ui's AI components.\n *\n * They match the Vercel AI SDK's UIMessage parts structurally, so messages\n * from `useChat` render as-is, but nothing here imports the AI SDK: the\n * components are presentation-only and work with any data source.\n */\n\nexport type RetroChatRole = \"user\" | \"assistant\" | \"system\"\n\n/** Lifecycle of a streamed text or reasoning part. */\nexport type RetroPartState = \"streaming\" | \"done\"\n\nexport interface RetroTextPart {\n  type: \"text\"\n  text: string\n  state?: RetroPartState\n}\n\nexport interface RetroReasoningPart {\n  type: \"reasoning\"\n  text: string\n  state?: RetroPartState\n}\n\nexport interface RetroFilePart {\n  type: \"file\"\n  mediaType: string\n  url: string\n  filename?: string\n}\n\n/** Where a tool call is in its life, as the AI SDK names it. */\nexport type RetroToolState =\n  | \"input-streaming\"\n  | \"input-available\"\n  | \"approval-requested\"\n  | \"approval-responded\"\n  | \"output-available\"\n  | \"output-error\"\n  | \"output-denied\"\n\nexport interface RetroToolPart {\n  /** `tool-<name>`, e.g. `tool-searchFiles`, or `dynamic-tool` with `toolName`. */\n  type: `tool-${string}` | \"dynamic-tool\"\n  toolName?: string\n  toolCallId: string\n  state: RetroToolState\n  input?: unknown\n  output?: unknown\n  errorText?: string\n  approval?: { id: string; approved?: boolean; reason?: string }\n}\n\nexport type RetroMessagePart = RetroTextPart | RetroReasoningPart | RetroFilePart | RetroToolPart\n\nexport interface RetroChatMessage {\n  id: string\n  role: RetroChatRole\n  parts: RetroMessagePart[]\n}\n\n/** Chat status, as `useChat` reports it. */\nexport type RetroChatStatus = \"ready\" | \"submitted\" | \"streaming\" | \"error\"\n\nexport function isToolPart(part: RetroMessagePart): part is RetroToolPart {\n  return part.type === \"dynamic-tool\" || part.type.startsWith(\"tool-\")\n}\n\n/** `tool-searchFiles` → `searchFiles`. */\nexport function toolNameOf(part: RetroToolPart): string {\n  return part.type === \"dynamic-tool\" ? (part.toolName ?? \"tool\") : part.type.slice(5)\n}\n\n/** All the text in a message, for copy actions. */\nexport function messageText(message: RetroChatMessage): string {\n  return message.parts\n    .filter((p): p is RetroTextPart => p.type === \"text\")\n    .map((p) => p.text)\n    .join(\"\\n\\n\")\n}\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:lib"
+}

@@ -2,7 +2,7 @@
 
 A shadcn-compatible component registry that recreates Mac OS 9 UI components as modern React/Tailwind components.
 
-78 components, 12 blocks (full screens such as a Finder window, Open/Save dialog, Control Panel and installer) and a theme item (`nostalgia-theme`). Zero image assets: every bevel and shadow is pure CSS.
+86 components, including AI chat elements, 13 blocks (full screens such as a Finder window, Open/Save dialog, installer and an AI chat window) and a theme item (`nostalgia-theme`). Zero image assets: every bevel and shadow is pure CSS.
 
 ## Prerequisites
 

@@ -133,6 +133,19 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: "AI",
+    items: [
+      { name: "Message", slug: "message" },
+      { name: "Model Picker", slug: "model-picker" },
+      { name: "Prompt Input", slug: "prompt-input" },
+      { name: "Streaming Text", slug: "streaming-text" },
+      { name: "Suggested Prompts", slug: "suggested-prompts" },
+      { name: "Thinking", slug: "thinking" },
+      { name: "Tool Call", slug: "tool-call" },
+      { name: "Approval", slug: "approval" },
+    ],
+  },
+  {
     label: "Visualization",
     items: [
       { name: "Chart", slug: "chart" },

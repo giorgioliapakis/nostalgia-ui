@@ -11,6 +11,7 @@ export interface BlockItem {
 }
 
 export const BLOCKS: BlockItem[] = [
+  { name: "AI Chat", slug: "ai-chat", description: "Chat window with streaming replies, thinking, tool calls and approvals." },
   { name: "About This Computer", slug: "about-this-computer", description: "Memory usage window with per-application bars." },
   { name: "Boot Screen", slug: "boot-screen", description: "Happy Mac startup screen with extension icon parade and progress." },
   { name: "Control Panel", slug: "control-panel", description: "Appearance-style settings panel with tabs, group boxes and controls." },

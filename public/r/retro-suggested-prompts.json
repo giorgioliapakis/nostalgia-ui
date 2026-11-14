@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "retro-suggested-prompts",
+  "title": "RetroSuggestedPrompts",
+  "description": "A row of Mac OS 9 bevel buttons offering starter prompts for an AI chat.",
+  "registryDependencies": [
+    "https://nostalgia-ui.com/r/nostalgia-theme.json",
+    "https://nostalgia-ui.com/r/retro-bevel-button.json"
+  ],
+  "files": [
+    {
+      "path": "registry/new-york/ui/retro-suggested-prompts.tsx",
+      "content": "\"use client\"\n\n/*\n * RetroSuggestedPrompts: starter prompts for an empty chat, as a wrapping\n * row of bevel buttons. Choosing one hands its prompt to `onSelect`; fill\n * the composer with it, or send it straight away.\n *\n * Crafted moment: the buttons arrive one after another, each fading in and\n * rising 4px, 30ms apart, so the row reads as a set being laid out rather\n * than a block popping in. Modern flair only; classic flair and reduced\n * motion show the row at once. Remount it (change its `key`) to replay.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { RetroBevelButton } from \"@/registry/new-york/ui/retro-bevel-button\"\n\n/* Shared with the other AI components; deduped by href. */\nconst RISE_CSS = `\n@keyframes os9-ai-rise { from { opacity: 0; transform: translateY(4px); } }\n.os9-ai-rise { animation: os9-ai-rise 160ms cubic-bezier(0.23, 1, 0.32, 1) both; }\n[data-flair=\"classic\"] .os9-ai-rise { animation: none; }\n@media (prefers-reduced-motion: reduce) { .os9-ai-rise { animation: none; } }\n`\n\nconst STAGGER_MS = 30\n\ntype RetroSuggestion =\n  | string\n  | {\n      /** What the button says. */\n      label: string\n      /** What `onSelect` receives; defaults to `label`. */\n      prompt?: string\n      /** A 16px icon before the label. */\n      icon?: React.ReactNode\n      disabled?: boolean\n    }\n\ntype RetroSuggestedPromptsProps = Omit<React.ComponentProps<\"div\">, \"onSelect\"> & {\n  suggestions: RetroSuggestion[]\n  /** Fires with the chosen suggestion's prompt. */\n  onSelect?: (prompt: string) => void\n  disabled?: boolean\n  /** Bevel depth of the buttons. */\n  bevel?: \"small\" | \"normal\" | \"large\"\n}\n\nfunction RetroSuggestedPrompts({\n  suggestions,\n  onSelect,\n  disabled,\n  bevel = \"small\",\n  className,\n  \"aria-label\": ariaLabel = \"Suggestions\",\n  ...props\n}: RetroSuggestedPromptsProps) {\n  return (\n    <div\n      role=\"group\"\n      aria-label={ariaLabel}\n      data-slot=\"suggested-prompts\"\n      className={cn(\"flex flex-wrap gap-[6px]\", className)}\n      {...props}\n    >\n      <style href=\"os9-ai-rise\" precedence=\"default\">\n        {RISE_CSS}\n      </style>\n      {suggestions.map((suggestion, index) => {\n        const item = typeof suggestion === \"string\" ? { label: suggestion } : suggestion\n        const prompt = (\"prompt\" in item && item.prompt) || item.label\n        return (\n          <RetroBevelButton\n            key={`${item.label}-${index}`}\n            data-slot=\"suggested-prompt\"\n            bevel={bevel}\n            icon={\"icon\" in item ? item.icon : undefined}\n            disabled={disabled || (\"disabled\" in item && item.disabled)}\n            onClick={() => onSelect?.(prompt)}\n            style={{ animationDelay: `${index * STAGGER_MS}ms` }}\n            className=\"os9-ai-rise max-w-full min-w-0 justify-start [&>span:last-child]:min-w-0\"\n          >\n            <span className=\"truncate\">{item.label}</span>\n          </RetroBevelButton>\n        )\n      })}\n    </div>\n  )\n}\n\nexport { RetroSuggestedPrompts }\nexport type { RetroSuggestedPromptsProps, RetroSuggestion }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

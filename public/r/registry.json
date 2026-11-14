@@ -105,6 +105,21 @@
       ]
     },
     {
+      "name": "retro-ai",
+      "type": "registry:lib",
+      "title": "Retro AI",
+      "description": "Shared message shapes for nostalgia-ui's AI components, structurally compatible with the Vercel AI SDK's UIMessage parts. Installed automatically by the components that use it.",
+      "files": [
+        {
+          "path": "registry/new-york/lib/retro-ai.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ]
+    },
+    {
       "name": "retro-label",
       "type": "registry:ui",
       "title": "RetroLabel",
@@ -1793,6 +1808,185 @@
           "path": "registry/new-york/blocks/open-save-dialog.tsx",
           "type": "registry:component"
         }
+      ]
+    },
+    {
+      "name": "retro-prompt-input",
+      "type": "registry:ui",
+      "title": "RetroPromptInput",
+      "description": "A Mac OS 9 chat composer: an inset edit field that grows with its text, a default Send button that becomes Stop while a reply streams (⌘-period), and slots for attachments and a model picker.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-prompt-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-ai.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-motion.json",
+        "https://nostalgia-ui.com/r/retro-textarea.json"
+      ]
+    },
+    {
+      "name": "retro-suggested-prompts",
+      "type": "registry:ui",
+      "title": "RetroSuggestedPrompts",
+      "description": "A row of Mac OS 9 bevel buttons offering starter prompts for an AI chat.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-suggested-prompts.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-bevel-button.json"
+      ]
+    },
+    {
+      "name": "retro-model-picker",
+      "type": "registry:ui",
+      "title": "RetroModelPicker",
+      "description": "A Mac OS 9 pop-up menu for choosing an AI model, with an icon and a short description per model.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-model-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-select.json"
+      ]
+    },
+    {
+      "name": "retro-message",
+      "type": "registry:ui",
+      "title": "RetroMessage",
+      "description": "Mac OS 9 chat transcript parts: a scrolling message thread, user and assistant messages built from AI SDK-style parts, and copy/retry actions.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-ai.json",
+        "https://nostalgia-ui.com/r/retro-bevel-button.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-motion.json",
+        "https://nostalgia-ui.com/r/retro-scrollbar.json",
+        "https://nostalgia-ui.com/r/retro-streaming-text.json",
+        "https://nostalgia-ui.com/r/retro-thinking.json"
+      ]
+    },
+    {
+      "name": "retro-streaming-text",
+      "type": "registry:ui",
+      "title": "RetroStreamingText",
+      "description": "Text that arrives behind a blinking Mac OS 9 insertion caret, for streamed AI replies.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-streaming-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
+      ]
+    },
+    {
+      "name": "retro-thinking",
+      "type": "registry:ui",
+      "title": "RetroThinking",
+      "description": "Mac OS 9 AI thinking states: the watch cursor and a barber pole while a reply is pending, and a collapsible reasoning panel.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-thinking.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-ai.json",
+        "https://nostalgia-ui.com/r/retro-collapsible.json",
+        "https://nostalgia-ui.com/r/retro-progress.json",
+        "https://nostalgia-ui.com/r/retro-streaming-text.json"
+      ]
+    },
+    {
+      "name": "retro-tool-call",
+      "type": "registry:ui",
+      "title": "RetroToolCall",
+      "description": "A Mac OS 9 row for an AI tool call: status icon, tool name, and a disclosure triangle revealing input and output.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-tool-call.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-ai.json",
+        "https://nostalgia-ui.com/r/retro-progress.json"
+      ]
+    },
+    {
+      "name": "retro-approval",
+      "type": "registry:ui",
+      "title": "RetroApproval",
+      "description": "A Mac OS 9 caution alert asking the user to allow or deny an AI tool call, with Option-click to always allow.",
+      "files": [
+        {
+          "path": "registry/new-york/ui/retro-approval.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-ai.json",
+        "https://nostalgia-ui.com/r/retro-alert-dialog.json",
+        "https://nostalgia-ui.com/r/retro-button.json",
+        "https://nostalgia-ui.com/r/retro-collapsible.json",
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-motion.json",
+        "https://nostalgia-ui.com/r/retro-tool-call.json"
+      ]
+    },
+    {
+      "name": "ai-chat",
+      "type": "registry:block",
+      "title": "AI Chat",
+      "description": "A Mac OS 9 AI chat window: transcript with streaming replies, thinking state, tool calls with approvals, suggested prompts, model picker and composer.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/ai-chat.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-ai.json",
+        "https://nostalgia-ui.com/r/retro-approval.json",
+        "https://nostalgia-ui.com/r/retro-message.json",
+        "https://nostalgia-ui.com/r/retro-model-picker.json",
+        "https://nostalgia-ui.com/r/retro-prompt-input.json",
+        "https://nostalgia-ui.com/r/retro-suggested-prompts.json",
+        "https://nostalgia-ui.com/r/retro-thinking.json",
+        "https://nostalgia-ui.com/r/retro-tool-call.json",
+        "https://nostalgia-ui.com/r/retro-window.json"
       ]
     }
   ]
