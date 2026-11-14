@@ -1,43 +1,43 @@
 "use client"
 
+/*
+ * RetroDatePicker: an OS 9 edit text field with a calendar button, on UI SDK's
+ * Date Picker. Type a date and press Return (or tab away), or open the
+ * calendar and pick one. UI SDK parses what's typed in the page's language
+ * and formats it on commit.
+ *
+ * Crafted moment: pop from trigger. The calendar grows out of the field
+ * (scale .95 to 1 from --transform-origin, 140ms) and fades out faster than
+ * it came in. Classic flair and reduced motion: it simply appears.
+ *
+ * Next.js with `cacheComponents`: UI SDK reads today's date while rendering,
+ * which fails the prerender. Wrap the picker in <Suspense>.
+ */
+
 import * as React from "react"
-import { format, parse, isValid } from "date-fns"
+import {
+  DatePicker as DatePickerPrimitive,
+  DatePickerContent as DatePickerContentPrimitive,
+  DatePickerHint as DatePickerHintPrimitive,
+  DatePickerInput as DatePickerInputPrimitive,
+  DatePickerTrigger as DatePickerTriggerPrimitive,
+  type DatePickerValue,
+  type DateMatchers,
+} from "@ui-sdk/react/date-picker"
 
 import { cn } from "@/lib/utils"
-import { RetroCalendar } from "@/registry/new-york/ui/retro-calendar"
 import {
-  RetroPopover,
-  RetroPopoverTrigger,
-  RetroPopoverContent,
-} from "@/registry/new-york/ui/retro-popover"
+  RetroCalendarBody,
+  fromISODate,
+  retroCalendarSurfaceClass,
+  toISODate,
+} from "@/registry/new-york/ui/retro-calendar"
 
-// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
-// literal `asChild` to Base UI's `render` prop in base-* projects, which
-// breaks these Radix-based components.
-const AS_CHILD = { asChild: true } as const
+/* ── shared pieces (also used by retro-date-range-picker) ── */
 
-interface RetroDatePickerProps {
-  /** The selected date (controlled) */
-  value?: Date
-  /** Callback when the date changes */
-  onChange?: (date: Date | undefined) => void
-  /** Placeholder text when no date is selected */
-  placeholder?: string
-  /** Date display format (date-fns format string) */
-  displayFormat?: string
-  /** Whether the date picker is disabled */
-  disabled?: boolean
-  /** Additional class names for the root container */
-  className?: string
-}
-
-const CalendarIcon = React.forwardRef<
-  SVGSVGElement,
-  React.SVGProps<SVGSVGElement>
->(function CalendarIcon(props, ref) {
+function CalendarIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      ref={ref}
       width="14"
       height="14"
       viewBox="0 0 12 12"
@@ -62,154 +62,157 @@ const CalendarIcon = React.forwardRef<
       <rect x="7" y="9" width="1" height="1" fill="currentColor" />
     </svg>
   )
-})
-CalendarIcon.displayName = "CalendarIcon"
+}
 
-const DATE_FORMAT = "MM/dd/yyyy"
-
-const RetroDatePicker = React.forwardRef<HTMLDivElement, RetroDatePickerProps>(
-  function RetroDatePicker(
-    {
-      value,
-      onChange,
-      placeholder = "MM/DD/YYYY",
-      displayFormat = DATE_FORMAT,
-      disabled = false,
-      className,
-    },
-    ref
-  ) {
-    const [open, setOpen] = React.useState(false)
-    const [internalDate, setInternalDate] = React.useState<Date | undefined>(
-      undefined
-    )
-    const [inputValue, setInputValue] = React.useState("")
-
-    const isControlled = value !== undefined
-    const selectedDate = isControlled ? value : internalDate
-
-    // Depend on the timestamp (not Date identity) so a parent passing a new
-    // Date instance with the same value on every render doesn't clobber typing.
-    const selectedTime = selectedDate?.getTime()
-
-    // Sync input text with the selected date
-    React.useEffect(() => {
-      setInputValue(
-        selectedTime !== undefined ? format(new Date(selectedTime), displayFormat) : ""
-      )
-    }, [selectedTime, displayFormat])
-
-    function commitDate(date: Date | undefined) {
-      if (!isControlled) {
-        setInternalDate(date)
-      }
-      onChange?.(date)
-    }
-
-    function handleCalendarSelect(date: Date | undefined) {
-      commitDate(date)
-      setOpen(false)
-    }
-
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-      setInputValue(e.target.value)
-    }
-
-    function parseInput(text: string): Date | undefined {
-      // Parse using the display format first, then fall back to MM/dd/yyyy
-      for (const fmt of [displayFormat, DATE_FORMAT]) {
-        const parsed = parse(text, fmt, new Date())
-        if (isValid(parsed) && parsed.getFullYear() > 1900 && parsed.getFullYear() < 2100) {
-          return parsed
-        }
-      }
-      return undefined
-    }
-
-    function handleInputCommit() {
-      if (inputValue.trim() === "") {
-        if (selectedTime !== undefined) commitDate(undefined)
-        return
-      }
-      const parsed = parseInput(inputValue.trim())
-      if (parsed) {
-        if (parsed.getTime() !== selectedTime) {
-          commitDate(parsed)
-        } else {
-          // Unchanged: normalise the text back to the display format
-          setInputValue(format(parsed, displayFormat))
-        }
-      } else {
-        // Reset to last valid value
-        setInputValue(selectedDate ? format(selectedDate, displayFormat) : "")
-      }
-    }
-
-    function handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-      if (e.key === "Enter") {
-        handleInputCommit()
-      }
-    }
-
-    return (
-      <RetroPopover open={open} onOpenChange={setOpen}>
-        <div
-          ref={ref}
-          className={cn("inline-flex items-center", className)}
-        >
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleInputCommit}
-            onKeyDown={handleInputKeyDown}
-            placeholder={placeholder}
-            disabled={disabled}
-            aria-label="Date"
-            className={cn(
-              "h-[24px] w-[110px] px-[5px]",
-              "font-[family-name:var(--os9-font-sans)] text-[11px] text-os9-black",
-              "border border-os9-black bg-os9-white",
-              "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-              "outline-none transition-none",
-              "focus:shadow-[0_2px_0_0_var(--os9-focus),2px_0_0_0_var(--os9-focus),0_-2px_0_0_var(--os9-focus),-2px_0_0_0_var(--os9-focus),0_0_0_1px_var(--os9-focus)]",
-              "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-os9-gray-200 disabled:text-os9-gray-600"
-            )}
-          />
-          <RetroPopoverTrigger {...AS_CHILD}>
-            <button
-              type="button"
-              disabled={disabled}
-              aria-label="Choose date"
-              className={cn(
-                "inline-flex items-center justify-center",
-                "h-[24px] w-[28px] p-0 -ml-px",
-                "border border-os9-black bg-os9-gray-300",
-                "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
-                "cursor-pointer select-none transition-none",
-                "active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-                "focus-visible:os9-focus-ring",
-                "disabled:pointer-events-none disabled:opacity-50"
-              )}
-            >
-              <CalendarIcon />
-            </button>
-          </RetroPopoverTrigger>
-        </div>
-        <RetroPopoverContent className="w-auto p-0" align="start">
-          <RetroCalendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleCalendarSelect}
-            defaultMonth={selectedDate}
-            autoFocus
-          />
-        </RetroPopoverContent>
-      </RetroPopover>
-    )
-  }
+const retroDateInputClass = cn(
+  "h-[24px] w-[110px] px-[5px]",
+  "font-[family-name:var(--os9-font-sans)] text-[11px] text-os9-black",
+  "border border-os9-black bg-os9-white",
+  "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
+  "outline-none transition-none placeholder:text-os9-gray-600",
+  "focus:shadow-[0_2px_0_0_var(--os9-focus),2px_0_0_0_var(--os9-focus),0_-2px_0_0_var(--os9-focus),-2px_0_0_0_var(--os9-focus),0_0_0_1px_var(--os9-focus)]",
+  /* text that isn't a date stays visible, marked, until it's fixed */
+  "data-invalid:text-[#cc0000] data-invalid:underline data-invalid:decoration-dotted",
+  "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-os9-gray-200 disabled:text-os9-gray-600"
 )
-RetroDatePicker.displayName = "RetroDatePicker"
 
-export { RetroDatePicker, CalendarIcon }
+const retroDateTriggerClass = cn(
+  "inline-flex items-center justify-center",
+  "h-[24px] w-[28px] p-0 -ml-px text-os9-black",
+  "border border-os9-black bg-os9-gray-300",
+  "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
+  "cursor-pointer select-none transition-none outline-none",
+  "active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
+  "data-open:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
+  "focus-visible:os9-focus-ring",
+  "disabled:pointer-events-none disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50"
+)
+
+/* The popup is the calendar window itself. Box properties carry `!` so UI
+ * SDK's popup reset can't strip them in apps that haven't declared
+ * `@layer ui-sdk;` first. */
+const retroDatePopupClass = cn(
+  "z-50 m-0! w-auto! h-auto! max-w-none! overflow-visible! outline-none",
+  retroCalendarSurfaceClass,
+  "p-4! border! border-os9-black! bg-os9-gray-200! text-os9-black!",
+  "shadow-[2px_2px_0_var(--os9-black),inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
+  "origin-(--transform-origin) transition-[opacity,scale] duration-140 ease-[cubic-bezier(0.23,1,0.32,1)]",
+  "data-starting-style:opacity-0 data-starting-style:scale-95",
+  "data-ending-style:opacity-0 data-ending-style:duration-100",
+  "in-data-[flair=classic]:transition-none motion-reduce:transition-none"
+)
+
+/*
+ * The field's placeholder is the locale's format ("MM/DD/YYYY", "TT.MM.JJJJ"),
+ * which UI SDK only knows once it has read the page's language. Its hint
+ * part, visually hidden, describes the field to screen readers and hands
+ * the format to the placeholder.
+ */
+function SyncFormat({ format, onFormat }: { format: string; onFormat: (f: string) => void }) {
+  React.useEffect(() => onFormat(format), [format, onFormat])
+  return <>{format}</>
+}
+
+function useFormatHint(): [string, React.ReactNode] {
+  const [format, setFormat] = React.useState("MM/DD/YYYY")
+  const hint = (
+    <DatePickerHintPrimitive className="sr-only">
+      {(state) => <SyncFormat format={state.placeholder} onFormat={setFormat} />}
+    </DatePickerHintPrimitive>
+  )
+  return [format, hint]
+}
+
+/* ── RetroDatePicker ───────────────────────────────────── */
+
+interface RetroDatePickerProps {
+  /** The selected date. Pass it (even as `undefined`) with `onChange` to control the picker. */
+  value?: Date
+  /** The date it starts with, when uncontrolled. */
+  defaultValue?: Date
+  /** Runs when a date is picked, or a typed one is committed with Return or by leaving the field. */
+  onChange?: (date: Date | undefined) => void
+  /** Placeholder text when no date is entered. Defaults to the locale's format, like "MM/DD/YYYY". */
+  placeholder?: string
+  /** The language dates are typed and shown in. Defaults to the page's `lang`. */
+  locale?: string
+  /** Whether the date picker is disabled */
+  disabled?: boolean
+  /** The earliest and latest dates that can be picked. */
+  min?: Date
+  max?: Date
+  /** Dates that can't be picked: ISO dates, `{ before }`, `{ weekday: [0, 6] }`… */
+  unavailable?: DateMatchers
+  /** The name the date submits under in a form, as an ISO date. */
+  name?: string
+  /** Accessible name of the field. */
+  "aria-label"?: string
+  /** Additional class names for the root container */
+  className?: string
+  ref?: React.Ref<HTMLDivElement>
+}
+
+function RetroDatePicker(props: RetroDatePickerProps) {
+  const {
+    value,
+    defaultValue,
+    onChange,
+    placeholder,
+    locale,
+    disabled = false,
+    min,
+    max,
+    unavailable,
+    name,
+    "aria-label": ariaLabel = "Date",
+    className,
+    ref,
+  } = props
+  const controlled = Object.prototype.hasOwnProperty.call(props, "value")
+  const [format, hint] = useFormatHint()
+
+  return (
+    <DatePickerPrimitive
+      ref={ref}
+      {...(controlled
+        ? { value: value ? toISODate(value) : null }
+        : defaultValue
+          ? { defaultValue: toISODate(defaultValue) }
+          : {})}
+      onValueChange={(next: DatePickerValue) =>
+        onChange?.(typeof next === "string" ? fromISODate(next) : undefined)
+      }
+      locale={locale}
+      disabled={disabled}
+      min={min ? toISODate(min) : undefined}
+      max={max ? toISODate(max) : undefined}
+      unavailable={unavailable}
+      name={name}
+      showOutsideDays
+      className={cn("inline-flex items-center", className)}
+    >
+      <DatePickerInputPrimitive
+        aria-label={ariaLabel}
+        placeholder={placeholder ?? format}
+        className={retroDateInputClass}
+      />
+      <DatePickerTriggerPrimitive className={retroDateTriggerClass}>
+        <CalendarIcon />
+      </DatePickerTriggerPrimitive>
+      {hint}
+      <DatePickerContentPrimitive align="start" sideOffset={4} className={retroDatePopupClass}>
+        <RetroCalendarBody />
+      </DatePickerContentPrimitive>
+    </DatePickerPrimitive>
+  )
+}
+
+export {
+  RetroDatePicker,
+  CalendarIcon,
+  useFormatHint,
+  retroDateInputClass,
+  retroDateTriggerClass,
+  retroDatePopupClass,
+}
 export type { RetroDatePickerProps }

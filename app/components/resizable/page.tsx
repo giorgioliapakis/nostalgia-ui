@@ -22,7 +22,7 @@ export default function ResizablePreview() {
       <p className="text-os9-gray-700 text-[10px] mb-6">
         Resizable panel layouts with OS9-styled drag handles. Supports
         horizontal and vertical orientations with grip dot indicators. Built on
-        react-resizable-panels.
+        UI SDK&apos;s Resizable, the WAI-ARIA window splitter.
       </p>
 
       {/* Horizontal */}
@@ -92,8 +92,9 @@ export default function ResizablePreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Drag the handles between panels to resize. The grip dots indicate
-        draggable areas. Handles darken when being dragged.
+        Drag the handles between panels to resize; they darken while dragged.
+        Or Tab to a handle and use the arrow keys (Shift for bigger steps, Home
+        and End for the limits): the panels ease to each new size.
       </p>
     </ComponentDocLayout>
   )

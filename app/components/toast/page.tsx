@@ -59,10 +59,24 @@ function ToastDemo() {
         >
           Description Only
         </RetroButton>
+
+        <RetroButton
+          onClick={() =>
+            toast({
+              title: "Printing “Read Me”",
+              description: "Stays until you close it.",
+              duration: Infinity,
+            })
+          }
+        >
+          Until Closed
+        </RetroButton>
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click a button to trigger a toast. Toasts auto-dismiss after 5 seconds.
+        Click a button to trigger a toast. Toasts close after 5 seconds; the
+        timer pauses while the pointer or focus is on one. Swipe a toast to the
+        right to dismiss it, or press F6 to reach the newest from the keyboard.
       </p>
     </ComponentDocLayout>
   )

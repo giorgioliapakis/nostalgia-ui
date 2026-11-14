@@ -14,6 +14,7 @@ import {
   RetroSelect,
   RetroSelectContent,
   RetroSelectItem,
+  RetroSelectItemIcon,
   RetroSelectTrigger,
   RetroSelectValue,
 } from "@/registry/new-york/ui/retro-select"
@@ -351,6 +352,7 @@ const ControlPanelBlock = React.forwardRef<HTMLDivElement, ControlPanelBlockProp
             </p>
             <RetroListBox
               aria-label="Themes"
+              glide={false}
               value={s.theme}
               onValueChange={(v) => {
                 const theme = THEMES.find((t) => t.id === v)
@@ -396,10 +398,10 @@ const ControlPanelBlock = React.forwardRef<HTMLDivElement, ControlPanelBlockProp
                   <RetroSelectContent>
                     {HIGHLIGHT_COLORS.map((c) => (
                       <RetroSelectItem key={c.id} value={c.id}>
-                        <span className="flex items-center gap-[6px]">
+                        <RetroSelectItemIcon>
                           <Swatch color={c.color} />
-                          {c.name}
-                        </span>
+                        </RetroSelectItemIcon>
+                        {c.name}
                       </RetroSelectItem>
                     ))}
                   </RetroSelectContent>

@@ -56,9 +56,9 @@ export default function ScrollbarPreview() {
                 arrow glyph.
               </p>
               <p className="mb-2">
-                This implementation is built on top of Radix UI ScrollArea for
-                accessible, cross-browser scroll behavior while faithfully
-                reproducing the Mac OS 9 visual style.
+                The browser still does the scrolling, so the wheel, touch,
+                keyboard and find in page all behave natively, while the
+                scrollbars faithfully reproduce the Mac OS 9 visual style.
               </p>
               <p className="mb-2">
                 Nostalgic yet functional - these scrollbars bring the warmth of
@@ -114,8 +114,8 @@ export default function ScrollbarPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Scroll areas use Radix UI ScrollArea with OS 9 styled scrollbars,
-        arrow buttons, and beveled thumb.
+        Drag the thumb, press the track to page, or hold an arrow button to
+        keep scrolling, as in OS 9.
       </p>
     </ComponentDocLayout>
   )

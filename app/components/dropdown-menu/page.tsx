@@ -34,9 +34,7 @@ export default function DropdownMenuPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Basic Dropdown</h2>
         <RetroDropdownMenu>
-          <RetroDropdownMenuTrigger asChild>
-            <RetroButton>File</RetroButton>
-          </RetroDropdownMenuTrigger>
+          <RetroDropdownMenuTrigger render={<RetroButton />}>File</RetroDropdownMenuTrigger>
           <RetroDropdownMenuContent>
             <RetroDropdownMenuItem>
               New
@@ -72,9 +70,7 @@ export default function DropdownMenuPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">With Submenus</h2>
         <RetroDropdownMenu>
-          <RetroDropdownMenuTrigger asChild>
-            <RetroButton>Edit</RetroButton>
-          </RetroDropdownMenuTrigger>
+          <RetroDropdownMenuTrigger render={<RetroButton />}>Edit</RetroDropdownMenuTrigger>
           <RetroDropdownMenuContent>
             <RetroDropdownMenuItem>
               Undo
@@ -124,9 +120,7 @@ export default function DropdownMenuPreview() {
           Checkbox &amp; Radio Items
         </h2>
         <RetroDropdownMenu>
-          <RetroDropdownMenuTrigger asChild>
-            <RetroButton>View</RetroButton>
-          </RetroDropdownMenuTrigger>
+          <RetroDropdownMenuTrigger render={<RetroButton />}>View</RetroDropdownMenuTrigger>
           <RetroDropdownMenuContent>
             <RetroDropdownMenuLabel>Panels</RetroDropdownMenuLabel>
             <RetroDropdownMenuCheckboxItem
@@ -165,9 +159,7 @@ export default function DropdownMenuPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Disabled Items</h2>
         <RetroDropdownMenu>
-          <RetroDropdownMenuTrigger asChild>
-            <RetroButton>Special</RetroButton>
-          </RetroDropdownMenuTrigger>
+          <RetroDropdownMenuTrigger render={<RetroButton />}>Special</RetroDropdownMenuTrigger>
           <RetroDropdownMenuContent>
             <RetroDropdownMenuItem>Empty Trash...</RetroDropdownMenuItem>
             <RetroDropdownMenuItem disabled>Eject</RetroDropdownMenuItem>

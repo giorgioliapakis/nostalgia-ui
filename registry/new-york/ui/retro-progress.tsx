@@ -1,97 +1,87 @@
 "use client"
 
+/*
+ * RetroProgress on UI SDK Progress.
+ *
+ * Crafted moments:
+ *  - Determinate: the fill eases to each new value (500ms, strong ease-out),
+ *    so jumpy real-world progress reads as steady work. Classic flair jumps,
+ *    as the Finder's copy bar did.
+ *  - Indeterminate: the barber pole. A seamless stripe tile scrolls smoothly
+ *    in modern flair; classic steps it a stripe at a time. Reduced motion
+ *    holds it still.
+ */
+
 import * as React from "react"
+import {
+  Progress as ProgressPrimitive,
+  ProgressIndicator as ProgressIndicatorPrimitive,
+  ProgressTrack as ProgressTrackPrimitive,
+} from "@ui-sdk/react/progress"
 
 import { cn } from "@/lib/utils"
 
-interface RetroProgressProps extends React.ComponentProps<"div"> {
+/*
+ * A 6px tile of 45° stripes (azul / lighter azul, ~2px each) that repeats
+ * without a seam, so the pole can scroll by whole tiles forever.
+ */
+const TILE = 6
+const STRIPES =
+  "linear-gradient(45deg, var(--os9-azul) 25%, #4c4cb2 25% 50%, var(--os9-azul) 50% 75%, #4c4cb2 75%)"
+
+const CSS = `
+@keyframes os9-barber-pole { from { background-position: 0 0; } to { background-position: ${TILE * 4}px 0; } }
+.os9-barber-pole[data-indeterminate] { animation: os9-barber-pole 600ms linear infinite; }
+[data-flair="classic"] .os9-barber-pole[data-indeterminate] { animation-timing-function: steps(4, end); }
+@media (prefers-reduced-motion: reduce) { .os9-barber-pole[data-indeterminate] { animation: none; } }
+`
+
+interface RetroProgressProps
+  extends Omit<React.ComponentProps<typeof ProgressPrimitive>, "className" | "children" | "value"> {
+  className?: string
   /** Progress value from 0 to 100. Clamped to [0, 100]. */
   value?: number
-  /** If true, shows an animated indeterminate state. */
+  /** If true, shows the barber pole: under way, but how far is unknown. */
   indeterminate?: boolean
 }
 
-function RetroProgress(
-  { className, value = 0, indeterminate = false, ...props }: RetroProgressProps,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
-  const clampedValue = Math.min(100, Math.max(0, value))
+function RetroProgress({ className, value = 0, indeterminate = false, ...props }: RetroProgressProps) {
+  const clamped = Math.min(100, Math.max(0, value))
 
   return (
-    <div
-      ref={ref}
-      role="progressbar"
-      aria-valuenow={indeterminate ? undefined : clampedValue}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      className={cn(
-        "relative h-[16px] w-full",
-        // Inset bevel track: black border, inner shadow for depth
-        "border border-os9-black",
-        "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-        "bg-os9-gray-500",
-        "overflow-hidden",
-        className
-      )}
+    <ProgressPrimitive
+      value={indeterminate ? null : clamped}
+      min={0}
+      max={100}
+      className={cn("relative h-[16px] w-full", className)}
       {...props}
     >
-      {/* Fill bar */}
-      <div
+      <style href="os9-progress" precedence="default">
+        {CSS}
+      </style>
+      <ProgressTrackPrimitive
         className={cn(
-          "absolute inset-y-[1px] left-[1px]",
-          "transition-none",
-          indeterminate && "retro-progress-indeterminate"
+          "relative h-full w-full overflow-hidden",
+          /* Inset bevel track: black border, inner shadow for depth */
+          "border border-os9-black bg-os9-gray-500",
+          "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]"
         )}
-        style={{
-          width: indeterminate
-            ? "calc(100% - 2px)"
-            : clampedValue === 0
-              ? 0
-              : `calc(${clampedValue}% - 2px)`,
-          // Candy-stripe diagonal pattern:
-          // Alternating azul (#333399) and a slightly lighter azul (#4c4cb2)
-          // with a horizontal banding overlay for the OS9 3D gradient effect
-          background: `
-            repeating-linear-gradient(
-              45deg,
-              var(--os9-azul),
-              var(--os9-azul) 2px,
-              #4c4cb2 2px,
-              #4c4cb2 4px
-            )
-          `,
-          backgroundSize: indeterminate ? "28px 28px" : undefined,
-          // Inner bevel on the fill for 3D depth matching the Figma gradient
-          boxShadow: clampedValue > 0 || indeterminate
-            ? "inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.25)"
-            : "none",
-        }}
-      />
-      {/*
-        Keyframe animation for the indeterminate stripe movement (kept inline
-        so the component stays self-contained). React 19 hoists this <style>
-        into <head> and dedupes it by `href`.
-      */}
-      {indeterminate && (
-        <style href="retro-progress" precedence="default">{`
-          @keyframes retro-progress-stripe {
-            from { background-position: 0 0; }
-            to { background-position: 28px 0; }
-          }
-          .retro-progress-indeterminate {
-            animation: retro-progress-stripe 0.6s linear infinite;
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .retro-progress-indeterminate { animation: none; }
-          }
-        `}</style>
-      )}
-    </div>
+      >
+        <ProgressIndicatorPrimitive
+          className={cn(
+            "os9-barber-pole absolute inset-y-[1px] left-[1px] max-w-[calc(100%-2px)]",
+            /* Inner bevel on the fill for the OS 9 3D look */
+            "shadow-[inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.25)]",
+            "transition-[width] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]",
+            "in-data-[flair=classic]:transition-none motion-reduce:transition-none",
+            "data-indeterminate:w-[calc(100%-2px)]!"
+          )}
+          style={{ backgroundImage: STRIPES, backgroundSize: `${TILE}px ${TILE}px` }}
+        />
+      </ProgressTrackPrimitive>
+    </ProgressPrimitive>
   )
 }
 
-const ForwardedRetroProgress = React.forwardRef(RetroProgress)
-ForwardedRetroProgress.displayName = "RetroProgress"
-
-export { ForwardedRetroProgress as RetroProgress }
+export { RetroProgress }
 export type { RetroProgressProps }

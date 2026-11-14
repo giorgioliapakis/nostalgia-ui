@@ -68,7 +68,9 @@ export default function SliderPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Drag the rectangular thumb to adjust values. The track uses OS9 inset bevel styling.
+        Drag the rectangular thumb to adjust values: it tracks the pointer
+        exactly. Arrow keys, Page Up/Down and Home/End move it too, and then
+        the thumb and fill glide to the new value.
       </p>
     </ComponentDocLayout>
   )

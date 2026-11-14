@@ -7,7 +7,7 @@
       "name": "nostalgia-theme",
       "type": "registry:theme",
       "title": "Nostalgia Theme",
-      "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, font stacks) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component.",
+      "description": "Mac OS 9 design tokens (--os9-* colors, bevel shadows, font stacks) and utilities (os9-raised, os9-inset, os9-window, os9-stripes, os9-focus-ring). Required by every retro-* component. Put `@layer ui-sdk;` above `@import \"tailwindcss\"` so utilities win over UI SDK's popup resets.",
       "cssVars": {
         "theme": {
           "color-os9-black": "var(--os9-black)",
@@ -90,12 +90,28 @@
       }
     },
     {
+      "name": "retro-motion",
+      "type": "registry:lib",
+      "title": "Retro Motion",
+      "description": "Shared behaviour for nostalgia-ui: modern/classic flair (data-flair=\"classic\"), the gliding menu highlight, the menu-selection blink, Finder zoom rects and popup class merging. Installed automatically by the components that use it.",
+      "files": [
+        {
+          "path": "registry/new-york/lib/retro-motion.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": [
+        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ]
+    },
+    {
       "name": "retro-label",
       "type": "registry:ui",
       "title": "RetroLabel",
-      "description": "A Mac OS 9 styled label with Geneva 10pt default and Charcoal 12pt large size variants, built on Radix UI Label.",
+      "description": "A Mac OS 9 styled label with Geneva 10pt default and Charcoal 12pt large size variants, built on UI SDK Label.",
       "dependencies": [
-        "@radix-ui/react-label",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -114,7 +130,8 @@
       "title": "RetroButton",
       "description": "A Mac OS 9 styled button with raised bevel effect, active/pressed state, and disabled styling.",
       "dependencies": [
-        "@radix-ui/react-slot",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -149,9 +166,10 @@
       "name": "retro-radio",
       "type": "registry:ui",
       "title": "RetroRadio",
-      "description": "A Mac OS 9 styled radio button group with 3D circular bevel effect, built on Radix UI Radio Group.",
+      "description": "A Mac OS 9 styled radio button group with 3D circular bevel effect, built on UI SDK Radio Group.",
       "dependencies": [
-        "@radix-ui/react-radio-group"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -167,9 +185,10 @@
       "name": "retro-tabs",
       "type": "registry:ui",
       "title": "RetroTabs",
-      "description": "Mac OS 9 styled tabs with large/small sizes and raised bevel active state, built on Radix UI Tabs.",
+      "description": "Mac OS 9 styled tabs with large/small sizes and raised bevel active state, built on UI SDK Tabs.",
       "dependencies": [
-        "@radix-ui/react-tabs",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -195,6 +214,10 @@
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "dependencies": [
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ]
     },
     {
@@ -216,9 +239,10 @@
       "name": "retro-slider",
       "type": "registry:ui",
       "title": "RetroSlider",
-      "description": "A Mac OS 9 styled slider with rectangular raised bevel thumb and inset track, built on Radix UI Slider.",
+      "description": "A Mac OS 9 styled slider with rectangular raised bevel thumb and inset track, built on UI SDK Slider.",
       "dependencies": [
-        "@radix-ui/react-slider"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -234,9 +258,10 @@
       "name": "retro-checkbox",
       "type": "registry:ui",
       "title": "RetroCheckbox",
-      "description": "A Mac OS 9 styled checkbox with inset bevel, checkmark and indeterminate (dash) states, built on Radix UI Checkbox.",
+      "description": "A Mac OS 9 styled checkbox with inset bevel, checkmark and indeterminate (dash) states, built on UI SDK Checkbox.",
       "dependencies": [
-        "@radix-ui/react-checkbox"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -254,7 +279,8 @@
       "title": "RetroMenuBar",
       "description": "A Mac OS 9 styled menu bar with horizontal strip, bevel highlights, azul active state, and dropdown menus with classic drop shadow.",
       "dependencies": [
-        "@radix-ui/react-menubar"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -263,7 +289,9 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-dropdown-menu.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
@@ -273,6 +301,7 @@
       "description": "A Mac OS 9 styled window frame with title bar, close/collapse/zoom controls, active/inactive states, and content area.",
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json",
         "https://nostalgia-ui.com/r/retro-title-bar.json"
       ],
       "files": [
@@ -286,9 +315,10 @@
       "name": "retro-select",
       "type": "registry:ui",
       "title": "RetroSelect",
-      "description": "A Mac OS 9 styled select dropdown with raised bevel trigger, up/down chevron arrows, and azul-highlighted menu items, built on Radix UI Select.",
+      "description": "A Mac OS 9 styled select dropdown with raised bevel trigger, up/down chevron arrows, and azul-highlighted menu items, built on UI SDK Select.",
       "dependencies": [
-        "@radix-ui/react-select"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -297,16 +327,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-separator",
       "type": "registry:ui",
       "title": "RetroSeparator",
-      "description": "A Mac OS 9 styled separator with classic beveled line effect: dark top/left pixel and light bottom/right pixel, built on Radix UI Separator.",
+      "description": "A Mac OS 9 styled separator with classic beveled line effect: dark top/left pixel and light bottom/right pixel, built on UI SDK Separator.",
       "dependencies": [
-        "@radix-ui/react-separator"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -358,9 +390,10 @@
       "name": "retro-popover",
       "type": "registry:ui",
       "title": "RetroPopover",
-      "description": "A Mac OS 9 styled popover with classic drop shadow, built on Radix UI Popover.",
+      "description": "A Mac OS 9 styled popover with classic drop shadow, built on UI SDK Popover.",
       "dependencies": [
-        "@radix-ui/react-popover"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -369,16 +402,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-toggle",
       "type": "registry:ui",
       "title": "RetroToggle",
-      "description": "A Mac OS 9 styled toggle button with raised/pressed bevel states, built on Radix UI Toggle.",
+      "description": "A Mac OS 9 styled toggle button with raised/pressed bevel states, built on UI SDK Toggle.",
       "dependencies": [
-        "@radix-ui/react-toggle",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -410,9 +445,10 @@
       "name": "retro-switch",
       "type": "registry:ui",
       "title": "RetroSwitch",
-      "description": "A Mac OS 9 styled binary toggle switch with rectangular inset track, raised bevel thumb, and azul checked state, built on Radix UI Switch.",
+      "description": "A Mac OS 9 styled binary toggle switch with rectangular inset track, raised bevel thumb, and azul checked state, built on UI SDK Switch.",
       "dependencies": [
-        "@radix-ui/react-switch"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -428,9 +464,10 @@
       "name": "retro-tooltip",
       "type": "registry:ui",
       "title": "RetroTooltip",
-      "description": "A Mac OS 9 Balloon Help styled tooltip with pale yellow background, rounded corners, and drop shadow, built on Radix UI Tooltip.",
+      "description": "A Mac OS 9 Balloon Help styled tooltip with pale yellow background, rounded corners, and drop shadow, built on UI SDK Tooltip.",
       "dependencies": [
-        "@radix-ui/react-tooltip"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -439,16 +476,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-hover-card",
       "type": "registry:ui",
       "title": "RetroHoverCard",
-      "description": "A Mac OS 9 styled hover card with solid border and drop shadow, built on Radix UI Hover Card.",
+      "description": "A Mac OS 9 styled hover card with solid border and drop shadow, built on UI SDK Hover Card.",
       "dependencies": [
-        "@radix-ui/react-hover-card"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -457,7 +496,8 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
@@ -497,9 +537,10 @@
       "name": "retro-avatar",
       "type": "registry:ui",
       "title": "RetroAvatar",
-      "description": "A Mac OS 9 styled avatar with beveled border, image support, fallback initials, and sm/default/lg size variants, built on Radix UI Avatar.",
+      "description": "A Mac OS 9 styled avatar with beveled border, image support, fallback initials, and sm/default/lg size variants, built on UI SDK Avatar.",
       "dependencies": [
-        "@radix-ui/react-avatar",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -570,6 +611,10 @@
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json"
+      ],
+      "dependencies": [
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ]
     },
     {
@@ -594,9 +639,10 @@
       "name": "retro-context-menu",
       "type": "registry:ui",
       "title": "RetroContextMenu",
-      "description": "A Mac OS 9 styled context menu with right-click trigger, sub-menus, checkbox/radio items, keyboard shortcuts, and classic drop shadow, built on Radix UI Context Menu.",
+      "description": "A Mac OS 9 styled context menu with right-click trigger, sub-menus, checkbox/radio items, keyboard shortcuts, gliding highlight and selection blink, built on UI SDK Menu.",
       "dependencies": [
-        "@radix-ui/react-context-menu"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -605,16 +651,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-dropdown-menu.json"
       ]
     },
     {
       "name": "retro-dialog",
       "type": "registry:ui",
       "title": "RetroDialog",
-      "description": "A Mac OS 9 styled modal dialog with overlay, OS9 window frame, striped title bar with close box, description area, and footer for action buttons, built on Radix UI Dialog.",
+      "description": "A Mac OS 9 styled modal dialog with OS9 window frame, striped title bar with close box, description area, and footer for action buttons. Zooms out of its trigger with Finder zoom rects. Built on UI SDK Dialog.",
       "dependencies": [
-        "@radix-ui/react-dialog"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -623,16 +671,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-alert-dialog",
       "type": "registry:ui",
       "title": "RetroAlertDialog",
-      "description": "A Mac OS 9 styled alert dialog with OS9 window shadow, striped title bar, caution icon, and modal behavior, built on Radix UI Alert Dialog.",
+      "description": "A Mac OS 9 styled alert dialog with OS9 window shadow, striped title bar, caution icon, and modal behavior. Zooms out of its trigger with Finder zoom rects. Built on UI SDK Alert Dialog.",
       "dependencies": [
-        "@radix-ui/react-alert-dialog"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -642,16 +692,18 @@
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
-        "https://nostalgia-ui.com/r/retro-icons.json"
+        "https://nostalgia-ui.com/r/retro-icons.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-toggle-group",
       "type": "registry:ui",
       "title": "RetroToggleGroup",
-      "description": "A Mac OS 9 styled toggle group with shared borders, raised/pressed bevel states, and single or multiple selection modes, built on Radix UI Toggle Group.",
+      "description": "A Mac OS 9 styled toggle group with shared borders, raised/pressed bevel states, and single or multiple selection modes, built on UI SDK Toggle Group.",
       "dependencies": [
-        "@radix-ui/react-toggle-group",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -683,9 +735,10 @@
       "name": "retro-sheet",
       "type": "registry:ui",
       "title": "RetroSheet",
-      "description": "A Mac OS 9 styled sheet (slide-over panel) with side variants, striped title bar, close box, and overlay, built on Radix UI Dialog.",
+      "description": "A Mac OS 9 styled sheet (slide-over panel) with side variants, striped title bar and close box, built on UI SDK Dialog.",
       "dependencies": [
-        "@radix-ui/react-dialog",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "files": [
@@ -695,16 +748,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-scrollbar",
       "type": "registry:ui",
       "title": "RetroScrollbar",
-      "description": "A Mac OS 9 styled scroll area with 16px wide/tall scrollbars featuring raised bevel thumb, inset track, and arrow navigation buttons at each end, built on Radix UI ScrollArea.",
+      "description": "A Mac OS 9 styled scroll area with 16px wide/tall scrollbars featuring raised bevel thumb, inset track, and arrow navigation buttons at each end, built on UI SDK Scroll Area.",
       "dependencies": [
-        "@radix-ui/react-scroll-area"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -720,9 +775,10 @@
       "name": "retro-navigation-menu",
       "type": "registry:ui",
       "title": "RetroNavigationMenu",
-      "description": "A Mac OS 9 styled navigation menu with horizontal strip, azul active triggers, dropdown content with classic drop shadow, and lavender hover links, built on Radix UI Navigation Menu.",
+      "description": "A Mac OS 9 styled navigation menu with horizontal strip, azul active triggers, dropdown content with classic drop shadow, and lavender hover links, built on UI SDK Navigation Menu.",
       "dependencies": [
-        "@radix-ui/react-navigation-menu"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -731,16 +787,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-accordion",
       "type": "registry:ui",
       "title": "RetroAccordion",
-      "description": "A Mac OS 9 styled accordion with disclosure triangle, bevel separator, and collapse animation, built on Radix UI Accordion.",
+      "description": "A Mac OS 9 styled accordion with disclosure triangle, bevel separator, and height morph, built on UI SDK Accordion.",
       "dependencies": [
-        "@radix-ui/react-accordion"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -756,9 +814,10 @@
       "name": "retro-collapsible",
       "type": "registry:ui",
       "title": "RetroCollapsible",
-      "description": "A Mac OS 9 styled collapsible disclosure with rotating triangle indicator, Charcoal heading trigger, and indented Geneva content area, built on Radix UI Collapsible.",
+      "description": "A Mac OS 9 styled collapsible disclosure with rotating triangle indicator, Charcoal heading trigger, and indented Geneva content area, built on UI SDK Collapsible.",
       "dependencies": [
-        "@radix-ui/react-collapsible"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -774,9 +833,10 @@
       "name": "retro-dropdown-menu",
       "type": "registry:ui",
       "title": "RetroDropdownMenu",
-      "description": "A Mac OS 9 styled dropdown menu with white background, classic drop shadow, azul-highlighted items, bevel separators, submenus, checkbox/radio items, and keyboard shortcut labels, built on Radix UI Dropdown Menu.",
+      "description": "A Mac OS 9 styled dropdown menu with white background, classic drop shadow, a gliding azul highlight, the selection blink, bevel separators, submenus, checkbox/radio items, and keyboard shortcut labels, built on UI SDK Menu.",
       "dependencies": [
-        "@radix-ui/react-dropdown-menu"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -785,7 +845,8 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
@@ -807,7 +868,7 @@
       "name": "retro-typography",
       "type": "registry:ui",
       "title": "RetroText",
-      "description": "Mac OS 9 typography: RetroText variants plus semantic RetroH1\u2013H4, RetroP, RetroLead, RetroBlockquote, RetroList, RetroInlineCode, RetroLarge, RetroSmall and RetroMuted.",
+      "description": "Mac OS 9 typography: RetroText variants plus semantic RetroH1–H4, RetroP, RetroLead, RetroBlockquote, RetroList, RetroInlineCode, RetroLarge, RetroSmall and RetroMuted.",
       "dependencies": [
         "class-variance-authority"
       ],
@@ -836,17 +897,15 @@
         "https://nostalgia-ui.com/r/nostalgia-theme.json"
       ],
       "dependencies": [
-        "@radix-ui/react-toolbar"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ]
     },
     {
       "name": "retro-aspect-ratio",
       "type": "registry:ui",
       "title": "RetroAspectRatio",
-      "description": "A Mac OS 9 styled aspect ratio container with optional inset border, built on Radix UI Aspect Ratio.",
-      "dependencies": [
-        "@radix-ui/react-aspect-ratio"
-      ],
+      "description": "A Mac OS 9 styled aspect ratio container with optional inset border.",
       "files": [
         {
           "path": "registry/new-york/ui/retro-aspect-ratio.tsx",
@@ -879,9 +938,10 @@
       "name": "retro-carousel",
       "type": "registry:ui",
       "title": "RetroCarousel",
-      "description": "A Mac OS 9 styled carousel/slideshow with inset panel container, raised bevel navigation buttons with triangle arrow SVGs, and embla-carousel-react for smooth sliding. Supports horizontal and vertical orientations.",
+      "description": "A Mac OS 9 styled carousel/slideshow with inset panel container and raised bevel navigation buttons with triangle arrows, built on UI SDK Carousel. Supports horizontal and vertical orientations.",
       "dependencies": [
-        "embla-carousel-react"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -897,9 +957,10 @@
       "name": "retro-input-otp",
       "type": "registry:ui",
       "title": "RetroInputOTP",
-      "description": "A Mac OS 9 styled one-time password input with individual inset bevel character slots, blinking caret, focus ring, and group separators, built on input-otp.",
+      "description": "A Mac OS 9 styled one-time password input with individual inset bevel character slots, blinking caret, focus ring, and group separators, built on UI SDK OTP Input.",
       "dependencies": [
-        "input-otp"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -915,9 +976,10 @@
       "name": "retro-resizable",
       "type": "registry:ui",
       "title": "RetroResizable",
-      "description": "A Mac OS 9 styled resizable panel group for split layouts with raised bevel handle, grip dots, and drag-darkening effect, built on react-resizable-panels.",
+      "description": "A Mac OS 9 styled resizable panel group for split layouts with raised bevel handle, grip dots, and drag-darkening effect, built on UI SDK Resizable.",
       "dependencies": [
-        "react-resizable-panels"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -933,9 +995,10 @@
       "name": "retro-drawer",
       "type": "registry:ui",
       "title": "RetroDrawer",
-      "description": "A Mac OS 9 styled bottom sheet / drawer with pull handle, OS9 window bevel, and overlay, built on vaul.",
+      "description": "A Mac OS 9 styled bottom sheet / drawer with pull handle and OS9 window bevel; drag to dismiss. Built on UI SDK Drawer.",
       "dependencies": [
-        "vaul"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -944,7 +1007,8 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
@@ -953,9 +1017,9 @@
       "title": "RetroForm",
       "description": "A React Hook Form integration with Mac OS 9 styling. Provides RetroForm, RetroFormField, RetroFormItem, RetroFormLabel, RetroFormControl, RetroFormDescription, and RetroFormMessage components following the shadcn Form pattern.",
       "dependencies": [
-        "react-hook-form",
-        "@radix-ui/react-label",
-        "@radix-ui/react-slot"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
+        "react-hook-form"
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
@@ -972,10 +1036,10 @@
       "name": "retro-command",
       "type": "registry:ui",
       "title": "RetroCommand",
-      "description": "A Mac OS 9 styled command palette (search interface) with inset search input, azul-highlighted items, keyboard shortcut labels, and modal dialog variant, built on cmdk and Radix UI Dialog.",
+      "description": "A Mac OS 9 styled command palette with inset search input, gliding azul highlight, selection blink, keyboard shortcut labels, and modal dialog variant, built on UI SDK Command and Dialog.",
       "dependencies": [
-        "cmdk",
-        "@radix-ui/react-dialog"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -984,16 +1048,18 @@
         }
       ],
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ]
     },
     {
       "name": "retro-calendar",
       "type": "registry:ui",
       "title": "RetroCalendar",
-      "description": "A Mac OS 9 styled date selection calendar grid with raised bevel navigation buttons, azul selected day, lavender hover and range states, built on react-day-picker v9.",
+      "description": "A Mac OS 9 styled date selection calendar grid with raised bevel navigation buttons, azul selected day, lavender hover and range states, built on UI SDK Calendar.",
       "dependencies": [
-        "react-day-picker"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "files": [
         {
@@ -1029,12 +1095,11 @@
       "title": "RetroDatePicker",
       "description": "A Mac OS 9 styled date picker with inline text input (MM/DD/YYYY), calendar icon trigger button, and popover calendar dropdown, composed from RetroPopover and RetroCalendar.",
       "dependencies": [
-        "date-fns",
-        "react-day-picker"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
-        "https://nostalgia-ui.com/r/retro-popover.json",
         "https://nostalgia-ui.com/r/retro-calendar.json"
       ],
       "files": [
@@ -1050,12 +1115,11 @@
       "title": "RetroDateRangePicker",
       "description": "A Mac OS 9 styled date range picker with two inline text inputs, en-dash separator, calendar icon trigger, and a two-month popover calendar for range selection.",
       "dependencies": [
-        "date-fns",
-        "react-day-picker"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
-        "https://nostalgia-ui.com/r/retro-popover.json",
         "https://nostalgia-ui.com/r/retro-calendar.json",
         "https://nostalgia-ui.com/r/retro-date-picker.json"
       ],
@@ -1070,10 +1134,10 @@
       "name": "retro-combobox",
       "type": "registry:ui",
       "title": "RetroCombobox",
-      "description": "A Mac OS 9 styled searchable select / autocomplete combobox with inset bevel trigger, search input, azul-highlighted items, checkmark selection indicator, and group headings, built on Radix UI Popover.",
+      "description": "A Mac OS 9 styled searchable select / autocomplete combobox with inset bevel trigger, search input, gliding azul highlight, checkmark selection indicator, and group headings, built on UI SDK Combobox.",
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
-        "https://nostalgia-ui.com/r/retro-popover.json"
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ],
       "files": [
         {
@@ -1082,7 +1146,8 @@
         }
       ],
       "dependencies": [
-        "cmdk"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ]
     },
     {
@@ -1125,12 +1190,13 @@
       "title": "RetroSidebar",
       "description": "A Mac OS 9 styled app shell layout with collapsible sidebar, context-driven open/closed state, menu items with azul active and lavender hover, keyboard shortcut (Cmd+B) toggle, and icon-only collapsed mode. Provides RetroSidebarProvider, RetroSidebar, RetroSidebarHeader, RetroSidebarContent, RetroSidebarFooter, RetroSidebarMenu, RetroSidebarMenuItem, RetroSidebarMenuButton, RetroSidebarGroup, RetroSidebarGroupLabel, RetroSidebarTrigger, and RetroSidebarInset.",
       "dependencies": [
-        "@radix-ui/react-slot"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
-        "https://nostalgia-ui.com/r/retro-sheet.json",
-        "https://nostalgia-ui.com/r/retro-scrollbar.json"
+        "https://nostalgia-ui.com/r/retro-scrollbar.json",
+        "https://nostalgia-ui.com/r/retro-sheet.json"
       ],
       "files": [
         {
@@ -1178,7 +1244,7 @@
       "name": "boot-screen",
       "type": "registry:block",
       "title": "Boot Screen",
-      "description": "Mac OS 9 startup screen with Happy Mac, \u201cWelcome to Mac OS\u201d progress box and marching extension icons. Controlled or autoPlay; respects prefers-reduced-motion.",
+      "description": "Mac OS 9 startup screen with Happy Mac, “Welcome to Mac OS” progress box and marching extension icons. Controlled or autoPlay; respects prefers-reduced-motion.",
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
         "https://nostalgia-ui.com/r/retro-icons.json",
@@ -1195,7 +1261,7 @@
       "name": "copy-progress",
       "type": "registry:block",
       "title": "Copy Progress",
-      "description": "The Finder \u201cCopy\u201d progress window with items remaining, current file, progress bar, Stop button and an indeterminate \u201cPreparing to copy\u2026\u201d state.",
+      "description": "The Finder “Copy” progress window with items remaining, current file, progress bar, Stop button and an indeterminate “Preparing to copy…” state.",
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
         "https://nostalgia-ui.com/r/retro-button.json",
@@ -1235,9 +1301,6 @@
       "type": "registry:ui",
       "title": "RetroAppSwitcher",
       "description": "The Mac OS 9 Application menu for the right end of the menu bar: frontmost app icon and name, Hide, Hide Others, Show All, and a checkmarked list of running apps.",
-      "dependencies": [
-        "@radix-ui/react-dropdown-menu"
-      ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
         "https://nostalgia-ui.com/r/retro-dropdown-menu.json"
@@ -1273,7 +1336,8 @@
       "title": "RetroButtonGroup",
       "description": "Joins RetroButtons, inputs and text into one Mac OS 9 control strip with shared borders. Horizontal or vertical, with RetroButtonGroupSeparator and RetroButtonGroupText.",
       "dependencies": [
-        "@radix-ui/react-slot",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "registryDependencies": [
@@ -1291,9 +1355,6 @@
       "type": "registry:ui",
       "title": "RetroControlStrip",
       "description": "The Mac OS 9 Control Strip: a collapsible strip of module buttons with a ridged end tab and pop-up module menus. Exports RetroControlStrip, RetroControlStripModule and RetroControlStripTab (aliased ControlStrip, ControlStripModule, ControlStripTab).",
-      "dependencies": [
-        "@radix-ui/react-dropdown-menu"
-      ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
         "https://nostalgia-ui.com/r/retro-dropdown-menu.json"
@@ -1420,7 +1481,8 @@
       "title": "RetroItem",
       "description": "A flexible Mac OS 9 list row: RetroItem (default/outline/muted, default/sm, asChild) with RetroItemMedia, RetroItemContent, RetroItemTitle, RetroItemDescription, RetroItemActions, RetroItemGroup, RetroItemSeparator, RetroItemHeader and RetroItemFooter.",
       "dependencies": [
-        "@radix-ui/react-slot",
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1",
         "class-variance-authority"
       ],
       "registryDependencies": [
@@ -1457,13 +1519,18 @@
       "title": "RetroListBox",
       "description": "Mac OS 9 inset list box with single or multiple selection, azul highlight, arrow/Home/End navigation, type-ahead and listbox/option semantics.",
       "registryDependencies": [
-        "https://nostalgia-ui.com/r/nostalgia-theme.json"
+        "https://nostalgia-ui.com/r/nostalgia-theme.json",
+        "https://nostalgia-ui.com/r/retro-motion.json"
       ],
       "files": [
         {
           "path": "registry/new-york/ui/retro-list-box.tsx",
           "type": "registry:ui"
         }
+      ],
+      "dependencies": [
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ]
     },
     {
@@ -1518,9 +1585,10 @@
       "name": "retro-sonner",
       "type": "registry:ui",
       "title": "RetroToaster",
-      "description": "Sonner toasts rendered as Mac OS 9 alert windows: striped title bar, close box, per-type alert icons and OS9 action/cancel buttons. Exports RetroToaster and re-exports sonner's toast().",
+      "description": "Toasts rendered as Mac OS 9 alert windows: striped title bar, close box, per-type alert icons, OS9 action/cancel buttons and act-then-Undo. Exports RetroToaster and a sonner-style toast() function. Built on UI SDK Toast.",
       "dependencies": [
-        "sonner"
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ],
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
@@ -1548,6 +1616,10 @@
           "path": "registry/new-york/ui/retro-tree-view.tsx",
           "type": "registry:ui"
         }
+      ],
+      "dependencies": [
+        "@ui-sdk/core@0.1.0-beta.1",
+        "@ui-sdk/react@0.1.0-beta.1"
       ]
     },
     {
@@ -1570,7 +1642,7 @@
       "name": "unexpectedly-quit",
       "type": "registry:block",
       "title": "Unexpectedly Quit",
-      "description": "The classic Mac OS 9 \u201capplication has unexpectedly quit\u201d Stop alert with OK, plus a \u201cSorry, a system error occurred\u201d bomb variant with Restart.",
+      "description": "The classic Mac OS 9 “application has unexpectedly quit” Stop alert with OK, plus a “Sorry, a system error occurred” bomb variant with Restart.",
       "registryDependencies": [
         "https://nostalgia-ui.com/r/nostalgia-theme.json",
         "https://nostalgia-ui.com/r/retro-button.json",

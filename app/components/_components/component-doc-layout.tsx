@@ -54,6 +54,9 @@ export function ComponentDocLayout({
           <code className="font-mono break-all">
             npx shadcn@latest add https://nostalgia-ui.com/r/nostalgia-theme.json
           </code>
+          . Put <code className="font-mono">@layer ui-sdk;</code> above{" "}
+          <code className="font-mono">@import &quot;tailwindcss&quot;</code> in
+          your global CSS (<a href="/components" className="underline">why</a>).
         </p>
       </section>
 

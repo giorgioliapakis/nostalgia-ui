@@ -1,80 +1,92 @@
 "use client"
 
+/*
+ * RetroSheet: a Mac OS 9 panel that slides in from an edge of the screen, on
+ * UI SDK's dialog.
+ *
+ * Crafted moment: the slide. The panel glides in from its side (220ms,
+ * strong ease-out) and leaves faster (180ms) the way it came. Classic flair
+ * and reduced motion: it appears and vanishes at once.
+ */
+
 import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
+import {
+  Dialog as DialogPrimitive,
+  DialogBackdrop as DialogBackdropPrimitive,
+  DialogClose as DialogClosePrimitive,
+  DialogContent as DialogContentPrimitive,
+  DialogDescription as DialogDescriptionPrimitive,
+  DialogTitle as DialogTitlePrimitive,
+  DialogTrigger as DialogTriggerPrimitive,
+} from "@ui-sdk/react/dialog"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+import { popupClass } from "@/registry/new-york/lib/retro-motion"
+
+type WithClassName<P> = Omit<P, "className"> & { className?: string }
 
 /* ------------------------------------------------------------------ */
-/*  Root & Trigger (pass-through)                                      */
+/*  Root, Trigger & Close                                              */
 /* ------------------------------------------------------------------ */
 
-const RetroSheet = DialogPrimitive.Root
+function RetroSheet(props: React.ComponentProps<typeof DialogPrimitive>) {
+  return <DialogPrimitive {...props} />
+}
 
-const RetroSheetTrigger = DialogPrimitive.Trigger
+function RetroSheetTrigger(props: React.ComponentProps<typeof DialogTriggerPrimitive>) {
+  return <DialogTriggerPrimitive {...props} />
+}
 
-const RetroSheetClose = DialogPrimitive.Close
-
-const RetroSheetPortal = DialogPrimitive.Portal
+function RetroSheetClose(props: React.ComponentProps<typeof DialogClosePrimitive>) {
+  return <DialogClosePrimitive {...props} />
+}
 
 /* ------------------------------------------------------------------ */
-/*  Overlay                                                            */
+/*  Motion                                                             */
 /* ------------------------------------------------------------------ */
 
-const RetroSheetOverlay = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "fixed inset-0 z-50 bg-black/40",
-      "data-[state=open]:animate-in data-[state=open]:fade-in-0",
-      "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
-      className
-    )}
-    {...props}
-  />
-))
-RetroSheetOverlay.displayName = "RetroSheetOverlay"
+/* 220ms in, 180ms out; classic flair and reduced motion skip it */
+const sheetMotion = cn(
+  "duration-220 ease-[cubic-bezier(0.23,1,0.32,1)] data-ending-style:duration-180",
+  "in-data-[flair=classic]:transition-none motion-reduce:transition-none"
+)
 
 /* ------------------------------------------------------------------ */
 /*  Content variants (slide from edge)                                 */
 /* ------------------------------------------------------------------ */
 
+/* Box properties carry `!` so UI SDK's popup reset can't strip them in apps
+ * that haven't declared `@layer ui-sdk;` first. */
 const sheetContentVariants = cva(
   [
-    "fixed z-50 flex flex-col outline-none",
-    "bg-os9-gray-200",
-    "data-[state=open]:animate-in data-[state=closed]:animate-out",
+    "fixed! z-50 m-0! p-0! flex flex-col outline-none overflow-visible!",
+    "bg-os9-gray-200! text-os9-black!",
+    "transition-[translate]",
+    sheetMotion,
   ].join(" "),
   {
     variants: {
       side: {
         right: [
-          "inset-y-0 right-0 h-full w-3/4 max-w-sm",
-          "border-l border-os9-black",
-          "data-[state=open]:slide-in-from-right",
-          "data-[state=closed]:slide-out-to-right",
+          "inset-auto! top-0! bottom-0! right-0! h-full! max-h-none! w-3/4! max-w-sm!",
+          "border-0! border-l! border-os9-black!",
+          "data-starting-style:translate-x-full data-ending-style:translate-x-full",
         ].join(" "),
         left: [
-          "inset-y-0 left-0 h-full w-3/4 max-w-sm",
-          "border-r border-os9-black",
-          "data-[state=open]:slide-in-from-left",
-          "data-[state=closed]:slide-out-to-left",
+          "inset-auto! top-0! bottom-0! left-0! h-full! max-h-none! w-3/4! max-w-sm!",
+          "border-0! border-r! border-os9-black!",
+          "data-starting-style:-translate-x-full data-ending-style:-translate-x-full",
         ].join(" "),
         top: [
-          "inset-x-0 top-0 w-full h-auto",
-          "border-b border-os9-black",
-          "data-[state=open]:slide-in-from-top",
-          "data-[state=closed]:slide-out-to-top",
+          "inset-auto! top-0! left-0! right-0! w-full! max-w-none! h-auto!",
+          "border-0! border-b! border-os9-black!",
+          "data-starting-style:-translate-y-full data-ending-style:-translate-y-full",
         ].join(" "),
         bottom: [
-          "inset-x-0 bottom-0 w-full h-auto",
-          "border-t border-os9-black",
-          "data-[state=open]:slide-in-from-bottom",
-          "data-[state=closed]:slide-out-to-bottom",
+          "inset-auto! bottom-0! left-0! right-0! w-full! max-w-none! h-auto!",
+          "border-0! border-t! border-os9-black!",
+          "data-starting-style:translate-y-full data-ending-style:translate-y-full",
         ].join(" "),
       },
     },
@@ -88,30 +100,32 @@ const sheetContentVariants = cva(
 /*  RetroSheetContent                                                  */
 /* ------------------------------------------------------------------ */
 
-interface RetroSheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
-    VariantProps<typeof sheetContentVariants> {}
+type RetroSheetContentProps = WithClassName<React.ComponentProps<typeof DialogContentPrimitive>> &
+  VariantProps<typeof sheetContentVariants>
 
-const RetroSheetContent = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Content>,
-  RetroSheetContentProps
->(({ side = "right", className, children, ...props }, ref) => (
-  <RetroSheetPortal>
-    <RetroSheetOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(sheetContentVariants({ side }), className)}
-      style={{
-        boxShadow:
-          "inset 2px 2px 0 rgba(255,255,255,0.6), inset -2px -2px 0 rgba(38,38,38,0.4)",
-      }}
-      {...props}
-    >
-      {children}
-    </DialogPrimitive.Content>
-  </RetroSheetPortal>
-))
-RetroSheetContent.displayName = "RetroSheetContent"
+function RetroSheetContent({ side = "right", className, style, children, ...props }: RetroSheetContentProps) {
+  return (
+    <>
+      <DialogBackdropPrimitive
+        className={cn(
+          "fixed! inset-0! z-50 bg-black/40!",
+          "transition-opacity data-starting-style:opacity-0 data-ending-style:opacity-0",
+          sheetMotion
+        )}
+      />
+      <DialogContentPrimitive
+        className={popupClass(sheetContentVariants({ side }), className)}
+        style={{
+          boxShadow: "inset 2px 2px 0 rgba(255,255,255,0.6), inset -2px -2px 0 rgba(38,38,38,0.4)",
+          ...style,
+        }}
+        {...props}
+      >
+        {children}
+      </DialogContentPrimitive>
+    </>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  Header (title-bar style with stripes & close box)                  */
@@ -131,8 +145,8 @@ function RetroSheetHeader({
       {...props}
     >
       {/* Close box — far left */}
-      <DialogPrimitive.Close
-        className="relative size-[13px] shrink-0 cursor-default ml-[3px]"
+      <DialogClosePrimitive
+        className="relative size-[13px] shrink-0 cursor-default ml-[3px] outline-none focus-visible:os9-focus-ring"
         aria-label="Close"
       >
         {/* Outer bevel frame */}
@@ -159,7 +173,7 @@ function RetroSheetHeader({
               "inset 1px 1px 0 rgba(255,255,255,0.5), inset -1px -1px 0 rgba(0,0,0,0.12)",
           }}
         />
-      </DialogPrimitive.Close>
+      </DialogClosePrimitive>
 
       {/* Stripes left */}
       <span
@@ -184,48 +198,44 @@ function RetroSheetHeader({
     </div>
   )
 }
-RetroSheetHeader.displayName = "RetroSheetHeader"
 
 /* ------------------------------------------------------------------ */
 /*  Title                                                              */
 /* ------------------------------------------------------------------ */
 
-const RetroSheetTitle = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className={cn(
-      "shrink-0 whitespace-nowrap text-[12px] tracking-[0.42px] leading-[0.98]",
-      "font-[family-name:var(--os9-font-heading)] text-os9-black",
-      "max-w-[60%] overflow-hidden text-ellipsis",
-      "px-[4px]",
-      className
-    )}
-    {...props}
-  />
-))
-RetroSheetTitle.displayName = "RetroSheetTitle"
+function RetroSheetTitle({ className, ...props }: WithClassName<React.ComponentProps<typeof DialogTitlePrimitive>>) {
+  return (
+    <DialogTitlePrimitive
+      className={cn(
+        "shrink-0 whitespace-nowrap text-[12px] tracking-[0.42px] leading-[0.98]",
+        "font-[family-name:var(--os9-font-heading)] text-os9-black",
+        "max-w-[60%] overflow-hidden text-ellipsis",
+        "px-[4px]",
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  Description                                                        */
 /* ------------------------------------------------------------------ */
 
-const RetroSheetDescription = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn(
-      "font-[family-name:var(--os9-font-sans)] text-[10px] leading-[1.3] text-os9-gray-800",
-      className
-    )}
-    {...props}
-  />
-))
-RetroSheetDescription.displayName = "RetroSheetDescription"
+function RetroSheetDescription({
+  className,
+  ...props
+}: WithClassName<React.ComponentProps<typeof DialogDescriptionPrimitive>>) {
+  return (
+    <DialogDescriptionPrimitive
+      className={cn(
+        "font-[family-name:var(--os9-font-sans)] text-[10px] leading-[1.3] text-os9-gray-800",
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /*  Footer                                                             */
@@ -250,7 +260,6 @@ function RetroSheetFooter({
     />
   )
 }
-RetroSheetFooter.displayName = "RetroSheetFooter"
 
 /* ------------------------------------------------------------------ */
 /*  Exports                                                            */
@@ -266,3 +275,5 @@ export {
   RetroSheetFooter,
   RetroSheetClose,
 }
+
+export type { RetroSheetContentProps }

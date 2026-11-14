@@ -35,11 +35,6 @@ import {
 } from "@/registry/new-york/ui/retro-tree-view"
 import { RetroWindow } from "@/registry/new-york/ui/retro-window"
 
-// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
-// literal `asChild` to Base UI's `render` prop in base-* projects, which
-// breaks these Radix-based components.
-const AS_CHILD = { asChild: true } as const
-
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
@@ -395,16 +390,18 @@ const OpenSaveDialogBlock = React.forwardRef<HTMLDivElement, OpenSaveDialogBlock
 
           <div className="flex shrink-0">
             <RetroDropdownMenu modal={false}>
-              <RetroDropdownMenuTrigger {...AS_CHILD}>
-                <RetroBevelButton
-                  bevel="small"
-                  menu
-                  aria-label="Shortcuts"
-                  title="Shortcuts"
-                  icon={<RetroIconHardDrive size="sm" />}
-                  className={MENU_BUTTON_CLS}
-                />
-              </RetroDropdownMenuTrigger>
+              <RetroDropdownMenuTrigger
+                render={
+                  <RetroBevelButton
+                    bevel="small"
+                    menu
+                    aria-label="Shortcuts"
+                    title="Shortcuts"
+                    icon={<RetroIconHardDrive size="sm" />}
+                    className={MENU_BUTTON_CLS}
+                  />
+                }
+              />
               <RetroDropdownMenuContent align="end">
                 <RetroDropdownMenuLabel>Shortcuts</RetroDropdownMenuLabel>
                 <RetroDropdownMenuItem onSelect={() => navigate([])}>
@@ -420,16 +417,18 @@ const OpenSaveDialogBlock = React.forwardRef<HTMLDivElement, OpenSaveDialogBlock
             </RetroDropdownMenu>
 
             <RetroDropdownMenu modal={false}>
-              <RetroDropdownMenuTrigger {...AS_CHILD}>
-                <RetroBevelButton
-                  bevel="small"
-                  menu
-                  aria-label="Favorites"
-                  title="Favorites"
-                  icon={<FavoritesGlyph />}
-                  className={cn(MENU_BUTTON_CLS, "-ml-px")}
-                />
-              </RetroDropdownMenuTrigger>
+              <RetroDropdownMenuTrigger
+                render={
+                  <RetroBevelButton
+                    bevel="small"
+                    menu
+                    aria-label="Favorites"
+                    title="Favorites"
+                    icon={<FavoritesGlyph />}
+                    className={cn(MENU_BUTTON_CLS, "-ml-px")}
+                  />
+                }
+              />
               <RetroDropdownMenuContent align="end">
                 <RetroDropdownMenuItem
                   onSelect={() =>
@@ -454,16 +453,18 @@ const OpenSaveDialogBlock = React.forwardRef<HTMLDivElement, OpenSaveDialogBlock
             </RetroDropdownMenu>
 
             <RetroDropdownMenu modal={false}>
-              <RetroDropdownMenuTrigger {...AS_CHILD}>
-                <RetroBevelButton
-                  bevel="small"
-                  menu
-                  aria-label="Recent"
-                  title="Recent"
-                  icon={<RecentGlyph />}
-                  className={cn(MENU_BUTTON_CLS, "-ml-px")}
-                />
-              </RetroDropdownMenuTrigger>
+              <RetroDropdownMenuTrigger
+                render={
+                  <RetroBevelButton
+                    bevel="small"
+                    menu
+                    aria-label="Recent"
+                    title="Recent"
+                    icon={<RecentGlyph />}
+                    className={cn(MENU_BUTTON_CLS, "-ml-px")}
+                  />
+                }
+              />
               <RetroDropdownMenuContent align="end">
                 {recent.length === 0 ? (
                   <RetroDropdownMenuItem disabled>No Recent Items</RetroDropdownMenuItem>

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
 
 import { cn } from "@/lib/utils"
 import {
@@ -398,29 +398,28 @@ ForwardedRetroSidebarMenuItem.displayName = "RetroSidebarMenuItem"
 interface RetroSidebarMenuButtonProps
   extends React.ComponentProps<"button"> {
   isActive?: boolean
-  asChild?: boolean
+  /** Render a different element, usually a link: `render={<Link href="/x" />}`. */
+  render?: RenderProp
 }
 
 function RetroSidebarMenuButton(
   {
     className,
     isActive = false,
-    asChild = false,
+    render,
     children,
     ...props
-  }: RetroSidebarMenuButtonProps,
-  ref: React.ForwardedRef<HTMLButtonElement>
+  }: RetroSidebarMenuButtonProps
 ) {
   const open = useSidebarExpanded()
-  const Comp = asChild ? Slot : "button"
 
-  return (
-    <Comp
-      ref={ref}
-      type={asChild ? undefined : "button"}
-      aria-current={isActive ? "page" : undefined}
-      data-active={isActive}
-      className={cn(
+  return renderElement(
+    "button",
+    {
+      type: render ? undefined : "button",
+      "aria-current": isActive ? "page" : undefined,
+      "data-active": isActive,
+      className: cn(
         "flex w-full items-center gap-2",
         "h-[28px] px-2",
         "font-[family-name:var(--os9-font-sans)] text-[10px] leading-[1.3]",
@@ -432,12 +431,9 @@ function RetroSidebarMenuButton(
         "focus-visible:os9-focus-ring",
         !open && "justify-center px-0",
         className
-      )}
-      {...props}
-    >
-      {asChild ? (
-        children
-      ) : open ? (
+      ),
+      ...props,
+      children: open ? (
         <span className="flex items-center gap-2 min-w-0 truncate">
           {children}
         </span>
@@ -446,15 +442,12 @@ function RetroSidebarMenuButton(
         <span className="flex items-center justify-center [&>*:not(:first-child)]:sr-only">
           {children}
         </span>
-      )}
-    </Comp>
+      ),
+    },
+    render
   )
 }
 
-const ForwardedRetroSidebarMenuButton = React.forwardRef(
-  RetroSidebarMenuButton
-)
-ForwardedRetroSidebarMenuButton.displayName = "RetroSidebarMenuButton"
 
 /* ------------------------------------------------------------------ */
 /*  RetroSidebarGroup                                                   */
@@ -593,7 +586,7 @@ export {
   ForwardedRetroSidebarFooter as RetroSidebarFooter,
   ForwardedRetroSidebarMenu as RetroSidebarMenu,
   ForwardedRetroSidebarMenuItem as RetroSidebarMenuItem,
-  ForwardedRetroSidebarMenuButton as RetroSidebarMenuButton,
+  RetroSidebarMenuButton,
   ForwardedRetroSidebarGroup as RetroSidebarGroup,
   ForwardedRetroSidebarGroupLabel as RetroSidebarGroupLabel,
   ForwardedRetroSidebarTrigger as RetroSidebarTrigger,

@@ -1,8 +1,23 @@
 "use client"
 
+/*
+ * RetroTabs on UI SDK Tabs.
+ *
+ * Crafted moment: none, on purpose. OS 9 tabs are folder tabs: the chosen
+ * one changes face and joins the panel below it, at once. A sliding
+ * indicator would read as a modern underline, not a Platinum tab, so the
+ * swap stays instant in both flairs. Arrow keys, Home/End and roving focus
+ * come from UI SDK.
+ */
+
 import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
-import { cva, type VariantProps } from "class-variance-authority"
+import {
+  Tabs as TabsPrimitive,
+  TabsList as TabsListPrimitive,
+  TabsPanel as TabsPanelPrimitive,
+  TabsTab as TabsTabPrimitive,
+} from "@ui-sdk/react/tabs"
+import { cva } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
@@ -14,48 +29,37 @@ type RetroTabsSize = "lg" | "sm"
 
 const SizeContext = React.createContext<RetroTabsSize>("lg")
 
+type Common = { className?: string; children?: React.ReactNode }
+
 /* ------------------------------------------------------------------ */
 /*  RetroTabs (root)                                                   */
 /* ------------------------------------------------------------------ */
 
-function RetroTabs(
-  {
-    className,
-    size = "lg",
-    ...props
-  }: React.ComponentProps<typeof TabsPrimitive.Root> & {
+function RetroTabs({
+  className,
+  size = "lg",
+  ...props
+}: Omit<React.ComponentProps<typeof TabsPrimitive>, "className" | "children"> &
+  Common & {
     size?: RetroTabsSize
-  },
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
+  }) {
   return (
     <SizeContext.Provider value={size}>
-      <TabsPrimitive.Root
-        ref={ref}
-        className={cn("flex flex-col", className)}
-        {...props}
-      />
+      <TabsPrimitive className={cn("flex flex-col", className)} {...props} />
     </SizeContext.Provider>
   )
 }
-
-const ForwardedRetroTabs = React.forwardRef(RetroTabs)
-ForwardedRetroTabs.displayName = "RetroTabs"
 
 /* ------------------------------------------------------------------ */
 /*  RetroTabsList                                                      */
 /* ------------------------------------------------------------------ */
 
-function RetroTabsList(
-  {
-    className,
-    ...props
-  }: React.ComponentProps<typeof TabsPrimitive.List>,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
+function RetroTabsList({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof TabsListPrimitive>, "className" | "children"> & Common) {
   return (
-    <TabsPrimitive.List
-      ref={ref}
+    <TabsListPrimitive
       className={cn(
         "relative flex items-end pl-[4px]",
         /* The 1px bottom border across the full tab bar */
@@ -67,9 +71,6 @@ function RetroTabsList(
   )
 }
 
-const ForwardedRetroTabsList = React.forwardRef(RetroTabsList)
-ForwardedRetroTabsList.displayName = "RetroTabsList"
-
 /* ------------------------------------------------------------------ */
 /*  RetroTabsTrigger                                                   */
 /* ------------------------------------------------------------------ */
@@ -79,7 +80,7 @@ const retroTabsTriggerVariants = cva(
     "relative z-[1] cursor-pointer select-none whitespace-nowrap",
     "transition-none",
     "focus-visible:os9-focus-ring focus-visible:z-[2]",
-    "data-[disabled]:opacity-50 data-[disabled]:cursor-default data-[disabled]:pointer-events-none",
+    "data-disabled:opacity-50 data-disabled:cursor-default data-disabled:pointer-events-none",
   ],
   {
     variants: {
@@ -100,19 +101,15 @@ const retroTabsTriggerVariants = cva(
   }
 )
 
-function RetroTabsTrigger(
-  {
-    className,
-    children,
-    ...props
-  }: React.ComponentProps<typeof TabsPrimitive.Trigger>,
-  ref: React.ForwardedRef<HTMLButtonElement>
-) {
+function RetroTabsTrigger({
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof TabsTabPrimitive>, "className" | "children"> & Common) {
   const size = React.useContext(SizeContext)
 
   return (
-    <TabsPrimitive.Trigger
-      ref={ref}
+    <TabsTabPrimitive
       className={cn(
         retroTabsTriggerVariants({ size }),
         /* ----- Inactive state (default) ----- */
@@ -123,43 +120,36 @@ function RetroTabsTrigger(
         /* Top border sits at baseline, inactive tabs have a bottom line */
         "mb-px",
 
-        /* ----- Active state (data-state=active) ----- */
-        "data-[state=active]:bg-os9-gray-200 data-[state=active]:text-os9-black",
-        "data-[state=active]:border-t data-[state=active]:border-x data-[state=active]:border-os9-black",
-        "data-[state=active]:border-b-0",
-        /* Active bevel: white inner highlight top-left, gray shadow bottom-right */
-        "data-[state=active]:shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_0_0_var(--os9-gray-700)]",
-        /* Active tab grows 1px taller so bottom edge covers the bar line */
-        "data-[state=active]:mb-0 data-[state=active]:pb-px",
-        /* Active tab sits above the bottom border */
-        "data-[state=active]:z-[2]",
+        /* ----- Selected state ----- */
+        "data-selected:bg-os9-gray-200 data-selected:text-os9-black",
+        "data-selected:border-t data-selected:border-x data-selected:border-os9-black",
+        "data-selected:border-b-0",
+        /* Selected bevel: white inner highlight top-left, gray shadow bottom-right */
+        "data-selected:shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_0_0_var(--os9-gray-700)]",
+        /* Selected tab grows 1px taller so bottom edge covers the bar line */
+        "data-selected:mb-0 data-selected:pb-px",
+        /* Selected tab sits above the bottom border */
+        "data-selected:z-[2]",
 
         className
       )}
       {...props}
     >
       {children}
-    </TabsPrimitive.Trigger>
+    </TabsTabPrimitive>
   )
 }
-
-const ForwardedRetroTabsTrigger = React.forwardRef(RetroTabsTrigger)
-ForwardedRetroTabsTrigger.displayName = "RetroTabsTrigger"
 
 /* ------------------------------------------------------------------ */
 /*  RetroTabsContent                                                   */
 /* ------------------------------------------------------------------ */
 
-function RetroTabsContent(
-  {
-    className,
-    ...props
-  }: React.ComponentProps<typeof TabsPrimitive.Content>,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
+function RetroTabsContent({
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof TabsPanelPrimitive>, "className" | "children"> & Common) {
   return (
-    <TabsPrimitive.Content
-      ref={ref}
+    <TabsPanelPrimitive
       className={cn(
         "border border-os9-black border-t-0",
         "bg-os9-gray-200",
@@ -174,16 +164,8 @@ function RetroTabsContent(
   )
 }
 
-const ForwardedRetroTabsContent = React.forwardRef(RetroTabsContent)
-ForwardedRetroTabsContent.displayName = "RetroTabsContent"
-
 /* ------------------------------------------------------------------ */
 /*  Exports                                                            */
 /* ------------------------------------------------------------------ */
 
-export {
-  ForwardedRetroTabs as RetroTabs,
-  ForwardedRetroTabsList as RetroTabsList,
-  ForwardedRetroTabsTrigger as RetroTabsTrigger,
-  ForwardedRetroTabsContent as RetroTabsContent,
-}
+export { RetroTabs, RetroTabsList, RetroTabsTrigger, RetroTabsContent }

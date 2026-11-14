@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
@@ -58,6 +59,18 @@ export default function ButtonPage() {
           <RetroButton isDefault size="sm">Small</RetroButton>
           <RetroButton isDefault size="lg">Large</RetroButton>
           <RetroButton isDefault disabled>Disabled</RetroButton>
+        </div>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">As a Link</h2>
+        <p className="mb-4 max-w-[520px] font-[family-name:var(--font-sans)] text-[10px] leading-[1.5] text-os9-gray-700">
+          Pass an element to <code className="font-mono">render</code> to keep
+          the button&apos;s look on a different element, such as a link:{" "}
+          <code className="font-mono">{`<RetroButton render={<Link href="/components" />}>Browse</RetroButton>`}</code>.
+        </p>
+        <div className="flex items-center gap-4 flex-wrap">
+          <RetroButton render={<Link href="/components" />}>Browse Components</RetroButton>
         </div>
       </section>
 

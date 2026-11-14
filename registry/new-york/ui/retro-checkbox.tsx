@@ -1,20 +1,38 @@
 "use client"
 
+/*
+ * RetroCheckbox: the OS 9 12px beveled check box.
+ *
+ * Crafted moment: none on purpose. OS 9 drew the check the instant the
+ * mouse came up, and the box answers the press itself with an inverted
+ * bevel while held. The check and the mixed dash appear without easing in
+ * both flairs.
+ *
+ * UI SDK renders a <button role="checkbox"> plus a hidden native checkbox
+ * for forms. A button is labelable, so <label htmlFor={id}> still works.
+ */
+
 import * as React from "react"
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+import {
+  Checkbox as CheckboxPrimitive,
+  CheckboxIndicator as CheckboxIndicatorPrimitive,
+} from "@ui-sdk/react/checkbox"
 
 import { cn } from "@/lib/utils"
 
-const RetroCheckbox = React.forwardRef<
-  React.ComponentRef<typeof CheckboxPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(function RetroCheckbox({ className, ...props }, ref) {
+type RetroCheckboxProps = Omit<
+  React.ComponentProps<typeof CheckboxPrimitive>,
+  "className" | "children"
+> & {
+  className?: string
+}
+
+function RetroCheckbox({ className, ...props }: RetroCheckboxProps) {
   return (
-    <CheckboxPrimitive.Root
-      ref={ref}
+    <CheckboxPrimitive
       className={cn(
         // 12x12px box with OS9 inset bevel
-        "group/checkbox peer relative inline-flex h-[12px] w-[12px] shrink-0 items-center justify-center",
+        "group/checkbox peer relative inline-flex h-[12px] w-[12px] shrink-0 items-center justify-center p-0",
         // Border
         "border border-os9-black",
         // Background: gray-300 default, gray-700 when active/pressed
@@ -25,14 +43,14 @@ const RetroCheckbox = React.forwardRef<
         // Active state: inverted inner shadows (darker top-left, lighter bottom-right)
         "active:shadow-[inset_1px_1px_0_#404040,inset_-1px_-1px_0_#c0c0c0,0.5px_0.5px_0_0_rgba(38,38,38,0.3)]",
         // Disabled state
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        "data-disabled:cursor-not-allowed data-disabled:opacity-50 data-disabled:active:bg-os9-gray-300",
         // Focus ring
         "focus-visible:outline-none focus-visible:os9-focus-ring",
         className
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator className="flex items-center justify-center">
+      <CheckboxIndicatorPrimitive className="flex items-center justify-center">
         {/* Checkmark (checked) */}
         <svg
           width="10"
@@ -41,7 +59,7 @@ const RetroCheckbox = React.forwardRef<
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden
-          className="mix-blend-darken group-data-[state=indeterminate]/checkbox:hidden"
+          className="mix-blend-darken group-data-indeterminate/checkbox:hidden"
         >
           <path
             d="M3 8.5L6.5 12L13 4"
@@ -59,14 +77,13 @@ const RetroCheckbox = React.forwardRef<
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden
-          className="hidden group-data-[state=indeterminate]/checkbox:block"
+          className="hidden group-data-indeterminate/checkbox:block"
         >
           <rect x="0" y="3" width="8" height="2" fill="var(--os9-black)" />
         </svg>
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
+      </CheckboxIndicatorPrimitive>
+    </CheckboxPrimitive>
   )
-})
-RetroCheckbox.displayName = "RetroCheckbox"
+}
 
 export { RetroCheckbox }

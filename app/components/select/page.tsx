@@ -28,12 +28,12 @@ export default function SelectPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Basic Select</h2>
         <div className="flex items-center gap-3">
-          <label className="os9-heading text-[12px] text-right shrink-0">
+          <label id="select-demo-1" className="os9-heading text-[12px] text-right shrink-0">
             Category:
           </label>
           <div className="w-[178px]">
             <RetroSelect defaultValue="platinum">
-              <RetroSelectTrigger>
+              <RetroSelectTrigger aria-labelledby="select-demo-1">
                 <RetroSelectValue placeholder="Choose..." />
               </RetroSelectTrigger>
               <RetroSelectContent>
@@ -54,12 +54,12 @@ export default function SelectPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">With Placeholder</h2>
         <div className="flex items-center gap-3">
-          <label className="os9-heading text-[12px] text-right shrink-0">
+          <label id="select-demo-2" className="os9-heading text-[12px] text-right shrink-0">
             View:
           </label>
           <div className="w-[178px]">
             <RetroSelect>
-              <RetroSelectTrigger>
+              <RetroSelectTrigger aria-labelledby="select-demo-2">
                 <RetroSelectValue placeholder="Select a view..." />
               </RetroSelectTrigger>
               <RetroSelectContent>
@@ -81,12 +81,12 @@ export default function SelectPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Grouped Options</h2>
         <div className="flex items-center gap-3">
-          <label className="os9-heading text-[12px] text-right shrink-0">
+          <label id="select-demo-3" className="os9-heading text-[12px] text-right shrink-0">
             Font:
           </label>
           <div className="w-[200px]">
             <RetroSelect defaultValue="geneva">
-              <RetroSelectTrigger>
+              <RetroSelectTrigger aria-labelledby="select-demo-3">
                 <RetroSelectValue />
               </RetroSelectTrigger>
               <RetroSelectContent>
@@ -116,12 +116,12 @@ export default function SelectPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Disabled</h2>
         <div className="flex items-center gap-3">
-          <label className="os9-heading text-[12px] text-right shrink-0 opacity-50">
+          <label id="select-demo-4" className="os9-heading text-[12px] text-right shrink-0 opacity-50">
             Size:
           </label>
           <div className="w-[178px]">
             <RetroSelect defaultValue="medium" disabled>
-              <RetroSelectTrigger>
+              <RetroSelectTrigger aria-labelledby="select-demo-4">
                 <RetroSelectValue />
               </RetroSelectTrigger>
               <RetroSelectContent>
@@ -134,9 +134,36 @@ export default function SelectPreview() {
         </div>
       </section>
 
+      {/* Item-aligned */}
+      <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">Item-aligned Pop-up</h2>
+        <div className="flex items-center gap-3">
+          <label id="select-demo-5" className="os9-heading text-[12px] text-right shrink-0">
+            Speed:
+          </label>
+          <div className="w-[178px]">
+            <RetroSelect defaultValue="normal">
+              <RetroSelectTrigger aria-labelledby="select-demo-5">
+                <RetroSelectValue />
+              </RetroSelectTrigger>
+              <RetroSelectContent position="item-aligned">
+                <RetroSelectItem value="slow">Slow</RetroSelectItem>
+                <RetroSelectItem value="normal">Normal</RetroSelectItem>
+                <RetroSelectItem value="fast">Fast</RetroSelectItem>
+              </RetroSelectContent>
+            </RetroSelect>
+          </div>
+        </div>
+        <p className="text-os9-gray-700 text-[9px] mt-2">
+          <code>position=&quot;item-aligned&quot;</code> opens the list over the
+          trigger with the chosen item in place, like a classic pop-up menu.
+        </p>
+      </section>
+
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click any select to open the dropdown. Hover items to see the azul
-        highlight.
+        Built on UI SDK&apos;s Select. Click any select to open the list, or
+        focus it and press Space or an arrow key; type to jump to an item. The
+        azul highlight glides between items as you move.
       </p>
     </ComponentDocLayout>
   )

@@ -2,17 +2,19 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "retro-popover",
   "title": "RetroPopover",
-  "description": "A Mac OS 9 styled popover with classic drop shadow, built on Radix UI Popover.",
+  "description": "A Mac OS 9 styled popover with classic drop shadow, built on UI SDK Popover.",
   "dependencies": [
-    "@radix-ui/react-popover"
+    "@ui-sdk/core@0.1.0-beta.1",
+    "@ui-sdk/react@0.1.0-beta.1"
   ],
   "registryDependencies": [
-    "https://nostalgia-ui.com/r/nostalgia-theme.json"
+    "https://nostalgia-ui.com/r/nostalgia-theme.json",
+    "https://nostalgia-ui.com/r/retro-motion.json"
   ],
   "files": [
     {
       "path": "registry/new-york/ui/retro-popover.tsx",
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport * as PopoverPrimitive from \"@radix-ui/react-popover\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst RetroPopover = PopoverPrimitive.Root\n\nconst RetroPopoverTrigger = PopoverPrimitive.Trigger\n\nconst RetroPopoverAnchor = PopoverPrimitive.Anchor\n\nconst RetroPopoverContent = React.forwardRef<\n  React.ComponentRef<typeof PopoverPrimitive.Content>,\n  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>\n>(({ className, sideOffset = 4, ...props }, ref) => (\n  <PopoverPrimitive.Portal>\n    <PopoverPrimitive.Content\n      ref={ref}\n      sideOffset={sideOffset}\n      className={cn(\n        \"z-50\",\n        \"bg-os9-white border border-os9-black\",\n        \"shadow-[2px_2px_0_var(--os9-black)]\",\n        \"p-2\",\n        \"outline-none\",\n        \"data-[state=open]:animate-in data-[state=open]:fade-in-0\",\n        \"data-[state=closed]:animate-out data-[state=closed]:fade-out-0\",\n        className\n      )}\n      {...props}\n    />\n  </PopoverPrimitive.Portal>\n))\nRetroPopoverContent.displayName = \"RetroPopoverContent\"\n\nexport {\n  RetroPopover,\n  RetroPopoverTrigger,\n  RetroPopoverContent,\n  RetroPopoverAnchor,\n}\n",
+      "content": "\"use client\"\n\n/*\n * RetroPopover: a Mac OS 9 floating panel on UI SDK.\n *\n * Crafted moment: pop from trigger. The panel grows out of the control that\n * opened it (scale .95 to 1 from --transform-origin, 140ms) and fades out\n * faster than it came in. Classic flair and reduced motion: it simply appears.\n */\n\nimport * as React from \"react\"\nimport {\n  Popover as PopoverPrimitive,\n  PopoverClose as PopoverClosePrimitive,\n  PopoverContent as PopoverContentPrimitive,\n  PopoverTrigger as PopoverTriggerPrimitive,\n} from \"@ui-sdk/react/popover\"\n\nimport { cn } from \"@/lib/utils\"\nimport { popupClass } from \"@/registry/new-york/lib/retro-motion\"\n\nfunction RetroPopover(props: React.ComponentProps<typeof PopoverPrimitive>) {\n  return <PopoverPrimitive {...props} />\n}\n\nfunction RetroPopoverTrigger(props: React.ComponentProps<typeof PopoverTriggerPrimitive>) {\n  return <PopoverTriggerPrimitive {...props} />\n}\n\nfunction RetroPopoverClose(props: React.ComponentProps<typeof PopoverClosePrimitive>) {\n  return <PopoverClosePrimitive {...props} />\n}\n\nfunction RetroPopoverContent({\n  className,\n  sideOffset = 4,\n  ...props\n}: Omit<React.ComponentProps<typeof PopoverContentPrimitive>, \"className\"> & {\n  className?: string\n}) {\n  return (\n    <PopoverContentPrimitive\n      sideOffset={sideOffset}\n      className={popupClass(\n        cn(\n          /* Box properties carry `!` so UI SDK's popup reset can't strip them in\n           * apps that haven't declared `@layer ui-sdk;` first. */\n          \"z-50 m-0! p-2! border! border-os9-black! bg-os9-white! text-os9-black! overflow-visible!\",\n          \"shadow-[2px_2px_0_var(--os9-black)] outline-none\",\n          \"origin-(--transform-origin) transition-[opacity,scale] duration-140 ease-[cubic-bezier(0.23,1,0.32,1)]\",\n          \"data-starting-style:opacity-0 data-starting-style:scale-95\",\n          \"data-ending-style:opacity-0 data-ending-style:duration-100\",\n          \"in-data-[flair=classic]:transition-none motion-reduce:transition-none\"\n        ),\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { RetroPopover, RetroPopoverTrigger, RetroPopoverContent, RetroPopoverClose }\n",
       "type": "registry:ui"
     }
   ],

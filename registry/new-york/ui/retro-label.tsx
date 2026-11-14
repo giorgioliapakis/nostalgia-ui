@@ -1,7 +1,17 @@
 "use client"
 
+/*
+ * RetroLabel: Charcoal/Geneva label text.
+ *
+ * Crafted moment: none, static.
+ *
+ * Built on UI SDK's Label, a native <label> that also names controls a
+ * plain label can't reach (a radio group, a slider) by htmlFor, and moves
+ * focus into them on press.
+ */
+
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
+import { Label as LabelPrimitive } from "@ui-sdk/react/label"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -12,6 +22,7 @@ const retroLabelVariants = cva(
     "text-os9-black",
     "cursor-default select-none",
     "peer-disabled:text-os9-gray-600 peer-disabled:pointer-events-none",
+    "peer-data-disabled:text-os9-gray-600 peer-data-disabled:pointer-events-none",
   ],
   {
     variants: {
@@ -26,17 +37,17 @@ const retroLabelVariants = cva(
   }
 )
 
-const RetroLabel = React.forwardRef<
-  React.ComponentRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-    VariantProps<typeof retroLabelVariants>
->(({ className, size, ...props }, ref) => (
-  <LabelPrimitive.Root
-    ref={ref}
-    className={cn(retroLabelVariants({ size }), className)}
-    {...props}
-  />
-))
-RetroLabel.displayName = "RetroLabel"
+type RetroLabelProps = Omit<
+  React.ComponentProps<typeof LabelPrimitive>,
+  "className" | "children"
+> &
+  VariantProps<typeof retroLabelVariants> & {
+    className?: string
+    children?: React.ReactNode
+  }
+
+function RetroLabel({ className, size, ...props }: RetroLabelProps) {
+  return <LabelPrimitive className={cn(retroLabelVariants({ size }), className)} {...props} />
+}
 
 export { RetroLabel, retroLabelVariants }

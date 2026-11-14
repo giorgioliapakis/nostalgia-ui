@@ -152,7 +152,7 @@ export default function OpengraphImage() {
                   border: `3px solid ${BLACK}`,
                 }}
               >
-                Radix UI
+                UI SDK
               </div>
               <div
                 style={{

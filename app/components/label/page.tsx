@@ -119,8 +119,9 @@ export default function LabelPreview() {
       </div>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Labels use cursor: default and are paired with inputs and checkboxes via
-        htmlFor.
+        Labels use cursor: default and are paired with controls via htmlFor,
+        including ones a plain label can&rsquo;t reach, like a radio group or a
+        slider: pressing the label moves focus into the control.
       </p>
     </ComponentDocLayout>
   )

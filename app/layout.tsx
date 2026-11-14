@@ -3,7 +3,7 @@ import "./globals.css"
 
 const SITE_URL = "https://nostalgia-ui.com"
 const DESCRIPTION =
-  "A shadcn-compatible component registry recreating Mac OS 9 UI components for React, Tailwind CSS v4 and Radix UI. Pure CSS, zero image assets."
+  "A shadcn-compatible component registry recreating Mac OS 9 UI components for React, built on Tailwind CSS v4 and Vercel's UI SDK. Pure CSS, zero image assets."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "shadcn registry",
     "React components",
     "Tailwind CSS",
-    "Radix UI",
+    "UI SDK",
   ],
   openGraph: {
     type: "website",
@@ -38,13 +38,19 @@ export const metadata: Metadata = {
   },
 }
 
+const FLAIR_SCRIPT = `try{if(localStorage.getItem("os9-flair")==="classic")document.documentElement.dataset.flair="classic"}catch(e){}`
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* apply the saved flair before first paint, so classic never flashes modern */}
+        <script dangerouslySetInnerHTML={{ __html: FLAIR_SCRIPT }} />
+      </head>
       <body className="font-sans antialiased">
         {children}
       </body>

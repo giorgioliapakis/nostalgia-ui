@@ -101,8 +101,9 @@ export default function ToggleGroupPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click items to toggle. Single mode allows one active item; multiple mode
-        allows many.
+        Click items to toggle, or Tab in and use the arrow keys. In single mode
+        one pushed-in slab slides to the button you choose; multiple mode lets
+        each button push in on its own.
       </p>
     </ComponentDocLayout>
   )

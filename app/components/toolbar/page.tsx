@@ -126,8 +126,11 @@ export default function ToolbarPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Press and hold buttons to see the active/pressed bevel state. Disabled
-        buttons appear at 50% opacity. Separators provide visual grouping.
+        Press and hold buttons to see the active/pressed bevel state. The
+        toolbar is one tab stop: Left and Right move between buttons, Home and
+        End jump to the ends. Disabled buttons appear at 50% opacity and stay
+        reachable by keyboard, but do nothing. Separators provide visual
+        grouping.
       </p>
     </ComponentDocLayout>
   )

@@ -112,7 +112,8 @@ export default function TreeViewPreview() {
         <p className="text-[10px] text-os9-gray-700 mb-3">
           Click a column header to sort (click again to reverse). Shift- and
           Cmd/Ctrl-click to extend the selection. Use arrow keys, Home/End,
-          type-ahead, and Enter to open.
+          type-ahead, <code className="font-mono">*</code> to expand siblings,
+          and Enter or a double-click to open. Folders unroll rather than jump.
         </p>
         <RetroTreeView
           aria-label="Macintosh HD"

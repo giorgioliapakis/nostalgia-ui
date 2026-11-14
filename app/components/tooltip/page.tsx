@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client"
+
 import { RetroButton } from "@/registry/new-york/ui/retro-button"
 import {
   RetroTooltipProvider,
@@ -7,12 +8,6 @@ import {
   RetroTooltipContent,
 } from "@/registry/new-york/ui/retro-tooltip"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
-
-export const metadata: Metadata = {
-  title: "Tooltip",
-  description:
-    "A Balloon Help style tooltip with Mac OS 9 raised bevel that appears on hover.",
-}
 
 export default function TooltipPreview() {
   return (
@@ -27,27 +22,21 @@ export default function TooltipPreview() {
           <h2 className="os9-heading text-[14px] mb-4">Button Tooltip</h2>
           <div className="flex items-center gap-4 flex-wrap">
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton>Hover Me</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton />}>Hover Me</RetroTooltipTrigger>
               <RetroTooltipContent>
                 This is a standard button.
               </RetroTooltipContent>
             </RetroTooltip>
 
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton variant="primary">Save</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton variant="primary" />}>Save</RetroTooltipTrigger>
               <RetroTooltipContent>
                 Save the current document to disk.
               </RetroTooltipContent>
             </RetroTooltip>
 
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton disabled>Disabled</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton aria-disabled />}>Disabled</RetroTooltipTrigger>
               <RetroTooltipContent>
                 This action is currently unavailable.
               </RetroTooltipContent>
@@ -61,11 +50,9 @@ export default function TooltipPreview() {
           <p className="os9-heading text-[12px] leading-relaxed">
             Welcome to{" "}
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <span className="underline decoration-dotted cursor-help">
+              <RetroTooltipTrigger render={<button type="button" className="cursor-help border-0 bg-transparent p-0 font-[inherit] text-[length:inherit] underline decoration-dotted outline-none focus-visible:os9-focus-ring" />}>
                   Balloon Help
-                </span>
-              </RetroTooltipTrigger>
+                </RetroTooltipTrigger>
               <RetroTooltipContent>
                 Balloon Help was introduced in System 7 to provide
                 contextual tips for interface elements.
@@ -73,11 +60,9 @@ export default function TooltipPreview() {
             </RetroTooltip>
             . Hover the underlined terms to learn more about{" "}
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <span className="underline decoration-dotted cursor-help">
+              <RetroTooltipTrigger render={<button type="button" className="cursor-help border-0 bg-transparent p-0 font-[inherit] text-[length:inherit] underline decoration-dotted outline-none focus-visible:os9-focus-ring" />}>
                   Mac OS 9
-                </span>
-              </RetroTooltipTrigger>
+                </RetroTooltipTrigger>
               <RetroTooltipContent>
                 Mac OS 9, released in 1999, was the last major release
                 of the classic Macintosh operating system.
@@ -92,36 +77,28 @@ export default function TooltipPreview() {
           <h2 className="os9-heading text-[14px] mb-4">Positioning</h2>
           <div className="flex items-center gap-6 flex-wrap">
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton>Top</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton />}>Top</RetroTooltipTrigger>
               <RetroTooltipContent side="top">
                 Appears above the trigger.
               </RetroTooltipContent>
             </RetroTooltip>
 
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton>Bottom</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton />}>Bottom</RetroTooltipTrigger>
               <RetroTooltipContent side="bottom">
                 Appears below the trigger.
               </RetroTooltipContent>
             </RetroTooltip>
 
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton>Left</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton />}>Left</RetroTooltipTrigger>
               <RetroTooltipContent side="left">
                 Appears to the left.
               </RetroTooltipContent>
             </RetroTooltip>
 
             <RetroTooltip>
-              <RetroTooltipTrigger asChild>
-                <RetroButton>Right</RetroButton>
-              </RetroTooltipTrigger>
+              <RetroTooltipTrigger render={<RetroButton />}>Right</RetroTooltipTrigger>
               <RetroTooltipContent side="right">
                 Appears to the right.
               </RetroTooltipContent>

@@ -52,9 +52,9 @@ interface RetroPlacardButtonProps
 }
 
 /**
- * Clickable placard (a pop-up). Forwards all props, so it works as
- * `<DropdownMenuTrigger asChild><RetroPlacardButton>…` — Radix's
- * data-state="open" keeps the pressed look while the menu is open.
+ * Clickable placard (a pop-up). Forwards all props, so it works as a menu
+ * trigger's element: `<RetroDropdownMenuTrigger render={<RetroPlacardButton />}>…`.
+ * The trigger's `data-open` keeps the pressed look while the menu is open.
  */
 const RetroPlacardButton = React.forwardRef<
   HTMLButtonElement,
@@ -72,8 +72,8 @@ const RetroPlacardButton = React.forwardRef<
         "cursor-pointer transition-none",
         "active:bg-os9-gray-700 active:text-os9-white",
         "active:shadow-[inset_1px_1px_0_var(--os9-gray-800),inset_-1px_-1px_0_var(--os9-gray-500)]",
-        "data-[state=open]:bg-os9-gray-700 data-[state=open]:text-os9-white",
-        "data-[state=open]:shadow-[inset_1px_1px_0_var(--os9-gray-800),inset_-1px_-1px_0_var(--os9-gray-500)]",
+        "data-open:bg-os9-gray-700 data-open:text-os9-white",
+        "data-open:shadow-[inset_1px_1px_0_var(--os9-gray-800),inset_-1px_-1px_0_var(--os9-gray-500)]",
         "focus-visible:os9-focus-ring",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-os9-gray-600",
         className

@@ -14,7 +14,7 @@ A shadcn-compatible component registry that recreates Mac OS 9 UI components as 
 ## Quick Context
 
 - **What:** Mac OS 9 styled components installable via `npx shadcn@latest add`
-- **Stack:** Next.js 16 + Tailwind v4 + Radix UI (24 packages) + class-variance-authority
+- **Stack:** Next.js 16 + Tailwind v4 + UI SDK (`@ui-sdk/react`, pinned beta) + class-variance-authority
 - **Template:** Based on the official `shadcn-ui/registry-template`
 - **Components:** 78, prefixed with `retro-`, each with a doc page at `/components/<slug>` (nav data: `app/components/_components/nav-data.ts`)
 - **Blocks:** 12 `registry:block` items in `registry/new-york/blocks/<slug>.tsx`, doc pages at `/blocks/<slug>` (data: `app/blocks/_components/blocks-data.ts`)
@@ -24,8 +24,8 @@ A shadcn-compatible component registry that recreates Mac OS 9 UI components as 
 ## To Resume Work
 
 The design system is complete. To extend or maintain:
-1. Read the master plan at `docs/plans/2026-03-28-003-feat-nostalgia-ui-master-completion-plan.md`
-2. It has the **Learnings & Patterns** section — 12 patterns covering forwardRef gotchas, bevel system, typography, focus rings, disabled states, and more
+1. Read `PATTERNS.md`: the UI SDK rules, the motion vocabulary (flair, glide, blink, zoom rects, height morphs) and the ship checklist
+2. The visual system (bevels, typography, menu look, focus, disabled) is the **Learnings & Patterns** section of `docs/plans/2026-03-28-003-feat-nostalgia-ui-master-completion-plan.md`. Its Radix and forwardRef notes are superseded by `PATTERNS.md`
 3. Follow existing component patterns when adding new components
 
 ## Figma Source
@@ -44,12 +44,13 @@ Params:
 ## Key Conventions
 
 - **Fonts:** components use `var(--os9-font-sans|heading|mono)`, never `var(--font-*)` — consumers' Tailwind only emits `--font-*` theme vars they use, so those resolve to nothing in installed projects
-- **No literal `asChild` JSX attributes in registry files:** use `{...AS_CHILD}` (see retro-combobox.tsx). The shadcn CLI rewrites literal `asChild` into Base UI `render` props for `base-*` projects (the default for `shadcn init`), which breaks Radix components
-- **Registry deps:** `registryDependencies` use full URLs (`https://nostalgia-ui.com/r/<name>.json`) and always include `nostalgia-theme.json`
+- **Composition is `render`, never `asChild`:** `<RetroDialogTrigger render={<RetroButton />}>`. A Server Component can't pass `render={<ClientComponent />}`; such doc pages are `"use client"` with `metadata` in a sibling `layout.tsx`
+- **Popup parts guard UI SDK's reset** with `!` on box properties (see PATTERNS.md, "The popup reset")
+- **Shared motion** (flair, glide, blink, zoom rects) lives in `registry/new-york/lib/retro-motion.ts`, registry item `retro-motion`
+- **Registry deps:** generated from imports by `node scripts/sync-registry-deps.mjs`, never hand-edited. `registryDependencies` use full URLs (`https://nostalgia-ui.com/r/<name>.json`) and always include `nostalgia-theme.json`
 - All design tokens use `--os9-*` CSS custom properties (defined in `app/globals.css`)
-- Components follow shadcn patterns: `React.forwardRef` (inline pattern), `cn()`, `cva()`, `className` prop
-- **forwardRef gotcha:** Always use `const X = React.forwardRef<El, Props>(function X(...) {...})` — NOT the two-step pattern
-- Radix UI primitives provide accessibility/behavior, OS9 CSS provides the visual layer
+- Components follow shadcn patterns: plain function components (React 19 `ref` prop), `cn()`, `cva()`, `className` prop. Older files still use the inline `React.forwardRef(function X…)` pattern; that's fine to keep, never the two-step pattern
+- UI SDK primitives provide accessibility/behavior, OS9 CSS provides the visual layer
 - Each component is a single `.tsx` file under `registry/new-york/ui/`
 - Never use Figma image asset URLs in components (they expire in 7 days)
 - `registry.json` is the source of truth for the registry build
@@ -66,4 +67,5 @@ pnpm build            # Production build
 pnpm registry:build   # Build registry JSON files to public/r/
 npx tsc --noEmit      # TypeScript type check
 pnpm lint             # ESLint (flat config, eslint.config.mjs)
+node scripts/sync-registry-deps.mjs  # rebuild registry.json deps from imports (--check to verify)
 ```

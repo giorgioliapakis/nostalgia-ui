@@ -1,23 +1,26 @@
 "use client"
 
 import * as React from "react"
-import { RetroCalendar } from "@/registry/new-york/ui/retro-calendar"
+import { RetroCalendar, type DateRange } from "@/registry/new-york/ui/retro-calendar"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
 export default function CalendarPreview() {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     new Date()
   )
+  const [range, setRange] = React.useState<DateRange | undefined>(undefined)
+  const [dates, setDates] = React.useState<Date[]>([])
 
   return (
     <ComponentDocLayout
       name="retro-calendar"
       title="RetroCalendar"
-      description="A date picker calendar with Mac OS 9 styling, supporting single date selection."
+      description="A month calendar with Mac OS 9 styling, supporting single dates, ranges and multiple dates."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        A date picker calendar with OS9 styling. Built on react-day-picker.
-        Supports single date selection, range selection, and multiple dates.
+        A month calendar with OS9 styling, built on UI SDK&apos;s Calendar.
+        Supports single dates, ranges and multiple dates, and takes and
+        returns plain <code className="font-mono">Date</code> objects.
       </p>
 
       {/* Single date selection */}
@@ -28,8 +31,41 @@ export default function CalendarPreview() {
           selected={selectedDate}
           onSelect={setSelectedDate}
         />
-        <p className="text-os9-gray-700 text-[9px] mt-2">
+        {/* server and browser format dates in their own locales */}
+        <p className="text-os9-gray-700 text-[9px] mt-2" suppressHydrationWarning>
           Selected: {selectedDate ? selectedDate.toLocaleDateString() : "None"}
+        </p>
+      </section>
+
+      {/* Range */}
+      <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">Range, Two Months</h2>
+        <RetroCalendar
+          mode="range"
+          numberOfMonths={2}
+          selected={range}
+          onSelect={setRange}
+        />
+        <p className="text-os9-gray-700 text-[9px] mt-2">
+          {range?.from && range.to
+            ? `${range.from.toLocaleDateString()} – ${range.to.toLocaleDateString()}`
+            : "Pick a start, then an end"}
+        </p>
+      </section>
+
+      {/* Multiple, with weekends unavailable */}
+      <section className="mb-8">
+        <h2 className="os9-heading text-[14px] mb-4">
+          Multiple, Weekends Unavailable
+        </h2>
+        <RetroCalendar
+          mode="multiple"
+          unavailable={{ weekday: [0, 6] }}
+          selected={dates}
+          onSelect={(next) => setDates(next ?? [])}
+        />
+        <p className="text-os9-gray-700 text-[9px] mt-2">
+          {dates.length} {dates.length === 1 ? "day" : "days"} selected
         </p>
       </section>
 
@@ -42,8 +78,9 @@ export default function CalendarPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click a date to select it. Use the arrow buttons to navigate months.
-        Today is underlined.
+        Click a date to select it, and click it again to clear it. Use the
+        arrow buttons to change months, or focus a day and use the arrow keys
+        (Page Up and Page Down change months). Today is underlined.
       </p>
     </ComponentDocLayout>
   )

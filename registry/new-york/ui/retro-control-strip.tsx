@@ -9,11 +9,6 @@ import {
   RetroDropdownMenuTrigger,
 } from "@/registry/new-york/ui/retro-dropdown-menu"
 
-// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
-// literal `asChild` to Base UI's `render` prop in base-* projects, which
-// breaks these Radix-based components.
-const AS_CHILD = { asChild: true } as const
-
 /* ------------------------------------------------------------------ */
 /*  Context                                                            */
 /* ------------------------------------------------------------------ */
@@ -220,8 +215,8 @@ const moduleClasses = cn(
   "group/module relative flex h-full shrink-0 cursor-default items-center gap-[3px] px-[4px]",
   "border-r border-os9-gray-700 shadow-[inset_1px_0_0_var(--os9-white),1px_0_0_var(--os9-white)]",
   "text-os9-black outline-none",
-  "active:bg-os9-gray-600 data-[state=open]:bg-os9-gray-600",
-  "active:shadow-[var(--os9-shadow-pressed)] data-[state=open]:shadow-[var(--os9-shadow-pressed)]",
+  "active:bg-os9-gray-600 data-open:bg-os9-gray-600",
+  "active:shadow-[var(--os9-shadow-pressed)] data-open:shadow-[var(--os9-shadow-pressed)]",
   "focus-visible:os9-focus-ring focus-visible:z-10",
   "disabled:opacity-50 disabled:pointer-events-none"
 )
@@ -269,17 +264,19 @@ const RetroControlStripModule = React.forwardRef<
 
   return (
     <RetroDropdownMenu modal={false}>
-      <RetroDropdownMenuTrigger {...AS_CHILD}>
-        <button
-          ref={ref}
-          type="button"
-          aria-label={label}
-          title={label}
-          className={cn(moduleClasses, className)}
-          {...props}
-        >
-          {content}
-        </button>
+      <RetroDropdownMenuTrigger
+        render={
+          <button
+            ref={ref}
+            type="button"
+            aria-label={label}
+            title={label}
+            className={cn(moduleClasses, className)}
+            {...props}
+          />
+        }
+      >
+        {content}
       </RetroDropdownMenuTrigger>
       <RetroDropdownMenuContent
         side="top"

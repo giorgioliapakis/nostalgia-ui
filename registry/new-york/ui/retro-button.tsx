@@ -1,7 +1,5 @@
-"use client"
-
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { renderElement, type RenderProp } from "@ui-sdk/react/primitive"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -12,6 +10,11 @@ import { cn } from "@/lib/utils"
  * drawn with outer box-shadows (so it never changes the button's box) plus a
  * matching margin so it does not overlap neighbours. Class strings are
  * written out in full so Tailwind can detect them.
+ *
+ * Crafted moment: none beyond the classic pressed state (the face inverts
+ * while held). Composition uses `render`, not `asChild`:
+ * `<RetroButton render={<Link href="/x" />}>Open</RetroButton>`. The file has
+ * no hooks and no "use client", so a Server Component can pass `render`.
  */
 
 const retroButtonVariants = cva(
@@ -73,46 +76,46 @@ const retroButtonVariants = cva(
 
 type RetroButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof retroButtonVariants> & {
-    asChild?: boolean
+    /** Render a different element (e.g. a link) with the button's look. */
+    render?: RenderProp
   }
 
-const RetroButton = React.forwardRef<HTMLButtonElement, RetroButtonProps>(
-  function RetroButton(
+function RetroButton({
+  className,
+  variant,
+  size,
+  isDefault = false,
+  disabled,
+  render,
+  onClick,
+  ...props
+}: RetroButtonProps) {
+  /* aria-disabled looks disabled but stays focusable and hoverable (so a
+   * tooltip can explain why); presses are ignored */
+  const softDisabled = props["aria-disabled"] === true || props["aria-disabled"] === "true"
+  return renderElement(
+    "button",
     {
-      className,
-      variant,
-      size,
-      isDefault = false,
-      asChild = false,
+      className: cn(
+        retroButtonVariants({ variant, size, isDefault }),
+        disabled && "pointer-events-none",
+        (disabled || softDisabled) && [
+          "text-os9-gray-600",
+          "border-os9-gray-600",
+          isDefault
+            ? "shadow-[inset_1px_1px_0_var(--os9-gray-300),inset_-1px_-1px_0_var(--os9-gray-400),0_0_0_2px_var(--os9-gray-300),0_0_0_5px_var(--os9-gray-600)]"
+            : "shadow-[inset_1px_1px_0_var(--os9-gray-300),inset_-1px_-1px_0_var(--os9-gray-400)]",
+        ],
+        className
+      ),
       disabled,
-      ...props
+      "data-default": isDefault ? "" : undefined,
+      onClick: softDisabled ? (e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault() : onClick,
+      ...props,
     },
-    ref
-  ) {
-    const Comp = asChild ? Slot : "button"
-    return (
-      <Comp
-        className={cn(
-          retroButtonVariants({ variant, size, isDefault }),
-          disabled && [
-            "pointer-events-none",
-            "text-os9-gray-600",
-            "border-os9-gray-600",
-            isDefault
-              ? "shadow-[inset_1px_1px_0_var(--os9-gray-300),inset_-1px_-1px_0_var(--os9-gray-400),0_0_0_2px_var(--os9-gray-300),0_0_0_5px_var(--os9-gray-600)]"
-              : "shadow-[inset_1px_1px_0_var(--os9-gray-300),inset_-1px_-1px_0_var(--os9-gray-400)]",
-          ],
-          className
-        )}
-        ref={ref}
-        disabled={disabled}
-        data-default={isDefault ? "" : undefined}
-        {...props}
-      />
-    )
-  }
-)
-RetroButton.displayName = "RetroButton"
+    render
+  )
+}
 
 export { RetroButton, retroButtonVariants }
 export type { RetroButtonProps }

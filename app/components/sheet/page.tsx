@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+"use client"
+
 import {
   RetroSheet,
   RetroSheetTrigger,
@@ -14,12 +15,6 @@ import { RetroInput } from "@/registry/new-york/ui/retro-input"
 import { RetroLabel } from "@/registry/new-york/ui/retro-label"
 import { ComponentDocLayout } from "../_components/component-doc-layout"
 
-export const metadata: Metadata = {
-  title: "Sheet",
-  description:
-    "A slide-in panel from any screen edge with Mac OS 9 window chrome and bevel styling.",
-}
-
 export default function SheetPreview() {
   return (
     <ComponentDocLayout
@@ -31,9 +26,7 @@ export default function SheetPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Right (default)</h2>
         <RetroSheet>
-          <RetroSheetTrigger asChild>
-            <RetroButton>Open Right Sheet</RetroButton>
-          </RetroSheetTrigger>
+          <RetroSheetTrigger render={<RetroButton />}>Open Right Sheet</RetroSheetTrigger>
           <RetroSheetContent side="right">
             <RetroSheetHeader>
               <RetroSheetTitle>Edit Profile</RetroSheetTitle>
@@ -52,16 +45,12 @@ export default function SheetPreview() {
               </div>
             </div>
             <RetroSheetFooter>
-              <RetroSheetClose asChild>
-                <RetroButton variant="default" size="sm">
+              <RetroSheetClose render={<RetroButton variant="default" size="sm" />}>
                   Cancel
-                </RetroButton>
-              </RetroSheetClose>
-              <RetroSheetClose asChild>
-                <RetroButton variant="default" size="sm">
+                </RetroSheetClose>
+              <RetroSheetClose render={<RetroButton variant="default" size="sm" />}>
                   Save Changes
-                </RetroButton>
-              </RetroSheetClose>
+                </RetroSheetClose>
             </RetroSheetFooter>
           </RetroSheetContent>
         </RetroSheet>
@@ -71,9 +60,7 @@ export default function SheetPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Left</h2>
         <RetroSheet>
-          <RetroSheetTrigger asChild>
-            <RetroButton>Open Left Sheet</RetroButton>
-          </RetroSheetTrigger>
+          <RetroSheetTrigger render={<RetroButton />}>Open Left Sheet</RetroSheetTrigger>
           <RetroSheetContent side="left">
             <RetroSheetHeader>
               <RetroSheetTitle>Navigation</RetroSheetTitle>
@@ -99,11 +86,9 @@ export default function SheetPreview() {
               </p>
             </nav>
             <RetroSheetFooter>
-              <RetroSheetClose asChild>
-                <RetroButton variant="default" size="sm">
+              <RetroSheetClose render={<RetroButton variant="default" size="sm" />}>
                   Close
-                </RetroButton>
-              </RetroSheetClose>
+                </RetroSheetClose>
             </RetroSheetFooter>
           </RetroSheetContent>
         </RetroSheet>
@@ -113,9 +98,7 @@ export default function SheetPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Top</h2>
         <RetroSheet>
-          <RetroSheetTrigger asChild>
-            <RetroButton>Open Top Sheet</RetroButton>
-          </RetroSheetTrigger>
+          <RetroSheetTrigger render={<RetroButton />}>Open Top Sheet</RetroSheetTrigger>
           <RetroSheetContent side="top">
             <RetroSheetHeader>
               <RetroSheetTitle>System Notification</RetroSheetTitle>
@@ -127,16 +110,12 @@ export default function SheetPreview() {
               </RetroSheetDescription>
             </div>
             <RetroSheetFooter>
-              <RetroSheetClose asChild>
-                <RetroButton variant="default" size="sm">
+              <RetroSheetClose render={<RetroButton variant="default" size="sm" />}>
                   Not Now
-                </RetroButton>
-              </RetroSheetClose>
-              <RetroSheetClose asChild>
-                <RetroButton variant="default" size="sm">
+                </RetroSheetClose>
+              <RetroSheetClose render={<RetroButton variant="default" size="sm" />}>
                   Update
-                </RetroButton>
-              </RetroSheetClose>
+                </RetroSheetClose>
             </RetroSheetFooter>
           </RetroSheetContent>
         </RetroSheet>
@@ -146,9 +125,7 @@ export default function SheetPreview() {
       <section className="mb-8">
         <h2 className="os9-heading text-[14px] mb-4">Bottom</h2>
         <RetroSheet>
-          <RetroSheetTrigger asChild>
-            <RetroButton>Open Bottom Sheet</RetroButton>
-          </RetroSheetTrigger>
+          <RetroSheetTrigger render={<RetroButton />}>Open Bottom Sheet</RetroSheetTrigger>
           <RetroSheetContent side="bottom">
             <RetroSheetHeader>
               <RetroSheetTitle>Disk Info</RetroSheetTitle>
@@ -170,19 +147,18 @@ export default function SheetPreview() {
               </div>
             </div>
             <RetroSheetFooter>
-              <RetroSheetClose asChild>
-                <RetroButton variant="default" size="sm">
+              <RetroSheetClose render={<RetroButton variant="default" size="sm" />}>
                   OK
-                </RetroButton>
-              </RetroSheetClose>
+                </RetroSheetClose>
             </RetroSheetFooter>
           </RetroSheetContent>
         </RetroSheet>
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click a button to open a sheet from each edge. Click outside, press
-        Escape, or use the close box to dismiss.
+        Click a button to slide a sheet in from each edge. Click outside, press
+        Escape, or use the close box to dismiss; it slides back out the way it
+        came.
       </p>
     </ComponentDocLayout>
   )

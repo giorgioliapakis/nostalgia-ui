@@ -31,6 +31,13 @@ export default function MenuBarPreview() {
       title="RetroMenuBar"
       description="A horizontal menu bar with Mac OS 9 styling and pull-down menu panels."
     >
+      <p className="text-os9-gray-700 text-[10px]">
+        Click a title to pull its menu down, then slide along the bar: the
+        highlight and the menu follow at once. Tab lands on the bar once;
+        Left and Right move between titles, Down opens a menu, and Escape
+        closes it. Choosing an item blinks it before the command runs.
+      </p>
+
       {/* ---- Full-width menu bar ---- */}
       <section className="space-y-2">
         <h2 className="font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px]">

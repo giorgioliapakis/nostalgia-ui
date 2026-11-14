@@ -1,7 +1,26 @@
 "use client"
 
+/*
+ * RetroScrollArea / RetroScrollBar on UI SDK Scroll Area.
+ *
+ * The browser still scrolls (wheel, touch, keys, find in page); UI SDK sizes
+ * and moves the thumb, drags it, and pages when the track is pressed, like a
+ * native scrollbar.
+ *
+ * Crafted moment: the arrow buttons auto-repeat while held, as OS 9's did:
+ * one step on press, then a steady scroll after a short pause until the
+ * button is released. Nothing else moves; Platinum scrollbars are still.
+ */
+
 import * as React from "react"
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+import {
+  ScrollArea as ScrollAreaPrimitive,
+  ScrollAreaContent as ScrollAreaContentPrimitive,
+  ScrollAreaCorner as ScrollAreaCornerPrimitive,
+  ScrollAreaScrollbar as ScrollAreaScrollbarPrimitive,
+  ScrollAreaThumb as ScrollAreaThumbPrimitive,
+  ScrollAreaViewport as ScrollAreaViewportPrimitive,
+} from "@ui-sdk/react/scroll-area"
 
 import { cn } from "@/lib/utils"
 
@@ -21,8 +40,14 @@ const arrowPaths: Record<string, string> = {
 const ScrollViewportContext =
   React.createContext<React.RefObject<HTMLDivElement | null> | null>(null)
 
-/** Distance (px) a single arrow click scrolls the viewport. */
+/** Distance (px) a single arrow step scrolls the viewport. */
 const ARROW_SCROLL_STEP = 40
+/** Hold this long before an arrow starts repeating. */
+const REPEAT_DELAY_MS = 300
+/** Repeat interval while an arrow is held. */
+const REPEAT_EVERY_MS = 50
+/** Distance per repeat: smaller than a step, so holding reads as a glide. */
+const REPEAT_STEP = 16
 
 /* ------------------------------------------------------------------ */
 /*  ScrollArea arrow button (16x16 raised bevel with centered arrow)  */
@@ -30,40 +55,73 @@ const ARROW_SCROLL_STEP = 40
 function ScrollArrowButton({
   direction,
   className,
-  onClick,
-  onPointerDown,
   ...props
 }: React.ComponentProps<"button"> & {
   direction: "up" | "down" | "left" | "right"
 }) {
   const viewportRef = React.useContext(ScrollViewportContext)
+  const timers = React.useRef({ delay: 0, repeat: 0 })
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onClick?.(event)
-    if (event.defaultPrevented) return
-    // Prefer the viewport registered by RetroScrollArea; fall back to the
-    // sibling Radix viewport when the scrollbar is used with a bare Root.
-    const viewport =
-      viewportRef?.current ??
-      event.currentTarget
-        .closest("[data-orientation]")
-        ?.parentElement?.querySelector<HTMLElement>(
-          "[data-radix-scroll-area-viewport]"
-        )
-    if (!viewport) return
-    const delta =
-      direction === "up" || direction === "left"
-        ? -ARROW_SCROLL_STEP
-        : ARROW_SCROLL_STEP
-    if (direction === "up" || direction === "down") {
-      viewport.scrollBy({ top: delta })
-    } else {
-      viewport.scrollBy({ left: delta })
-    }
-  }
+  const stop = React.useCallback(() => {
+    window.clearTimeout(timers.current.delay)
+    window.clearInterval(timers.current.repeat)
+  }, [])
+  React.useEffect(() => stop, [stop])
+
+  /*
+   * The press is handled natively: UI SDK pages the viewport on a native
+   * pointerdown on the scrollbar, so the arrow has to stop the event before
+   * it bubbles there, which also keeps it from React's root listener.
+   */
+  const buttonRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      if (!node) return
+      const scrollBy = (target: HTMLElement, distance: number) => {
+        const delta = direction === "up" || direction === "left" ? -distance : distance
+        if (direction === "up" || direction === "down") target.scrollBy({ top: delta })
+        else target.scrollBy({ left: delta })
+      }
+      const onPointerDown = (event: PointerEvent) => {
+        event.stopPropagation()
+        if (event.button !== 0) return
+        // Keep focus where it was, like a native scrollbar.
+        event.preventDefault()
+        // Prefer the viewport registered by RetroScrollArea; fall back to the
+        // sibling viewport when the scrollbar is used inside a bare ScrollArea.
+        const viewport =
+          viewportRef?.current ??
+          node
+            .closest<HTMLElement>('[data-slot="scroll-area"]')
+            ?.querySelector<HTMLElement>('[data-slot="scroll-area-viewport"]')
+        if (!viewport) return
+        scrollBy(viewport, ARROW_SCROLL_STEP)
+        stop()
+        node.setPointerCapture(event.pointerId)
+        timers.current.delay = window.setTimeout(() => {
+          timers.current.repeat = window.setInterval(
+            () => scrollBy(viewport, REPEAT_STEP),
+            REPEAT_EVERY_MS
+          )
+        }, REPEAT_DELAY_MS)
+      }
+      node.addEventListener("pointerdown", onPointerDown)
+      node.addEventListener("pointerup", stop)
+      node.addEventListener("pointercancel", stop)
+      node.addEventListener("lostpointercapture", stop)
+      return () => {
+        stop()
+        node.removeEventListener("pointerdown", onPointerDown)
+        node.removeEventListener("pointerup", stop)
+        node.removeEventListener("pointercancel", stop)
+        node.removeEventListener("lostpointercapture", stop)
+      }
+    },
+    [direction, viewportRef, stop]
+  )
 
   return (
     <button
+      ref={buttonRef}
       type="button"
       tabIndex={-1}
       aria-hidden="true"
@@ -75,12 +133,6 @@ function ScrollArrowButton({
         "active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
         className
       )}
-      onPointerDown={(event) => {
-        onPointerDown?.(event)
-        // Stop Radix's scrollbar handler from treating this as a track click
-        event.stopPropagation()
-      }}
-      onClick={handleClick}
       {...props}
     >
       <svg
@@ -100,29 +152,29 @@ function ScrollArrowButton({
 /* ------------------------------------------------------------------ */
 /*  RetroScrollBar                                                    */
 /* ------------------------------------------------------------------ */
-function RetroScrollBar(
-  {
-    className,
-    orientation = "vertical",
-    ...props
-  }: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  ref: React.ForwardedRef<
-    React.ComponentRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
-  >
-) {
+function RetroScrollBar({
+  className,
+  orientation = "vertical",
+  ...props
+}: Omit<React.ComponentProps<typeof ScrollAreaScrollbarPrimitive>, "className" | "children"> & {
+  className?: string
+}) {
   const isVertical = orientation === "vertical"
 
   return (
-    <ScrollAreaPrimitive.ScrollAreaScrollbar
-      ref={ref}
+    <ScrollAreaScrollbarPrimitive
       orientation={orientation}
       className={cn(
-        "flex touch-none select-none",
+        "flex touch-none select-none bg-os9-white",
         // Padding reserves room for the absolutely-positioned arrow buttons.
-        // Radix reads this padding so the thumb never travels over the arrows.
+        // UI SDK measures the track inside the padding, so the thumb never
+        // travels over the arrows.
         isVertical
-          ? "h-full w-[16px] flex-col py-[16px] border-l border-os9-black"
-          : "h-[16px] w-full flex-row px-[16px] border-t border-os9-black",
+          ? "w-[16px] flex-col py-[16px] border-l border-os9-black"
+          : "h-[16px] flex-row px-[16px] border-t border-os9-black",
+        // Opaque, so content scrolling past the end never shows through the track.
+        // `type="hover" | "scroll"`: hidden until UI SDK marks it visible
+        "not-data-visible:opacity-0",
         className
       )}
       {...props}
@@ -130,10 +182,7 @@ function RetroScrollBar(
       {/* Arrow button: start (up / left) */}
       <ScrollArrowButton
         direction={isVertical ? "up" : "left"}
-        className={cn(
-          "absolute",
-          isVertical ? "top-0 right-0" : "left-0 bottom-0"
-        )}
+        className={cn("absolute", isVertical ? "top-0 right-0" : "left-0 bottom-0")}
       />
 
       {/* Track */}
@@ -145,14 +194,14 @@ function RetroScrollBar(
           isVertical ? "border-x" : "border-y border-x-0"
         )}
       >
-        <ScrollAreaPrimitive.ScrollAreaThumb
+        <ScrollAreaThumbPrimitive
           className={cn(
-            "relative flex-1",
-            isVertical ? "!w-full min-h-[20px]" : "!h-full min-w-[20px]",
+            isVertical ? "w-full min-h-[20px]" : "h-full min-w-[20px]",
             "bg-os9-gray-300",
             "border border-os9-black",
             "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
             "active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
+            "data-dragging:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
             "cursor-pointer"
           )}
         />
@@ -161,36 +210,27 @@ function RetroScrollBar(
       {/* Arrow button: end (down / right) */}
       <ScrollArrowButton
         direction={isVertical ? "down" : "right"}
-        className={cn(
-          "absolute",
-          isVertical ? "bottom-0 right-0" : "right-0 bottom-0"
-        )}
+        className={cn("absolute", isVertical ? "bottom-0 right-0" : "right-0 bottom-0")}
       />
-    </ScrollAreaPrimitive.ScrollAreaScrollbar>
+    </ScrollAreaScrollbarPrimitive>
   )
 }
-
-const ForwardedRetroScrollBar = React.forwardRef(RetroScrollBar)
-ForwardedRetroScrollBar.displayName = "RetroScrollBar"
 
 /* ------------------------------------------------------------------ */
 /*  RetroScrollArea                                                   */
 /* ------------------------------------------------------------------ */
-function RetroScrollArea(
-  {
-    className,
-    children,
-    orientation = "vertical",
-    // OS9 scroll bars are always visible
-    type = "always",
-    ...props
-  }: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
-    orientation?: "vertical" | "horizontal" | "both"
-  },
-  ref: React.ForwardedRef<
-    React.ComponentRef<typeof ScrollAreaPrimitive.Root>
-  >
-) {
+function RetroScrollArea({
+  className,
+  children,
+  orientation = "vertical",
+  // OS9 scroll bars are always visible
+  type = "always",
+  ...props
+}: Omit<React.ComponentProps<typeof ScrollAreaPrimitive>, "className" | "children"> & {
+  className?: string
+  children?: React.ReactNode
+  orientation?: "vertical" | "horizontal" | "both"
+}) {
   const viewportRef = React.useRef<HTMLDivElement>(null)
   const hasVertical = orientation === "vertical" || orientation === "both"
   const hasHorizontal = orientation === "horizontal" || orientation === "both"
@@ -199,13 +239,12 @@ function RetroScrollArea(
 
   return (
     <ScrollViewportContext.Provider value={viewportRef}>
-      <ScrollAreaPrimitive.Root
-        ref={ref}
+      <ScrollAreaPrimitive
         type={type}
         className={cn("relative overflow-hidden", className)}
         {...props}
       >
-        <ScrollAreaPrimitive.Viewport
+        <ScrollAreaViewportPrimitive
           ref={viewportRef}
           className={cn(
             "h-full w-full",
@@ -213,25 +252,19 @@ function RetroScrollArea(
             reserveSpace && hasHorizontal && "pb-[16px]"
           )}
         >
-          {children}
-        </ScrollAreaPrimitive.Viewport>
+          <ScrollAreaContentPrimitive>{children}</ScrollAreaContentPrimitive>
+        </ScrollAreaViewportPrimitive>
 
-        {hasVertical && <ForwardedRetroScrollBar orientation="vertical" />}
-        {hasHorizontal && <ForwardedRetroScrollBar orientation="horizontal" />}
+        {hasVertical && <RetroScrollBar orientation="vertical" />}
+        {hasHorizontal && <RetroScrollBar orientation="horizontal" />}
 
-        <ScrollAreaPrimitive.Corner className="bg-os9-gray-300" />
-      </ScrollAreaPrimitive.Root>
+        <ScrollAreaCornerPrimitive className="bg-os9-gray-300" />
+      </ScrollAreaPrimitive>
     </ScrollViewportContext.Provider>
   )
 }
 
-const ForwardedRetroScrollArea = React.forwardRef(RetroScrollArea)
-ForwardedRetroScrollArea.displayName = "RetroScrollArea"
-
 /* ------------------------------------------------------------------ */
 /*  Exports                                                           */
 /* ------------------------------------------------------------------ */
-export {
-  ForwardedRetroScrollArea as RetroScrollArea,
-  ForwardedRetroScrollBar as RetroScrollBar,
-}
+export { RetroScrollArea, RetroScrollBar }

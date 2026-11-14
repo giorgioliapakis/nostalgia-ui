@@ -24,8 +24,9 @@ export default function CarouselPreview() {
       description="A slide carousel with Mac OS 9 beveled navigation buttons and inset content area."
     >
       <p className="text-os9-gray-700 text-[10px] mb-6">
-        A carousel/slider component with OS9-styled navigation buttons and inset
-        panel content area. Built on Embla Carousel.
+        A carousel with OS9-styled navigation buttons and an inset panel
+        content area. Built on UI SDK&apos;s Carousel, which scrolls natively,
+        so swipes and trackpads work too.
       </p>
 
       {/* Horizontal carousel */}
@@ -77,8 +78,8 @@ export default function CarouselPreview() {
       </section>
 
       <p className="text-os9-gray-700 text-[9px] mt-8">
-        Click the arrow buttons or use keyboard arrow keys to navigate slides.
-        Buttons disable at the start and end of the carousel.
+        Click the arrow buttons, swipe, or focus the slides and use the arrow
+        keys. The buttons dim at the start and end of the carousel.
       </p>
     </ComponentDocLayout>
   )

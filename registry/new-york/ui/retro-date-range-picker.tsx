@@ -1,168 +1,138 @@
 "use client"
 
+/*
+ * RetroDateRangePicker: two OS 9 edit text fields and a calendar button, on
+ * UI SDK's Date Picker in range mode. The calendar stays open after the
+ * start is picked, previews the range in lavender as the pointer or arrow
+ * keys move, and closes once the end is picked. Typed dates commit on Return
+ * or when the field is left; an end before the start is marked invalid.
+ *
+ * Crafted moment: pop from trigger. The calendar grows out of the fields
+ * (scale .95 to 1 from --transform-origin, 140ms) and fades out faster than
+ * it came in. Classic flair and reduced motion: it simply appears.
+ *
+ * Next.js with `cacheComponents`: UI SDK reads today's date while rendering,
+ * which fails the prerender. Wrap the picker in <Suspense>.
+ */
+
 import * as React from "react"
-import { format, parse, isValid } from "date-fns"
-import type { DateRange } from "react-day-picker"
+import {
+  DatePicker as DatePickerPrimitive,
+  DatePickerContent as DatePickerContentPrimitive,
+  DatePickerInput as DatePickerInputPrimitive,
+  DatePickerTrigger as DatePickerTriggerPrimitive,
+  type DatePickerValue,
+  type DateMatchers,
+} from "@ui-sdk/react/date-picker"
 
 import { cn } from "@/lib/utils"
-import { CalendarIcon } from "@/registry/new-york/ui/retro-date-picker"
-import { RetroCalendar } from "@/registry/new-york/ui/retro-calendar"
 import {
-  RetroPopover,
-  RetroPopoverTrigger,
-  RetroPopoverContent,
-} from "@/registry/new-york/ui/retro-popover"
-
-// Spread rather than a literal `asChild` attribute: the shadcn CLI rewrites
-// literal `asChild` to Base UI's `render` prop in base-* projects, which
-// breaks these Radix-based components.
-const AS_CHILD = { asChild: true } as const
+  RetroCalendarBody,
+  fromISODate,
+  toISODate,
+  type DateRange,
+} from "@/registry/new-york/ui/retro-calendar"
+import {
+  CalendarIcon,
+  retroDateInputClass,
+  retroDatePopupClass,
+  retroDateTriggerClass,
+  useFormatHint,
+} from "@/registry/new-york/ui/retro-date-picker"
 
 interface RetroDateRangePickerProps {
-  /** The selected date range (controlled) */
+  /** The selected range. Pass it (even as `undefined`) with `onChange` to control the picker. */
   value?: DateRange
-  /** Callback when the date range changes */
+  /** The range it starts with, when uncontrolled. */
+  defaultValue?: DateRange
+  /** Runs once both ends are set, or with `undefined` when either is cleared. */
   onChange?: (range: DateRange | undefined) => void
-  /** Placeholder text for each field */
+  /** Placeholder text for each field. Defaults to the locale's format, like "MM/DD/YYYY". */
   placeholder?: { from?: string; to?: string }
+  /** The language dates are typed and shown in. Defaults to the page's `lang`. */
+  locale?: string
   /** Whether the picker is disabled */
   disabled?: boolean
   /** Number of months to display (default 2) */
   numberOfMonths?: number
+  /** The earliest and latest dates that can be picked. */
+  min?: Date
+  max?: Date
+  /** Dates that can't be picked or, without `allowUnavailable`, spanned. */
+  unavailable?: DateMatchers
+  /** The fewest and most days a range can span, counting both ends. */
+  minDays?: number
+  maxDays?: number
+  /** The names the ends submit under in a form, as ISO dates. */
+  startName?: string
+  endName?: string
   /** Additional class names */
   className?: string
+  ref?: React.Ref<HTMLDivElement>
 }
 
-const DATE_FORMAT = "MM/dd/yyyy"
+const toRangeValue = (range: DateRange | undefined): DatePickerValue =>
+  range?.from && range.to ? [toISODate(range.from), toISODate(range.to)] : null
 
-const RetroDateRangePicker = React.forwardRef<
-  HTMLDivElement,
-  RetroDateRangePickerProps
->(function RetroDateRangePicker(
-  {
+function RetroDateRangePicker(props: RetroDateRangePickerProps) {
+  const {
     value,
+    defaultValue,
     onChange,
     placeholder,
+    locale,
     disabled = false,
     numberOfMonths = 2,
+    min,
+    max,
+    unavailable,
+    minDays,
+    maxDays,
+    startName,
+    endName,
     className,
-  },
-  ref
-) {
-  const [open, setOpen] = React.useState(false)
-  const [internalRange, setInternalRange] = React.useState<
-    DateRange | undefined
-  >(undefined)
-  const [fromInput, setFromInput] = React.useState("")
-  const [toInput, setToInput] = React.useState("")
-
-  const isControlled = value !== undefined
-  const selectedRange = isControlled ? value : internalRange
-
-  // Depend on timestamps (not object identity) so an inline `value` prop
-  // doesn't reset the inputs on every parent render while the user types.
-  const fromTime = selectedRange?.from?.getTime()
-  const toTime = selectedRange?.to?.getTime()
-
-  // Sync input text with range
-  React.useEffect(() => {
-    setFromInput(fromTime !== undefined ? format(new Date(fromTime), DATE_FORMAT) : "")
-  }, [fromTime])
-  React.useEffect(() => {
-    setToInput(toTime !== undefined ? format(new Date(toTime), DATE_FORMAT) : "")
-  }, [toTime])
-
-  function commitRange(range: DateRange | undefined) {
-    if (!isControlled) {
-      setInternalRange(range)
-    }
-    onChange?.(range)
-  }
-
-  function handleCalendarSelect(range: DateRange | undefined) {
-    commitRange(range)
-    // Close when both dates are selected
-    if (range?.from && range?.to) {
-      setOpen(false)
-    }
-  }
-
-  function parseInput(text: string): Date | undefined {
-    if (text.trim() === "") return undefined
-    const parsed = parse(text, DATE_FORMAT, new Date())
-    if (isValid(parsed) && parsed.getFullYear() > 1900 && parsed.getFullYear() < 2100) {
-      return parsed
-    }
-    return undefined
-  }
-
-  function handleFromCommit() {
-    const parsed = parseInput(fromInput)
-    if (parsed) {
-      if (parsed.getTime() === fromTime) {
-        setFromInput(format(parsed, DATE_FORMAT))
-        return
-      }
-      commitRange({ from: parsed, to: selectedRange?.to })
-    } else if (fromInput.trim() === "") {
-      if (fromTime === undefined) return
-      commitRange(
-        selectedRange?.to ? { from: undefined, to: selectedRange.to } : undefined
-      )
-    } else {
-      setFromInput(selectedRange?.from ? format(selectedRange.from, DATE_FORMAT) : "")
-    }
-  }
-
-  function handleToCommit() {
-    const parsed = parseInput(toInput)
-    if (parsed) {
-      if (parsed.getTime() === toTime) {
-        setToInput(format(parsed, DATE_FORMAT))
-        return
-      }
-      commitRange({ from: selectedRange?.from, to: parsed })
-    } else if (toInput.trim() === "") {
-      if (toTime === undefined) return
-      commitRange(
-        selectedRange?.from ? { from: selectedRange.from, to: undefined } : undefined
-      )
-    } else {
-      setToInput(selectedRange?.to ? format(selectedRange.to, DATE_FORMAT) : "")
-    }
-  }
-
-  const inputClasses = cn(
-    "h-[24px] w-[110px] px-[5px]",
-    "font-[family-name:var(--os9-font-sans)] text-[11px] text-os9-black",
-    "border border-os9-black bg-os9-white",
-    "shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-    "outline-none transition-none",
-    "focus:shadow-[0_2px_0_0_var(--os9-focus),2px_0_0_0_var(--os9-focus),0_-2px_0_0_var(--os9-focus),-2px_0_0_0_var(--os9-focus),0_0_0_1px_var(--os9-focus)]",
-    "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-os9-gray-200 disabled:text-os9-gray-600"
-  )
+    ref,
+  } = props
+  const controlled = Object.prototype.hasOwnProperty.call(props, "value")
+  /* the popup lines up with the whole row of fields, not just the button */
+  const [field, setField] = React.useState<HTMLDivElement | null>(null)
+  const [format, hint] = useFormatHint()
 
   return (
-    <RetroPopover open={open} onOpenChange={setOpen}>
-      <div
-        ref={ref}
-        className={cn("inline-flex items-center gap-0", className)}
-      >
-        {/* From date input */}
-        <input
-          type="text"
-          value={fromInput}
-          onChange={(e) => setFromInput(e.target.value)}
-          onBlur={handleFromCommit}
-          onKeyDown={(e) => e.key === "Enter" && handleFromCommit()}
-          placeholder={placeholder?.from ?? "MM/DD/YYYY"}
-          disabled={disabled}
+    <DatePickerPrimitive
+      ref={ref}
+      mode="range"
+      {...(controlled
+        ? { value: toRangeValue(value) }
+        : defaultValue
+          ? { defaultValue: toRangeValue(defaultValue) }
+          : {})}
+      onValueChange={(next: DatePickerValue) =>
+        onChange?.(
+          Array.isArray(next) ? { from: fromISODate(next[0]), to: fromISODate(next[1]) } : undefined
+        )
+      }
+      months={numberOfMonths}
+      locale={locale}
+      disabled={disabled}
+      min={min ? toISODate(min) : undefined}
+      max={max ? toISODate(max) : undefined}
+      unavailable={unavailable}
+      minDays={minDays}
+      maxDays={maxDays}
+      startName={startName}
+      endName={endName}
+      showOutsideDays
+      className={cn("inline-flex", className)}
+    >
+      <div ref={setField} className="inline-flex items-center gap-0">
+        <DatePickerInputPrimitive
           aria-label="Start date"
-          className={inputClasses}
+          placeholder={placeholder?.from ?? format}
+          className={retroDateInputClass}
         />
-
-        {/* Separator */}
         <span
+          aria-hidden="true"
           className={cn(
             "inline-flex items-center justify-center",
             "h-[24px] w-[28px]",
@@ -172,55 +142,28 @@ const RetroDateRangePicker = React.forwardRef<
         >
           &ndash;
         </span>
-
-        {/* To date input */}
-        <input
-          type="text"
-          value={toInput}
-          onChange={(e) => setToInput(e.target.value)}
-          onBlur={handleToCommit}
-          onKeyDown={(e) => e.key === "Enter" && handleToCommit()}
-          placeholder={placeholder?.to ?? "MM/DD/YYYY"}
-          disabled={disabled}
+        <DatePickerInputPrimitive
+          end
           aria-label="End date"
-          className={inputClasses}
+          placeholder={placeholder?.to ?? format}
+          className={retroDateInputClass}
         />
-
-        {/* Calendar trigger */}
-        <RetroPopoverTrigger {...AS_CHILD}>
-          <button
-            type="button"
-            disabled={disabled}
-            aria-label="Choose date range"
-            className={cn(
-              "inline-flex items-center justify-center",
-              "h-[24px] w-[28px] p-0 -ml-px",
-              "border border-os9-black bg-os9-gray-300",
-              "shadow-[inset_1px_1px_0_var(--os9-white),inset_-1px_-1px_0_var(--os9-gray-700)]",
-              "cursor-pointer select-none transition-none",
-              "active:shadow-[inset_1px_1px_0_var(--os9-gray-700),inset_-1px_-1px_0_var(--os9-white)]",
-              "focus-visible:os9-focus-ring",
-              "disabled:pointer-events-none disabled:opacity-50"
-            )}
-          >
-            <CalendarIcon />
-          </button>
-        </RetroPopoverTrigger>
+        <DatePickerTriggerPrimitive aria-label="Choose date range" className={retroDateTriggerClass}>
+          <CalendarIcon />
+        </DatePickerTriggerPrimitive>
       </div>
-      <RetroPopoverContent className="w-auto p-0" align="start">
-        <RetroCalendar
-          mode="range"
-          selected={selectedRange}
-          onSelect={handleCalendarSelect}
-          numberOfMonths={numberOfMonths}
-          defaultMonth={selectedRange?.from}
-          autoFocus
-        />
-      </RetroPopoverContent>
-    </RetroPopover>
+      {hint}
+      <DatePickerContentPrimitive
+        anchor={field}
+        align="start"
+        sideOffset={4}
+        className={retroDatePopupClass}
+      >
+        <RetroCalendarBody months={numberOfMonths} />
+      </DatePickerContentPrimitive>
+    </DatePickerPrimitive>
   )
-})
-RetroDateRangePicker.displayName = "RetroDateRangePicker"
+}
 
 export { RetroDateRangePicker }
 export type { RetroDateRangePickerProps }

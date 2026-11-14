@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { FlairToggle } from "@/app/_components/flair-toggle"
 import { NAV_GROUPS, TOTAL_COMPONENTS } from "./nav-data"
 import { BLOCKS } from "../../blocks/_components/blocks-data"
 
@@ -31,7 +32,7 @@ import {
 } from "@/registry/new-york/ui/retro-dropdown-menu"
 
 const MENU_TRIGGER_CLS =
-  "bg-transparent border-none cursor-default select-none px-[4px] py-0 outline-none font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98] text-os9-black data-[state=open]:bg-os9-azul data-[state=open]:text-os9-white"
+  "bg-transparent border-none cursor-default select-none px-[4px] py-0 outline-none font-[family-name:var(--font-heading)] text-[12px] tracking-[0.42px] leading-[0.98] text-os9-black data-open:bg-os9-azul data-open:text-os9-white"
 
 /* ------------------------------------------------------------------ */
 /*  Sidebar Nav (child component — reads sidebar context)              */
@@ -75,19 +76,13 @@ function SidebarNav() {
             <RetroSidebarGroup>
               <RetroSidebarMenu>
                 <RetroSidebarMenuItem>
-                  <RetroSidebarMenuButton asChild isActive={pathname === "/components"}>
-                    <Link href="/components"><span>Overview</span></Link>
-                  </RetroSidebarMenuButton>
+                  <RetroSidebarMenuButton isActive={pathname === "/components"} render={<Link href="/components" />}><span>Overview</span></RetroSidebarMenuButton>
                 </RetroSidebarMenuItem>
                 <RetroSidebarMenuItem>
-                  <RetroSidebarMenuButton asChild isActive={pathname === "/components/all"}>
-                    <Link href="/components/all"><span>All Components</span></Link>
-                  </RetroSidebarMenuButton>
+                  <RetroSidebarMenuButton isActive={pathname === "/components/all"} render={<Link href="/components/all" />}><span>All Components</span></RetroSidebarMenuButton>
                 </RetroSidebarMenuItem>
                 <RetroSidebarMenuItem>
-                  <RetroSidebarMenuButton asChild isActive={pathname === "/blocks"}>
-                    <Link href="/blocks"><span>Blocks</span></Link>
-                  </RetroSidebarMenuButton>
+                  <RetroSidebarMenuButton isActive={pathname === "/blocks"} render={<Link href="/blocks" />}><span>Blocks</span></RetroSidebarMenuButton>
                 </RetroSidebarMenuItem>
               </RetroSidebarMenu>
             </RetroSidebarGroup>
@@ -102,12 +97,10 @@ function SidebarNav() {
                     return (
                       <RetroSidebarMenuItem key={item.slug}>
                         <RetroSidebarMenuButton
-                          asChild
                           isActive={isActive}
+                          render={<Link href={href} />}
                         >
-                          <Link href={href}>
-                            <span>{item.name}</span>
-                          </Link>
+                          <span>{item.name}</span>
                         </RetroSidebarMenuButton>
                       </RetroSidebarMenuItem>
                     )
@@ -122,10 +115,8 @@ function SidebarNav() {
                   const href = `/blocks/${block.slug}`
                   return (
                     <RetroSidebarMenuItem key={block.slug}>
-                      <RetroSidebarMenuButton asChild isActive={pathname === href}>
-                        <Link href={href}>
-                          <span>{block.name}</span>
-                        </Link>
+                      <RetroSidebarMenuButton isActive={pathname === href} render={<Link href={href} />}>
+                        <span>{block.name}</span>
                       </RetroSidebarMenuButton>
                     </RetroSidebarMenuItem>
                   )
@@ -135,6 +126,7 @@ function SidebarNav() {
           </RetroSidebarContent>
 
           <RetroSidebarFooter className="flex-col items-start gap-1.5">
+            <FlairToggle className="mb-1" />
             <span className="inline-flex items-center bg-os9-gray-400 px-1.5 py-0.5 font-[family-name:var(--font-sans)] text-[9px] text-os9-black"
               style={{
                 border: "1px solid var(--os9-gray-700)",
@@ -200,19 +192,11 @@ function ComponentsMenuBar() {
             <span className="font-bold">File</span>
           </RetroDropdownMenuTrigger>
           <RetroDropdownMenuContent align="start" sideOffset={2}>
-            <RetroDropdownMenuItem asChild>
-              <Link href="/">Home</Link>
-            </RetroDropdownMenuItem>
-            <RetroDropdownMenuItem asChild>
-              <Link href="/components">Components Overview</Link>
-            </RetroDropdownMenuItem>
-            <RetroDropdownMenuItem asChild>
-              <Link href="/blocks">Blocks</Link>
-            </RetroDropdownMenuItem>
+            <RetroDropdownMenuItem render={<Link href="/" />}>Home</RetroDropdownMenuItem>
+            <RetroDropdownMenuItem render={<Link href="/components" />}>Components Overview</RetroDropdownMenuItem>
+            <RetroDropdownMenuItem render={<Link href="/blocks" />}>Blocks</RetroDropdownMenuItem>
             <RetroDropdownMenuSeparator />
-            <RetroDropdownMenuItem asChild>
-              <a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </RetroDropdownMenuItem>
+            <RetroDropdownMenuItem render={<a href="https://github.com/giorgioliapakis/nostalgia-ui" target="_blank" rel="noopener noreferrer" />}>GitHub</RetroDropdownMenuItem>
           </RetroDropdownMenuContent>
         </RetroDropdownMenu>
       </div>
